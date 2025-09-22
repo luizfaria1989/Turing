@@ -47,51 +47,45 @@ optimizer_method = GradientDescent(learning_rate=0.001)
 # =====================
 # Função de treino
 # =====================
-def train(epochs=10, batch_size=32):
+def train(epochs=100, batch_size=32):
     n_samples = x_train.shape[0]
 
     for epoch in range(epochs):
-        # Shuffle dos dados a cada época
+        # ... (código de shuffle dos dados, sem alterações) ...
         indices = np.arange(n_samples)
         np.random.shuffle(indices)
         x_train_shuffled = x_train[indices]
         y_train_shuffled = y_train_one_hot[indices]
 
-        # Iteração por batches
         for start in range(0, n_samples, batch_size):
             end = min(start + batch_size, n_samples)
             x_batch = x_train_shuffled[start:end]
             y_batch = y_train_shuffled[start:end]
 
-            # Debug shapes
-            print("x_batch.shape:", x_batch.shape)
-            print("y_batch.shape:", y_batch.shape)
-
             # Forward
             preds = model.forward(x_batch)
 
+            # Cálculo da perda
             loss = loss_func.forward(preds, y_batch)
 
-            # Gradiente inicial da loss
+            # Gradiente inicial
             initial_gradient = loss_func.backward(preds, y_batch)
 
-            print("initial_gradient.shape:", initial_gradient.shape)
+            # Backward - agora só calcula e retorna os gradientes
+            grads = model.backward(initial_gradient)
 
-            # Backward
-            params, grads = model.backward(initial_gradient)
+            # Atualização dos pesos - agora é feita pelo otimizador!
+            optimizer_method.step(model.params, grads)
 
-            print("params:", params)
-            print("grads:", grads)
-
-            # Atualização dos pesos
-            optimizer_method.step(params, grads)
-
-        # Avaliação
+        # ... (código de avaliação, sem alterações) ...
         test_preds = model.forward(x_test)
         test_loss = loss_func.forward(test_preds, y_test_one_hot)
-        test_accuracy = Accuracy.calculate(test_preds, y_test_one_hot)
+        # Supondo que sua classe Accuracy tenha um método estático ou de classe
+        accuracy = Accuracy()
+        test_accuracy = accuracy.calculate(test_preds, y_test_one_hot)
 
-        print(f'Época {epoch+1}/{epochs} | Perda: {test_loss:.4f} | Acurácia: {test_accuracy:.4f}')
+        print(f'Época {epoch+1}/{epochs} | Perda no teste: {test_loss} | Acurácia no teste: {test_accuracy:.4f}')
+
 
 # =====================
 # Execução
