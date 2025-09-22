@@ -1,4 +1,4 @@
-from Optimizers.base import Optimizer
+from optimizers.base import Optimizer
 
 class GradientDescent(Optimizer):
     """Implementa o otimizador de Gradiente Descendente (GD).
