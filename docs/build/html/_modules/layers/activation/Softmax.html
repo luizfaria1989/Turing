@@ -32,40 +32,40 @@
             
   <h1>Source code for layers.activation.Softmax</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span> <span class="c1"># Supondo que sua classe base esteja aqui</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span> <span class="c1"># Assuming your base class is here</span>
 
 <div class="viewcode-block" id="Softmax">
 <a class="viewcode-back" href="../../../api/layers.html#layers.activation.Softmax.Softmax">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Softmax</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementa a camada de ativação Softmax.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements the Softmax activation layer.</span>
 
-<span class="sd">    A Softmax é tipicamente usada como a camada de ativação final em problemas</span>
-<span class="sd">    de classificação multi-classe. Ela transforma um vetor de scores (logits)</span>
-<span class="sd">    em uma distribuição de probabilidades, onde cada valor está no intervalo</span>
-<span class="sd">    [0, 1] e a soma de todos os valores é 1.</span>
+<span class="sd">    Softmax is typically used as the final activation layer in multi-class</span>
+<span class="sd">    classification problems. It transforms a vector of scores (logits) into a</span>
+<span class="sd">    probability distribution, where each value is in the range [0, 1] and all</span>
+<span class="sd">    values sum to 1.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        probs (np.ndarray): Armazena as probabilidades de saída do forward pass.</span>
+<span class="sd">        probs (np.ndarray): Stores the output probabilities from the forward pass.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inicializa a camada Softmax.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the Softmax layer.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">probs</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Softmax.forward">
 <a class="viewcode-back" href="../../../api/layers.html#layers.activation.Softmax.Softmax.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa a passagem para frente (forward pass) da camada.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the layer.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            x (np.ndarray): Os dados de entrada (logits) da camada anterior, com</span>
-<span class="sd">                shape (batch_size, num_classes).</span>
+<span class="sd">            x (np.ndarray): The input data (logits) from the previous layer,</span>
+<span class="sd">                with shape (batch_size, num_classes).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            np.ndarray: As probabilidades de saída, com o mesmo shape da entrada.</span>
+<span class="sd">            np.ndarray: The output probabilities, with the same shape as the input.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># A subtração pelo máximo é um truque para estabilidade numérica,</span>
-        <span class="c1"># prevenindo overflow com valores de entrada muito grandes.</span>
+        <span class="c1"># Subtracting the max value is a trick for numerical stability,</span>
+        <span class="c1"># preventing overflow with large input values.</span>
         <span class="n">exp_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">probs</span> <span class="o">=</span> <span class="n">exp_values</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">exp_values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">probs</span></div>
@@ -74,24 +74,24 @@
 <div class="viewcode-block" id="Softmax.backward">
 <a class="viewcode-back" href="../../../api/layers.html#layers.activation.Softmax.Softmax.backward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa a passagem para trás (backward pass) da camada.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass of the layer.</span>
 
-<span class="sd">        NOTA IMPORTANTE: Este é um backward pass simplificado que SÓ funciona</span>
-<span class="sd">        quando a Softmax é usada em conjunto com a função de perda de</span>
-<span class="sd">        Entropia Cruzada Categórica. A derivada complexa da Softmax é</span>
-<span class="sd">        convenientemente cancelada pela derivada da Entropia Cruzada,</span>
-<span class="sd">        resultando em uma simples passagem do gradiente.</span>
+<span class="sd">        IMPORTANT NOTE: This is a simplified backward pass that is ONLY valid</span>
+<span class="sd">        when Softmax is used in conjunction with the Categorical Cross-Entropy</span>
+<span class="sd">        loss function. The complex Jacobian of the Softmax is conveniently</span>
+<span class="sd">        canceled out by the derivative of the Cross-Entropy loss, resulting in</span>
+<span class="sd">        a simple pass-through of the gradient.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            grad_output (np.ndarray): O gradiente da perda em relação à saída</span>
-<span class="sd">                desta camada. Neste design, ele será (y_previsto - y_real).</span>
+<span class="sd">            grad_output (np.ndarray): The gradient of the loss with respect to</span>
+<span class="sd">                this layer&#39;s output. In our design, this will be (y_pred - y_true).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            tuple[np.ndarray, None]: Uma tupla contendo:</span>
-<span class="sd">                - O gradiente em relação à entrada da camada.</span>
-<span class="sd">                - None, pois a Softmax não possui parâmetros treináveis.</span>
+<span class="sd">            tuple[np.ndarray, None]: A tuple containing:</span>
+<span class="sd">                - The gradient with respect to the layer&#39;s input.</span>
+<span class="sd">                - None, since Softmax has no trainable parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># O gradiente simplesmente passa direto pela camada.</span>
+        <span class="c1"># The gradient simply passes through the layer.</span>
         <span class="k">return</span> <span class="n">grad_output</span><span class="p">,</span> <span class="kc">None</span></div>
 </div>
 
@@ -128,6 +128,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/datasets.html">Datasets</a></li>
 </ul>
 
 <div class="relations">

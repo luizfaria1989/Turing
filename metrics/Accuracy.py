@@ -1,42 +1,40 @@
 import numpy as np
 
-
 class Accuracy:
-    """
-    Calcula a métrica de acurácia para problemas de classificação.
+    """Calculates the accuracy metric for classification problems.
 
-    A acurácia mede a proporção de previsões corretas em relação ao
-    número total de amostras. É calculada como:
-    Acurácia = (Previsões Corretas) / (Total de Previsões)
+    Accuracy measures the proportion of correct predictions out of the
+    total number of samples. It is calculated as:
+    Accuracy = (Correct Predictions) / (Total Predictions)
     """
 
     def __init__(self):
-        """Inicializa o calculador de acurácia."""
+        """Initializes the accuracy calculator."""
         pass
 
     def calculate(self, y_pred, y_true):
-        """Calcula a acurácia para um lote de previsões.
+        """Calculates the accuracy for a batch of predictions.
 
         Args:
-            y_pred (np.ndarray): As saídas previstas pelo modelo, geralmente
-                como distribuições de probabilidade (saída da Softmax).
+            y_pred (np.ndarray): The predicted outputs from the model, typically
+                as probability distributions (output from Softmax).
                 Shape: (batch_size, num_classes).
-            y_true (np.ndarray): Os rótulos verdadeiros em formato one-hot.
+            y_true (np.ndarray): The true labels in one-hot encoded format.
                 Shape: (batch_size, num_classes).
 
         Returns:
-            float: O valor da acurácia, um número entre 0 e 1.
+            float: The accuracy score, a value between 0 and 1.
         """
-        # Converte as probabilidades em previsões de classe (o índice de maior valor)
+        # Convert probabilities to class predictions (the index of the highest value)
         predictions = np.argmax(y_pred, axis=1)
 
-        # Converte os rótulos one-hot de volta para classes
-        correct_predictions = np.argmax(y_true, axis=1)
+        # Convert one-hot encoded true labels back to class labels
+        true_labels = np.argmax(y_true, axis=1)
 
-        # Compara as previsões com os valores reais e soma os acertos
-        correct = np.sum(predictions == correct_predictions)
+        # Compare predictions with true labels and sum the matches
+        correct = np.sum(predictions == true_labels)
 
-        # Calcula a acurácia
+        # Calculate the accuracy
         accuracy = correct / len(predictions)
 
         return accuracy

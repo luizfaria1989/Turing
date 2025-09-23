@@ -1,7 +1,7 @@
 Model
 =======
 
-Este módulo contém todas as models da rede.
+This module contains all the models that are implemented in the API.
 
 Sequential
 -----------

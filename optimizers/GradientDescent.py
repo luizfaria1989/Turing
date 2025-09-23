@@ -1,35 +1,35 @@
-from optimizers.base import Optimizer # Supondo que sua classe base esteja aqui
+from optimizers.base import Optimizer # Assuming your base class is here
 
 class GradientDescent(Optimizer):
-    """Implementa o otimizador de Gradiente Descendente (GD).
+    """Implements the classic Gradient Descent (GD) optimization algorithm.
 
-    Esta classe herda da classe base Otimizador e implementa a lógica
-    de atualização de parâmetros seguindo a fórmula clássica:
-    θ_novo = θ_antigo - α * ∇J(θ)
+    This class inherits from the base Optimizer class and implements the
+    parameter update logic following the classic formula:
+    θ_new = θ_old - α * ∇J(θ)
 
     Attributes:
-        lr (float): A taxa de aprendizado (α) usada para a atualização.
+        lr (float): The learning rate (α) used for the parameter updates.
     """
     def __init__(self, learning_rate=0.001):
-        """Inicializa o otimizador GradientDescent.
+        """Initializes the GradientDescent optimizer.
 
         Args:
-            learning_rate (float, optional): A taxa de aprendizado (α).
-                Padrão: 0.001.
+            learning_rate (float, optional): The learning rate (α).
+                Defaults to 0.001.
         """
         super().__init__(learning_rate)
 
     def step(self, params, grads):
-        """Executa um único passo de otimização para todos os parâmetros.
+        """Performs a single optimization step for all parameters.
 
         Args:
-            params (list): Uma lista de listas contendo os parâmetros do modelo.
-                Estrutura esperada: [[pesos1, biases1], [pesos2, biases2], ...]
-            grads (list): Uma lista de listas contendo os gradientes para cada
-                parâmetro, com a mesma estrutura de `params`.
+            params (list): A list of lists containing the model's parameters.
+                Expected structure: [[weights1, biases1], [weights2, biases2], ...]
+            grads (list): A list of lists containing the gradients for each
+                parameter, with the same structure as `params`.
         """
-        # Itera sobre cada grupo de parâmetros (um por camada Densa)
+        # Iterate over each parameter group (one per Dense layer)
         for i in range(len(params)):
-            # A fórmula: parametro -= learning_rate * gradiente_do_parametro
-            params[i][0] -= self.lr * grads[i][0]  # Atualiza pesos (w)
-            params[i][1] -= self.lr * grads[i][1]  # Atualiza biases (b)
+            # The formula: parameter -= learning_rate * parameter_gradient
+            params[i][0] -= self.lr * grads[i][0]  # Update weights (w)
+            params[i][1] -= self.lr * grads[i][1]  # Update biases (b)

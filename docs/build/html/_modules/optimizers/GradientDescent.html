@@ -31,45 +31,45 @@
           <div class="body" role="main">
             
   <h1>Source code for optimizers.GradientDescent</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">optimizers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optimizer</span> <span class="c1"># Supondo que sua classe base esteja aqui</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">optimizers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optimizer</span> <span class="c1"># Assuming your base class is here</span>
 
 <div class="viewcode-block" id="GradientDescent">
 <a class="viewcode-back" href="../../api/optimizers.html#optimizers.GradientDescent.GradientDescent">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GradientDescent</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementa o otimizador de Gradiente Descendente (GD).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements the classic Gradient Descent (GD) optimization algorithm.</span>
 
-<span class="sd">    Esta classe herda da classe base Otimizador e implementa a lógica</span>
-<span class="sd">    de atualização de parâmetros seguindo a fórmula clássica:</span>
-<span class="sd">    θ_novo = θ_antigo - α * ∇J(θ)</span>
+<span class="sd">    This class inherits from the base Optimizer class and implements the</span>
+<span class="sd">    parameter update logic following the classic formula:</span>
+<span class="sd">    θ_new = θ_old - α * ∇J(θ)</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        lr (float): A taxa de aprendizado (α) usada para a atualização.</span>
+<span class="sd">        lr (float): The learning rate (α) used for the parameter updates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inicializa o otimizador GradientDescent.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the GradientDescent optimizer.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            learning_rate (float, optional): A taxa de aprendizado (α).</span>
-<span class="sd">                Padrão: 0.001.</span>
+<span class="sd">            learning_rate (float, optional): The learning rate (α).</span>
+<span class="sd">                Defaults to 0.001.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GradientDescent.step">
 <a class="viewcode-back" href="../../api/optimizers.html#optimizers.GradientDescent.GradientDescent.step">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">grads</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa um único passo de otimização para todos os parâmetros.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a single optimization step for all parameters.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (list): Uma lista de listas contendo os parâmetros do modelo.</span>
-<span class="sd">                Estrutura esperada: [[pesos1, biases1], [pesos2, biases2], ...]</span>
-<span class="sd">            grads (list): Uma lista de listas contendo os gradientes para cada</span>
-<span class="sd">                parâmetro, com a mesma estrutura de `params`.</span>
+<span class="sd">            params (list): A list of lists containing the model&#39;s parameters.</span>
+<span class="sd">                Expected structure: [[weights1, biases1], [weights2, biases2], ...]</span>
+<span class="sd">            grads (list): A list of lists containing the gradients for each</span>
+<span class="sd">                parameter, with the same structure as `params`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Itera sobre cada grupo de parâmetros (um por camada Densa)</span>
+        <span class="c1"># Iterate over each parameter group (one per Dense layer)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)):</span>
-            <span class="c1"># A fórmula: parametro -= learning_rate * gradiente_do_parametro</span>
-            <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">*</span> <span class="n">grads</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Atualiza pesos (w)</span>
-            <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">*</span> <span class="n">grads</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Atualiza biases (b)</span></div>
+            <span class="c1"># The formula: parameter -= learning_rate * parameter_gradient</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">*</span> <span class="n">grads</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Update weights (w)</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">*</span> <span class="n">grads</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Update biases (b)</span></div>
 </div>
 
 </pre></div>
@@ -99,12 +99,14 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/datasets.html">Datasets</a></li>
 </ul>
 
 <div class="relations">

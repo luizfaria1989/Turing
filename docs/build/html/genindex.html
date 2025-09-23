@@ -47,6 +47,7 @@
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
  | <a href="#W"><strong>W</strong></a>
  
 </div>
@@ -59,6 +60,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/layers.html#layers.Dense.Dense.activation">activation (layers.Dense.Dense attribute)</a>
 </li>
+      <li><a href="api/activation_functions/leaky_relu.html#layers.activation.LeakyReLU.LeakyReLU.alpha">alpha (layers.activation.LeakyReLU.LeakyReLU attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -67,12 +70,20 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/layers.html#layers.Dense.Dense.b">b (layers.Dense.Dense attribute)</a>
 </li>
-      <li><a href="api/layers.html#layers.activation.ReLU.ReLU.backward">backward() (layers.activation.ReLU.ReLU method)</a>
+      <li><a href="api/activation_functions/leaky_relu.html#layers.activation.LeakyReLU.LeakyReLU.backward">backward() (layers.activation.LeakyReLU.LeakyReLU method)</a>
 
       <ul>
-        <li><a href="api/layers.html#layers.activation.Softmax.Softmax.backward">(layers.activation.Softmax.Softmax method)</a>
+        <li><a href="api/activation_functions/relu.html#layers.activation.ReLU.ReLU.backward">(layers.activation.ReLU.ReLU method)</a>
+</li>
+        <li><a href="api/activation_functions/sigmoid.html#layers.activation.Sigmoid.Sigmoid.backward">(layers.activation.Sigmoid.Sigmoid method)</a>
+</li>
+        <li><a href="api/activation_functions/softmax.html#layers.activation.Softmax.Softmax.backward">(layers.activation.Softmax.Softmax method)</a>
+</li>
+        <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh.backward">(layers.activation.Tanh.Tanh method)</a>
 </li>
         <li><a href="api/layers.html#layers.Dense.Dense.backward">(layers.Dense.Dense method)</a>
+</li>
+        <li><a href="api/layers.html#layers.Flatten.Flatten.backward">(layers.Flatten.Flatten method)</a>
 </li>
         <li><a href="api/loss.html#loss.CategoricalCrossEntropy.CategoricalCrossEntropy.backward">(loss.CategoricalCrossEntropy.CategoricalCrossEntropy method)</a>
 </li>
@@ -114,12 +125,22 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/layers.html#layers.activation.ReLU.ReLU.forward">forward() (layers.activation.ReLU.ReLU method)</a>
+      <li><a href="api/layers.html#layers.Flatten.Flatten">Flatten (class in layers.Flatten)</a>
+</li>
+      <li><a href="api/activation_functions/leaky_relu.html#layers.activation.LeakyReLU.LeakyReLU.forward">forward() (layers.activation.LeakyReLU.LeakyReLU method)</a>
 
       <ul>
-        <li><a href="api/layers.html#layers.activation.Softmax.Softmax.forward">(layers.activation.Softmax.Softmax method)</a>
+        <li><a href="api/activation_functions/relu.html#layers.activation.ReLU.ReLU.forward">(layers.activation.ReLU.ReLU method)</a>
+</li>
+        <li><a href="api/activation_functions/sigmoid.html#layers.activation.Sigmoid.Sigmoid.forward">(layers.activation.Sigmoid.Sigmoid method)</a>
+</li>
+        <li><a href="api/activation_functions/softmax.html#layers.activation.Softmax.Softmax.forward">(layers.activation.Softmax.Softmax method)</a>
+</li>
+        <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh.forward">(layers.activation.Tanh.Tanh method)</a>
 </li>
         <li><a href="api/layers.html#layers.Dense.Dense.forward">(layers.Dense.Dense method)</a>
+</li>
+        <li><a href="api/layers.html#layers.Flatten.Flatten.forward">(layers.Flatten.Flatten method)</a>
 </li>
         <li><a href="api/loss.html#loss.CategoricalCrossEntropy.CategoricalCrossEntropy.forward">(loss.CategoricalCrossEntropy.CategoricalCrossEntropy method)</a>
 </li>
@@ -144,7 +165,15 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/layers.html#layers.activation.ReLU.ReLU.input">input (layers.activation.ReLU.ReLU attribute)</a>
+      <li><a href="api/activation_functions/leaky_relu.html#layers.activation.LeakyReLU.LeakyReLU.input">input (layers.activation.LeakyReLU.LeakyReLU attribute)</a>
+
+      <ul>
+        <li><a href="api/activation_functions/relu.html#layers.activation.ReLU.ReLU.input">(layers.activation.ReLU.ReLU attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/layers.html#layers.Flatten.Flatten.input_shape">input_shape (layers.Flatten.Flatten attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -155,24 +184,38 @@
       <li><a href="api/model.html#model.Sequential.Sequential.layers">layers (model.Sequential.Sequential attribute)</a>
 </li>
       <li>
+    layers.activation.LeakyReLU
+
+      <ul>
+        <li><a href="api/activation_functions/leaky_relu.html#module-layers.activation.LeakyReLU">module</a>
+</li>
+      </ul></li>
+      <li>
     layers.activation.ReLU
 
       <ul>
-        <li><a href="api/layers.html#module-layers.activation.ReLU">module</a>
+        <li><a href="api/activation_functions/relu.html#module-layers.activation.ReLU">module</a>
+</li>
+      </ul></li>
+      <li>
+    layers.activation.Sigmoid
+
+      <ul>
+        <li><a href="api/activation_functions/sigmoid.html#module-layers.activation.Sigmoid">module</a>
 </li>
       </ul></li>
       <li>
     layers.activation.Softmax
 
       <ul>
-        <li><a href="api/layers.html#module-layers.activation.Softmax">module</a>
+        <li><a href="api/activation_functions/softmax.html#module-layers.activation.Softmax">module</a>
 </li>
       </ul></li>
       <li>
-    layers.base
+    layers.activation.Tanh
 
       <ul>
-        <li><a href="api/layers.html#module-layers.base">module</a>
+        <li><a href="api/activation_functions/tanh.html#module-layers.activation.Tanh">module</a>
 </li>
       </ul></li>
   </ul></td>
@@ -184,15 +227,17 @@
         <li><a href="api/layers.html#module-layers.Dense">module</a>
 </li>
       </ul></li>
-      <li><a href="api/datasets.html#datasets.mnist.load_mnist">load_mnist() (in module datasets.mnist)</a>
-</li>
       <li>
-    loss.base
+    layers.Flatten
 
       <ul>
-        <li><a href="api/loss.html#module-loss.base">module</a>
+        <li><a href="api/layers.html#module-layers.Flatten">module</a>
 </li>
       </ul></li>
+      <li><a href="api/activation_functions/leaky_relu.html#layers.activation.LeakyReLU.LeakyReLU">LeakyReLU (class in layers.activation.LeakyReLU)</a>
+</li>
+      <li><a href="api/datasets.html#datasets.mnist.load_mnist">load_mnist() (in module datasets.mnist)</a>
+</li>
       <li>
     loss.CategoricalCrossEntropy
 
@@ -228,23 +273,25 @@
       <ul>
         <li><a href="api/datasets.html#module-datasets.mnist">datasets.mnist</a>
 </li>
-        <li><a href="api/layers.html#module-layers.activation.ReLU">layers.activation.ReLU</a>
+        <li><a href="api/activation_functions/leaky_relu.html#module-layers.activation.LeakyReLU">layers.activation.LeakyReLU</a>
 </li>
-        <li><a href="api/layers.html#module-layers.activation.Softmax">layers.activation.Softmax</a>
+        <li><a href="api/activation_functions/relu.html#module-layers.activation.ReLU">layers.activation.ReLU</a>
 </li>
-        <li><a href="api/layers.html#module-layers.base">layers.base</a>
+        <li><a href="api/activation_functions/sigmoid.html#module-layers.activation.Sigmoid">layers.activation.Sigmoid</a>
+</li>
+        <li><a href="api/activation_functions/softmax.html#module-layers.activation.Softmax">layers.activation.Softmax</a>
+</li>
+        <li><a href="api/activation_functions/tanh.html#module-layers.activation.Tanh">layers.activation.Tanh</a>
 </li>
         <li><a href="api/layers.html#module-layers.Dense">layers.Dense</a>
 </li>
-        <li><a href="api/loss.html#module-loss.base">loss.base</a>
+        <li><a href="api/layers.html#module-layers.Flatten">layers.Flatten</a>
 </li>
         <li><a href="api/loss.html#module-loss.CategoricalCrossEntropy">loss.CategoricalCrossEntropy</a>
 </li>
         <li><a href="api/metrics.html#module-metrics.Accuracy">metrics.Accuracy</a>
 </li>
         <li><a href="api/model.html#module-model.Sequential">model.Sequential</a>
-</li>
-        <li><a href="api/optimizers.html#module-optimizers.base">optimizers.base</a>
 </li>
         <li><a href="api/optimizers.html#module-optimizers.GradientDescent">optimizers.GradientDescent</a>
 </li>
@@ -254,15 +301,6 @@
 
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    optimizers.base
-
-      <ul>
-        <li><a href="api/optimizers.html#module-optimizers.base">module</a>
-</li>
-      </ul></li>
-  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     optimizers.GradientDescent
@@ -285,7 +323,7 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/layers.html#layers.activation.Softmax.Softmax.probs">probs (layers.activation.Softmax.Softmax attribute)</a>
+      <li><a href="api/activation_functions/softmax.html#layers.activation.Softmax.Softmax.probs">probs (layers.activation.Softmax.Softmax attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -293,7 +331,7 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/layers.html#layers.activation.ReLU.ReLU">ReLU (class in layers.activation.ReLU)</a>
+      <li><a href="api/activation_functions/relu.html#layers.activation.ReLU.ReLU">ReLU (class in layers.activation.ReLU)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -303,11 +341,27 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/model.html#model.Sequential.Sequential">Sequential (class in model.Sequential)</a>
 </li>
+      <li><a href="api/activation_functions/sigmoid.html#layers.activation.Sigmoid.Sigmoid">Sigmoid (class in layers.activation.Sigmoid)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/layers.html#layers.activation.Softmax.Softmax">Softmax (class in layers.activation.Softmax)</a>
+      <li><a href="api/activation_functions/sigmoid.html#layers.activation.Sigmoid.Sigmoid.sigmoid_output">sigmoid_output (layers.activation.Sigmoid.Sigmoid attribute)</a>
+</li>
+      <li><a href="api/activation_functions/softmax.html#layers.activation.Softmax.Softmax">Softmax (class in layers.activation.Softmax)</a>
 </li>
       <li><a href="api/optimizers.html#optimizers.GradientDescent.GradientDescent.step">step() (optimizers.GradientDescent.GradientDescent method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh">Tanh (class in layers.activation.Tanh)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh.tanh_output">tanh_output (layers.activation.Tanh.Tanh attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -347,10 +401,11 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/activation_functions.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/model.html">Model</a></li>

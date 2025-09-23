@@ -1,12 +1,7 @@
 Loss
 =======
 
-Este módulo contém todas as funções de perda da rede.
-
-Camada Base
------------
-.. automodule:: loss.base
-   :members:
+This module contains all loss functions that are implemented in the API.
 
 Categorical Cross Entropy
 ------------

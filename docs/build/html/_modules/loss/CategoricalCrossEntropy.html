@@ -32,43 +32,43 @@
             
   <h1>Source code for loss.CategoricalCrossEntropy</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">loss.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">LossFunction</span>  <span class="c1"># Supondo que sua classe base esteja aqui</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loss.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">LossFunction</span>  <span class="c1"># Assuming your base class is here</span>
 
 
 <div class="viewcode-block" id="CategoricalCrossEntropy">
 <a class="viewcode-back" href="../../api/loss.html#loss.CategoricalCrossEntropy.CategoricalCrossEntropy">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CategoricalCrossEntropy</span><span class="p">(</span><span class="n">LossFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementa a função de perda de Entropia Cruzada Categórica.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements the Categorical Cross-Entropy loss function.</span>
 
-<span class="sd">    Esta é a função de perda padrão para problemas de classificação multi-classe.</span>
-<span class="sd">    Ela mede a dissimilaridade entre a distribuição de probabilidade prevista</span>
-<span class="sd">    pela rede (saída da Softmax) e a distribuição real (os rótulos one-hot).</span>
+<span class="sd">    This is the standard loss function for multi-class classification problems.</span>
+<span class="sd">    It measures the dissimilarity between the predicted probability distribution</span>
+<span class="sd">    (from Softmax) and the true distribution (the one-hot encoded labels).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inicializa a função de perda.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the loss function.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="CategoricalCrossEntropy.forward">
 <a class="viewcode-back" href="../../api/loss.html#loss.CategoricalCrossEntropy.CategoricalCrossEntropy.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_true</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcula a perda média de Entropia Cruzada Categórica para um lote.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the mean Categorical Cross-Entropy loss for a batch.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            y_pred (np.ndarray): As distribuições de probabilidade previstas pela</span>
-<span class="sd">                rede, com shape (batch_size, num_classes).</span>
-<span class="sd">            y_true (np.ndarray): Os rótulos verdadeiros em formato one-hot, com</span>
-<span class="sd">                o mesmo shape de y_pred.</span>
+<span class="sd">            y_pred (np.ndarray): The predicted probability distributions from the</span>
+<span class="sd">                network, with shape (batch_size, num_classes).</span>
+<span class="sd">            y_true (np.ndarray): The true labels in one-hot encoded format, with</span>
+<span class="sd">                the same shape as y_pred.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            float: O valor da perda média para o lote.</span>
+<span class="sd">            float: The mean loss value for the batch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Número de amostras no lote</span>
+        <span class="c1"># Number of samples in the batch</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># &quot;Clipamos&quot; as previsões para evitar o log(0), que resultaria em erro (nan)</span>
+        <span class="c1"># Clip predictions to avoid log(0), which would result in nan error</span>
         <span class="n">y_pred_clipped</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-9</span><span class="p">)</span>
 
-        <span class="c1"># Calcula a perda total e a normaliza pelo tamanho do lote</span>
+        <span class="c1"># Calculate the total loss and normalize it by the batch size</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_true</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_pred_clipped</span><span class="p">))</span> <span class="o">/</span> <span class="n">m</span>
         <span class="k">return</span> <span class="n">loss</span></div>
 
@@ -76,20 +76,21 @@
 <div class="viewcode-block" id="CategoricalCrossEntropy.backward">
 <a class="viewcode-back" href="../../api/loss.html#loss.CategoricalCrossEntropy.CategoricalCrossEntropy.backward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_true</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcula o gradiente inicial da perda para a retropropagação.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the initial gradient of the loss for backpropagation.</span>
 
-<span class="sd">        NOTA: Esta é a derivada simplificada da combinação Softmax + Entropia Cruzada,</span>
-<span class="sd">        o que torna o cálculo do gradiente inicial muito eficiente.</span>
+<span class="sd">        NOTE: This is the simplified derivative of the combined Softmax and</span>
+<span class="sd">        Cross-Entropy functions, which makes the initial gradient calculation</span>
+<span class="sd">        very efficient.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            y_pred (np.ndarray): As distribuições de probabilidade previstas.</span>
-<span class="sd">            y_true (np.ndarray): Os rótulos verdadeiros em formato one-hot.</span>
+<span class="sd">            y_pred (np.ndarray): The predicted probability distributions.</span>
+<span class="sd">            y_true (np.ndarray): The true labels in one-hot encoded format.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            np.ndarray: O gradiente da perda em relação à saída da rede, pronto</span>
-<span class="sd">                para ser passado para o backward da última camada.</span>
+<span class="sd">            np.ndarray: The gradient of the loss with respect to the network&#39;s</span>
+<span class="sd">                output, ready to be passed to the last layer&#39;s backward method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Normaliza o gradiente pelo tamanho do lote</span>
+        <span class="c1"># Normalize the gradient by the batch size</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">grad_output</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">)</span> <span class="o">/</span> <span class="n">m</span>
         <span class="k">return</span> <span class="n">grad_output</span></div>
@@ -128,6 +129,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/datasets.html">Datasets</a></li>
 </ul>
 
 <div class="relations">

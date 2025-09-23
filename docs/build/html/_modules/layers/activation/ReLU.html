@@ -32,42 +32,41 @@
             
   <h1>Source code for layers.activation.ReLU</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span>  <span class="c1"># Supondo que sua classe base esteja aqui</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span>  <span class="c1"># Assuming your base class is here</span>
 
 
 <div class="viewcode-block" id="ReLU">
 <a class="viewcode-back" href="../../../api/layers.html#layers.activation.ReLU.ReLU">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ReLU</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementa a camada de ativação ReLU (Rectified Linear Unit).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements the ReLU (Rectified Linear Unit) activation layer.</span>
 
-<span class="sd">    A ReLU aplica a função não-linear f(x) = max(0, x) elemento a elemento.</span>
-<span class="sd">    É uma das funções de ativação mais comuns para camadas ocultas em redes</span>
-<span class="sd">    neurais por ser computacionalmente eficiente e ajudar a mitigar o problema</span>
-<span class="sd">    do desaparecimento do gradiente.</span>
+<span class="sd">    The Rectified Linear Unit is a non-linear function with the formula</span>
+<span class="sd">    f(x) = max(0, x). It is one of the most common activation functions used</span>
+<span class="sd">    in neural networks because it is computationally efficient and helps</span>
+<span class="sd">    mitigate the vanishing gradient problem.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        input (np.ndarray): Armazena a entrada do forward pass para ser usada</span>
-<span class="sd">            no cálculo do gradiente durante o backward pass.</span>
+<span class="sd">        input (np.ndarray): Stores the input from the forward pass, which is</span>
+<span class="sd">            needed to calculate the gradient in the backward pass.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inicializa a camada ReLU.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the ReLU activation layer.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="ReLU.forward">
 <a class="viewcode-back" href="../../../api/layers.html#layers.activation.ReLU.ReLU.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa a passagem para frente (forward pass) da camada.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the layer.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            input_data (np.ndarray): Os dados de entrada da camada anterior.</span>
+<span class="sd">            input_data (np.ndarray): The input data from the previous layer.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            np.ndarray: A saída da camada após a aplicação da ReLU, com o</span>
-<span class="sd">                mesmo shape da entrada.</span>
+<span class="sd">            np.ndarray: The output of the layer after applying ReLU.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Guarda a entrada para o backward pass</span>
+        <span class="c1"># Caches the input for the backward pass</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">input_data</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span></div>
 
@@ -75,24 +74,25 @@
 <div class="viewcode-block" id="ReLU.backward">
 <a class="viewcode-back" href="../../../api/layers.html#layers.activation.ReLU.ReLU.backward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa a passagem para trás (backward pass) da camada.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass of the layer.</span>
 
-<span class="sd">        Calcula o gradiente da perda em relação à entrada da camada. A derivada</span>
-<span class="sd">        da ReLU é 1 para entradas &gt; 0 e 0 caso contrário.</span>
+<span class="sd">        It computes the derivative of the ReLU function and applies it to the</span>
+<span class="sd">        incoming gradient from the next layer (using the chain rule).</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            grad_output (np.ndarray): O gradiente da perda em relação à saída</span>
-<span class="sd">                desta camada.</span>
+<span class="sd">            grad_output (np.ndarray): The gradient of the loss with respect to</span>
+<span class="sd">                this layer&#39;s output.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            tuple[np.ndarray, None]: Uma tupla contendo:</span>
-<span class="sd">                - O gradiente em relação à entrada da camada (para retropropagar).</span>
-<span class="sd">                - None, pois a ReLU não possui parâmetros treináveis.</span>
+<span class="sd">            tuple[np.ndarray, None]: A tuple containing:</span>
+<span class="sd">                - The gradient of the loss with respect to this layer&#39;s input.</span>
+<span class="sd">                - None, since ReLU has no trainable parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Cria uma máscara booleana e a multiplica pelo gradiente de saída</span>
-        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># The derivative of ReLU is 1 for inputs &gt; 0, and 0 otherwise.</span>
+        <span class="n">relu_grad</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">grad_input</span><span class="p">,</span> <span class="kc">None</span></div>
+        <span class="c1"># Apply the chain rule</span>
+        <span class="k">return</span> <span class="n">grad_output</span> <span class="o">*</span> <span class="n">relu_grad</span><span class="p">,</span> <span class="kc">None</span></div>
 </div>
 
 </pre></div>
@@ -128,6 +128,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/datasets.html">Datasets</a></li>
 </ul>
 
 <div class="relations">

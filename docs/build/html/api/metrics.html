@@ -35,32 +35,32 @@
             
   <section id="metrics">
 <h1>Metrics<a class="headerlink" href="#metrics" title="Link to this heading">¶</a></h1>
-<p>Este módulo contém todas as métricas da rede.</p>
+<p>This module contains metrics that are implemented in the API.</p>
 <section id="module-metrics.Accuracy">
 <span id="accuracy"></span><h2>Accuracy<a class="headerlink" href="#module-metrics.Accuracy" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="metrics.Accuracy.Accuracy">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metrics.Accuracy.</span></span><span class="sig-name descname"><span class="pre">Accuracy</span></span><a class="reference internal" href="../_modules/metrics/Accuracy.html#Accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.Accuracy.Accuracy" title="Link to this definition">¶</a></dt>
-<dd><p>Calcula a métrica de acurácia para problemas de classificação.</p>
-<p>A acurácia mede a proporção de previsões corretas em relação ao
-número total de amostras. É calculada como:
-Acurácia = (Previsões Corretas) / (Total de Previsões)</p>
+<dd><p>Calculates the accuracy metric for classification problems.</p>
+<p>Accuracy measures the proportion of correct predictions out of the
+total number of samples. It is calculated as:
+Accuracy = (Correct Predictions) / (Total Predictions)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="metrics.Accuracy.Accuracy.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/metrics/Accuracy.html#Accuracy.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.Accuracy.Accuracy.calculate" title="Link to this definition">¶</a></dt>
-<dd><p>Calcula a acurácia para um lote de previsões.</p>
+<dd><p>Calculates the accuracy for a batch of predictions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – As saídas previstas pelo modelo, geralmente
-como distribuições de probabilidade (saída da Softmax).
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted outputs from the model, typically
+as probability distributions (output from Softmax).
 Shape: (batch_size, num_classes).</p></li>
-<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – Os rótulos verdadeiros em formato one-hot.
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true labels in one-hot encoded format.
 Shape: (batch_size, num_classes).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>O valor da acurácia, um número entre 0 e 1.</p>
+<dd class="field-even"><p>The accuracy score, a value between 0 and 1.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -99,9 +99,9 @@ Shape: (batch_size, num_classes).</p></li>
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Metrics</a><ul>

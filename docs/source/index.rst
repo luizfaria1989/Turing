@@ -1,16 +1,17 @@
 .. Minha Biblioteca de ML documentation master file, etc...
 
-Bem-vindo à Documentação da Minha Biblioteca!
+Turing
 =============================================
 
-Este projeto implementa uma rede neural do zero para fins didáticos.
+This project consist in a API for creating machine learning algorithms.
 
 .. toctree::
    :maxdepth: 2
-   :caption: API da Biblioteca:
+   :caption: API:
 
    api/optimizers
    api/layers
+   api/activation_functions
    api/loss
    api/metrics
    api/model

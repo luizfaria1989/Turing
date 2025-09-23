@@ -33,47 +33,45 @@
   <h1>Source code for metrics.Accuracy</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-
 <div class="viewcode-block" id="Accuracy">
 <a class="viewcode-back" href="../../api/metrics.html#metrics.Accuracy.Accuracy">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Accuracy</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calcula a métrica de acurácia para problemas de classificação.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the accuracy metric for classification problems.</span>
 
-<span class="sd">    A acurácia mede a proporção de previsões corretas em relação ao</span>
-<span class="sd">    número total de amostras. É calculada como:</span>
-<span class="sd">    Acurácia = (Previsões Corretas) / (Total de Previsões)</span>
+<span class="sd">    Accuracy measures the proportion of correct predictions out of the</span>
+<span class="sd">    total number of samples. It is calculated as:</span>
+<span class="sd">    Accuracy = (Correct Predictions) / (Total Predictions)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inicializa o calculador de acurácia.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the accuracy calculator.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="Accuracy.calculate">
 <a class="viewcode-back" href="../../api/metrics.html#metrics.Accuracy.Accuracy.calculate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_true</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcula a acurácia para um lote de previsões.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the accuracy for a batch of predictions.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            y_pred (np.ndarray): As saídas previstas pelo modelo, geralmente</span>
-<span class="sd">                como distribuições de probabilidade (saída da Softmax).</span>
+<span class="sd">            y_pred (np.ndarray): The predicted outputs from the model, typically</span>
+<span class="sd">                as probability distributions (output from Softmax).</span>
 <span class="sd">                Shape: (batch_size, num_classes).</span>
-<span class="sd">            y_true (np.ndarray): Os rótulos verdadeiros em formato one-hot.</span>
+<span class="sd">            y_true (np.ndarray): The true labels in one-hot encoded format.</span>
 <span class="sd">                Shape: (batch_size, num_classes).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            float: O valor da acurácia, um número entre 0 e 1.</span>
+<span class="sd">            float: The accuracy score, a value between 0 and 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Converte as probabilidades em previsões de classe (o índice de maior valor)</span>
+        <span class="c1"># Convert probabilities to class predictions (the index of the highest value)</span>
         <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="c1"># Converte os rótulos one-hot de volta para classes</span>
-        <span class="n">correct_predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Convert one-hot encoded true labels back to class labels</span>
+        <span class="n">true_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="c1"># Compara as previsões com os valores reais e soma os acertos</span>
-        <span class="n">correct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">predictions</span> <span class="o">==</span> <span class="n">correct_predictions</span><span class="p">)</span>
+        <span class="c1"># Compare predictions with true labels and sum the matches</span>
+        <span class="n">correct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">predictions</span> <span class="o">==</span> <span class="n">true_labels</span><span class="p">)</span>
 
-        <span class="c1"># Calcula a acurácia</span>
+        <span class="c1"># Calculate the accuracy</span>
         <span class="n">accuracy</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">accuracy</span></div>

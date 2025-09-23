@@ -39,35 +39,35 @@
 <div class="viewcode-block" id="load_mnist">
 <a class="viewcode-back" href="../../api/datasets.html#datasets.mnist.load_mnist">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_mnist</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Baixa o dataset MNIST (se não existir localmente) e o carrega.</span>
-
-<span class="sd">    A função verifica se o arquivo `mnist.npz` existe na pasta `datasets/_data/`.</span>
-<span class="sd">    Se não existir, ele é baixado da fonte de datasets do Keras/TensorFlow.</span>
-<span class="sd">    Em seguida, os dados são carregados em arrays NumPy.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function downloads the MNIST dataset (if it doesn&#39;t exist yet) and then loads it.</span>
+<span class="sd">    The function starts by verifying that the MNIST dataset is downloaded by checking the file `mnist.npz` in</span>
+<span class="sd">    the directory `datasets/_data`.</span>
+<span class="sd">    If it doesn&#39;t exist yet, it downloads the dataset from Keras/TensorFlow.</span>
+<span class="sd">    And then loads the dataset into memory in a numpy array.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        tuple: Uma tupla contendo quatro arrays NumPy na seguinte ordem:</span>
+<span class="sd">        tuple: A tuple containing four numpy arrays in the following order:</span>
 <span class="sd">        (x_train, y_train, x_test, y_test).</span>
-<span class="sd">        - x_train (np.ndarray): Imagens de treino com shape (60000, 28, 28).</span>
-<span class="sd">        - y_train (np.ndarray): Rótulos de treino com shape (60000,).</span>
-<span class="sd">        - x_test (np.ndarray): Imagens de teste com shape (10000, 28, 28).</span>
-<span class="sd">        - y_test (np.ndarray): Rótulos de teste com shape (10000,).</span>
+<span class="sd">        - x_train (np.ndarray): Train images with dimensions (60000, 28, 28).</span>
+<span class="sd">        - y_train (np.ndarray): Train labels with dimensions (60000,).</span>
+<span class="sd">        - x_test (np.ndarray): Test images with dimensions (10000, 28, 28).</span>
+<span class="sd">        - y_test (np.ndarray): Test labels with dimensions (10000,).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Garante que o diretório de dados exista</span>
+    <span class="c1"># Makes sure that `datasets/_data` exists</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;datasets/_data&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;datasets/_data/mnist.npz&quot;</span>
 
-    <span class="c1"># Baixa o arquivo apenas se ele não existir</span>
+    <span class="c1"># Download the file if it doesn`t exist yet</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Baixando o dataset MNIST...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dowloading MNIST dataset...&quot;</span><span class="p">)</span>
         <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span>
             <span class="s2">&quot;https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz&quot;</span><span class="p">,</span>
             <span class="n">data_path</span>
         <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download completo.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading complete.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># Carrega os dados do arquivo .npz</span>
+    <span class="c1"># Load the data in the file .npz</span>
     <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">mnist</span><span class="p">:</span>
         <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;x_train&quot;</span><span class="p">],</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;y_train&quot;</span><span class="p">]</span>
         <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;x_test&quot;</span><span class="p">],</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;y_test&quot;</span><span class="p">]</span>

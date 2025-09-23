@@ -1,7 +1,7 @@
 Datasets
 =======
 
-Este módulo contém todas os datasets da rede.
+This module explain about all the datasets that are implemented in this API.
 
 MNIST
 -----------

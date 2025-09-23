@@ -32,33 +32,33 @@
             
   <h1>Source code for layers.Dense</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span>  <span class="c1"># Supondo que sua classe base esteja aqui</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span>
 
 
 <div class="viewcode-block" id="Dense">
 <a class="viewcode-back" href="../../api/layers.html#layers.Dense.Dense">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Dense</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementa uma camada densa (fully connected) da rede neural.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a fully connected (dense) neural network layer.</span>
 
-<span class="sd">    Uma camada densa realiza uma transformação linear nos dados de entrada</span>
-<span class="sd">    (Y = XW + b). É o principal bloco de construção para redes neurais.</span>
+<span class="sd">    A dense layer performs a linear transformation on the input data according</span>
+<span class="sd">    to the equation Y = XW + b. It is a fundamental building block for</span>
+<span class="sd">    most neural networks.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        w (np.ndarray): A matriz de pesos da camada.</span>
-<span class="sd">        b (np.ndarray): O vetor de biases da camada.</span>
-<span class="sd">        params (list): Uma lista contendo os parâmetros treináveis da camada, [w, b].</span>
-<span class="sd">        activation (Layer, optional): A camada de ativação a ser aplicada após a</span>
-<span class="sd">            transformação linear.</span>
+<span class="sd">        w (np.ndarray): The weight matrix of the layer.</span>
+<span class="sd">        b (np.ndarray): The bias vector of the layer.</span>
+<span class="sd">        params (list): A list containing the layer&#39;s trainable parameters, [w, b].</span>
+<span class="sd">        activation (Layer, optional): The activation layer to be applied after</span>
+<span class="sd">            the linear transformation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inicializa a camada Densa.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the Dense layer.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            input_size (int): O número de features de entrada (neurônios da camada anterior).</span>
-<span class="sd">            output_size (int): O número de neurônios de saída desta camada.</span>
-<span class="sd">            activation (Layer, optional): Uma camada de ativação a ser usada.</span>
-<span class="sd">                Padrão é None (nenhuma ativação).</span>
+<span class="sd">            input_size (int): The number of input features (neurons from the previous layer).</span>
+<span class="sd">            output_size (int): The number of output neurons for this layer.</span>
+<span class="sd">            activation (Layer, optional): An activation layer to be used. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span>
@@ -70,19 +70,19 @@
 <div class="viewcode-block" id="Dense.forward">
 <a class="viewcode-back" href="../../api/layers.html#layers.Dense.Dense.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa a passagem para frente (forward pass) da camada.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the layer.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            input_data (np.ndarray): Os dados de entrada com shape (batch_size, input_size).</span>
+<span class="sd">            input_data (np.ndarray): The input data with shape (batch_size, input_size).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            np.ndarray: A saída da camada com shape (batch_size, output_size).</span>
+<span class="sd">            np.ndarray: The output from the layer with shape (batch_size, output_size).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">input_data</span>
-        <span class="c1"># Cálculo da transformação linear</span>
+        <span class="c1"># Perform the linear transformation</span>
         <span class="n">linear_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
 
-        <span class="c1"># Aplica a função de ativação, se houver</span>
+        <span class="c1"># Apply the activation function, if it exists</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">linear_output</span><span class="p">)</span>
 
@@ -92,27 +92,29 @@
 <div class="viewcode-block" id="Dense.backward">
 <a class="viewcode-back" href="../../api/layers.html#layers.Dense.Dense.backward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa a passagem para trás (backward pass) da camada.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass (backpropagation) through the layer.</span>
 
-<span class="sd">        Calcula os gradientes para os pesos, biases e para a entrada da camada.</span>
+<span class="sd">        Calculates the gradients of the loss with respect to the layer&#39;s</span>
+<span class="sd">        inputs, weights, and biases.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            output_gradient (np.ndarray): O gradiente da perda em relação à saída desta camada.</span>
+<span class="sd">            output_gradient (np.ndarray): The gradient of the loss with respect</span>
+<span class="sd">                to the output of this layer.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            tuple[np.ndarray, list]: Uma tupla contendo:</span>
-<span class="sd">                - O gradiente em relação à entrada da camada (para retropropagar).</span>
-<span class="sd">                - Uma lista com os gradientes dos pesos e biases.</span>
+<span class="sd">            tuple[np.ndarray, list]: A tuple containing:</span>
+<span class="sd">                - The gradient of the loss with respect to the layer&#39;s input.</span>
+<span class="sd">                - A list containing the gradients for the weights and biases.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Se houver uma função de ativação, primeiro fazemos o backward dela</span>
+        <span class="c1"># If an activation function exists, first perform its backward pass</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">:</span>
             <span class="n">output_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">)</span>
 
-        <span class="c1"># Gradientes para os parâmetros</span>
+        <span class="c1"># Gradients for the parameters (weights and biases)</span>
         <span class="n">grad_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">output_gradient</span>
         <span class="n">grad_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="c1"># Gradiente para passar para a camada anterior</span>
+        <span class="c1"># Gradient to pass to the previous layer</span>
         <span class="n">input_gradient</span> <span class="o">=</span> <span class="n">output_gradient</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">T</span>
 
         <span class="k">return</span> <span class="n">input_gradient</span><span class="p">,</span> <span class="p">[</span><span class="n">grad_w</span><span class="p">,</span> <span class="n">grad_b</span><span class="p">]</span></div>
@@ -151,6 +153,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/datasets.html">Datasets</a></li>
 </ul>
 
 <div class="relations">

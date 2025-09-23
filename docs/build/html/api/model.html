@@ -35,19 +35,19 @@
             
   <section id="model">
 <h1>Model<a class="headerlink" href="#model" title="Link to this heading">¶</a></h1>
-<p>Este módulo contém todas as models da rede.</p>
+<p>This module contains all the models that are implemented in the API.</p>
 <section id="module-model.Sequential">
 <span id="sequential"></span><h2>Sequential<a class="headerlink" href="#module-model.Sequential" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="model.Sequential.Sequential">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model.Sequential.</span></span><span class="sig-name descname"><span class="pre">Sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model/Sequential.html#Sequential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Sequential.Sequential" title="Link to this definition">¶</a></dt>
-<dd><p>Um container para empilhar camadas de rede neural em uma sequência.</p>
-<p>Esta classe gerencia uma lista de camadas e orquestra a passagem de dados
-para frente (forward) e a retropropagação de gradientes para trás (backward).</p>
+<dd><p>A container for stacking neural network layers in a sequence.</p>
+<p>This class manages a list of layers and orchestrates the forward pass of
+data and the backward pass of gradients.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="model.Sequential.Sequential.layers">
 <span class="sig-name descname"><span class="pre">layers</span></span><a class="headerlink" href="#model.Sequential.Sequential.layers" title="Link to this definition">¶</a></dt>
-<dd><p>A lista de objetos de camada que compõem a rede.</p>
+<dd><p>The list of layer objects that make up the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
@@ -58,8 +58,8 @@ para frente (forward) e a retropropagação de gradientes para trás (backward).
 <dl class="py attribute">
 <dt class="sig sig-object py" id="model.Sequential.Sequential.params">
 <span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#model.Sequential.Sequential.params" title="Link to this definition">¶</a></dt>
-<dd><p>Uma lista de listas contendo os parâmetros treináveis
-(pesos e biases) de todas as camadas na rede que os possuem.</p>
+<dd><p>A list of lists containing the trainable parameters
+(weights and biases) from all layers in the network that have them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
@@ -70,8 +70,8 @@ para frente (forward) e a retropropagação de gradientes para trás (backward).
 <dl class="py attribute">
 <dt class="sig sig-object py" id="model.Sequential.Sequential.grads">
 <span class="sig-name descname"><span class="pre">grads</span></span><a class="headerlink" href="#model.Sequential.Sequential.grads" title="Link to this definition">¶</a></dt>
-<dd><p>Uma lista de listas contendo os gradientes para cada
-parâmetro. Esta lista é populada após cada chamada ao <cite>backward</cite>.</p>
+<dd><p>A list of lists containing the gradients for each
+parameter. This list is populated after each call to <cite>backward</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
@@ -81,16 +81,16 @@ parâmetro. Esta lista é populada após cada chamada ao <cite>backward</cite>.<
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model.Sequential.Sequential.backward">
-<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradiente_saida</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model/Sequential.html#Sequential.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Sequential.Sequential.backward" title="Link to this definition">¶</a></dt>
-<dd><p>Executa a passagem para trás (backward pass) para toda a rede.</p>
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model/Sequential.html#Sequential.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Sequential.Sequential.backward" title="Link to this definition">¶</a></dt>
+<dd><p>Performs the backward pass (backpropagation) for the entire network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>gradiente_saida</strong> (<em>np.ndarray</em>) – O gradiente inicial da função de perda
-em relação à saída da rede.</p>
+<dd class="field-odd"><p><strong>output_gradient</strong> (<em>np.ndarray</em>) – The initial gradient from the loss function
+with respect to the network’s output.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
-<dt>Uma lista de listas contendo os gradientes para todos os</dt><dd><p>parâmetros treináveis da rede.</p>
+<dt>A list of lists containing the gradients for all trainable</dt><dd><p>parameters in the network.</p>
 </dd>
 </dl>
 </p>
@@ -104,13 +104,13 @@ em relação à saída da rede.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="model.Sequential.Sequential.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model/Sequential.html#Sequential.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Sequential.Sequential.forward" title="Link to this definition">¶</a></dt>
-<dd><p>Executa a passagem para frente (forward pass) para toda a rede.</p>
+<dd><p>Performs the forward pass for the entire network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>input_data</strong> (<em>np.ndarray</em>) – Os dados de entrada para a primeira camada.</p>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>np.ndarray</em>) – The input data for the first layer.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A saída final da rede após passar por todas as camadas.</p>
+<dd class="field-even"><p>The final output of the network after passing through all layers.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
@@ -149,9 +149,9 @@ em relação à saída da rede.</p>
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>

@@ -1,68 +1,68 @@
 import numpy as np
-# from layers.base import Layer # Supondo que você tenha uma classe base
+# from layers.base import Layer # Assuming you have a base class
 
 class Sequential:
-    """Um container para empilhar camadas de rede neural em uma sequência.
+    """A container for stacking neural network layers in a sequence.
 
-    Esta classe gerencia uma lista de camadas e orquestra a passagem de dados
-    para frente (forward) e a retropropagação de gradientes para trás (backward).
+    This class manages a list of layers and orchestrates the forward pass of
+    data and the backward pass of gradients.
 
     Attributes:
-        layers (list): A lista de objetos de camada que compõem a rede.
-        params (list): Uma lista de listas contendo os parâmetros treináveis
-            (pesos e biases) de todas as camadas na rede que os possuem.
-        grads (list): Uma lista de listas contendo os gradientes para cada
-            parâmetro. Esta lista é populada após cada chamada ao `backward`.
+        layers (list): The list of layer objects that make up the network.
+        params (list): A list of lists containing the trainable parameters
+            (weights and biases) from all layers in the network that have them.
+        grads (list): A list of lists containing the gradients for each
+            parameter. This list is populated after each call to `backward`.
     """
     def __init__(self, layers):
-        """Inicializa o modelo Sequencial.
+        """Initializes the Sequential model.
 
         Args:
-            layers (list): Uma lista de objetos de camada (ex: [Dense(), ReLU()])
-                na ordem em que devem ser aplicados.
+            layers (list): A list of layer objects (e.g., [Dense(), ReLU()])
+                in the order they should be applied.
         """
         self.layers = layers
         self.params = []
         self.grads = []
 
-        # Loop inteligente que só coleta parâmetros de camadas que realmente os têm
+        # Smart loop that only collects parameters from layers that actually have them
         for layer in self.layers:
             if hasattr(layer, 'params') and layer.params:
                 self.params.append(layer.params)
 
     def forward(self, input_data):
-        """Executa a passagem para frente (forward pass) para toda a rede.
+        """Performs the forward pass for the entire network.
 
         Args:
-            input_data (np.ndarray): Os dados de entrada para a primeira camada.
+            input_data (np.ndarray): The input data for the first layer.
 
         Returns:
-            np.ndarray: A saída final da rede após passar por todas as camadas.
+            np.ndarray: The final output of the network after passing through all layers.
         """
         output = input_data
         for layer in self.layers:
             output = layer.forward(output)
         return output
 
-    def backward(self, gradiente_saida):
-        """Executa a passagem para trás (backward pass) para toda a rede.
+    def backward(self, output_gradient):
+        """Performs the backward pass (backpropagation) for the entire network.
 
         Args:
-            gradiente_saida (np.ndarray): O gradiente inicial da função de perda
-                em relação à saída da rede.
+            output_gradient (np.ndarray): The initial gradient from the loss function
+                with respect to the network's output.
 
         Returns:
-            list: Uma lista de listas contendo os gradientes para todos os
-                parâmetros treináveis da rede.
+            list: A list of lists containing the gradients for all trainable
+                parameters in the network.
         """
         self.grads = []
-        grad = gradiente_saida
+        grad = output_gradient
 
-        # Itera sobre as camadas na ordem inversa
+        # Iterate over the layers in reverse order
         for layer in reversed(self.layers):
             grad, layer_grads = layer.backward(grad)
 
-            # Coleta os gradientes apenas de camadas que os retornaram
+            # Collect gradients only from layers that returned them
             if layer_grads:
                 self.grads.insert(0, layer_grads)
 

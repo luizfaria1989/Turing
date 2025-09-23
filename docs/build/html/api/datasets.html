@@ -34,24 +34,25 @@
             
   <section id="datasets">
 <h1>Datasets<a class="headerlink" href="#datasets" title="Link to this heading">¶</a></h1>
-<p>Este módulo contém todas os datasets da rede.</p>
+<p>This module explain about all the datasets that are implemented in this API.</p>
 <section id="module-datasets.mnist">
 <span id="mnist"></span><h2>MNIST<a class="headerlink" href="#module-datasets.mnist" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="datasets.mnist.load_mnist">
 <span class="sig-prename descclassname"><span class="pre">datasets.mnist.</span></span><span class="sig-name descname"><span class="pre">load_mnist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/datasets/mnist.html#load_mnist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasets.mnist.load_mnist" title="Link to this definition">¶</a></dt>
-<dd><p>Baixa o dataset MNIST (se não existir localmente) e o carrega.</p>
-<p>A função verifica se o arquivo <cite>mnist.npz</cite> existe na pasta <cite>datasets/_data/</cite>.
-Se não existir, ele é baixado da fonte de datasets do Keras/TensorFlow.
-Em seguida, os dados são carregados em arrays NumPy.</p>
+<dd><p>This function downloads the MNIST dataset (if it doesn’t exist yet) and then loads it.
+The function starts by verifying that the MNIST dataset is downloaded by checking the file <cite>mnist.npz</cite> in
+the directory <cite>datasets/_data</cite>.
+If it doesn’t exist yet, it downloads the dataset from Keras/TensorFlow.
+And then loads the dataset into memory in a numpy array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Uma tupla contendo quatro arrays NumPy na seguinte ordem:
+<dd class="field-odd"><p>A tuple containing four numpy arrays in the following order:
 (x_train, y_train, x_test, y_test).
-- x_train (np.ndarray): Imagens de treino com shape (60000, 28, 28).
-- y_train (np.ndarray): Rótulos de treino com shape (60000,).
-- x_test (np.ndarray): Imagens de teste com shape (10000, 28, 28).
-- y_test (np.ndarray): Rótulos de teste com shape (10000,).</p>
+- x_train (np.ndarray): Train images with dimensions (60000, 28, 28).
+- y_train (np.ndarray): Train labels with dimensions (60000,).
+- x_test (np.ndarray): Test images with dimensions (10000, 28, 28).
+- y_test (np.ndarray): Test labels with dimensions (10000,).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>

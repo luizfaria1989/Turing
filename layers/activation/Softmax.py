@@ -1,55 +1,55 @@
 import numpy as np
-from layers.base import Layer # Supondo que sua classe base esteja aqui
+from layers.base import Layer # Assuming your base class is here
 
 class Softmax(Layer):
-    """Implementa a camada de ativação Softmax.
+    """Implements the Softmax activation layer.
 
-    A Softmax é tipicamente usada como a camada de ativação final em problemas
-    de classificação multi-classe. Ela transforma um vetor de scores (logits)
-    em uma distribuição de probabilidades, onde cada valor está no intervalo
-    [0, 1] e a soma de todos os valores é 1.
+    Softmax is typically used as the final activation layer in multi-class
+    classification problems. It transforms a vector of scores (logits) into a
+    probability distribution, where each value is in the range [0, 1] and all
+    values sum to 1.
 
     Attributes:
-        probs (np.ndarray): Armazena as probabilidades de saída do forward pass.
+        probs (np.ndarray): Stores the output probabilities from the forward pass.
     """
     def __init__(self):
-        """Inicializa a camada Softmax."""
+        """Initializes the Softmax layer."""
         super().__init__()
         self.probs = None
 
     def forward(self, x):
-        """Executa a passagem para frente (forward pass) da camada.
+        """Performs the forward pass of the layer.
 
         Args:
-            x (np.ndarray): Os dados de entrada (logits) da camada anterior, com
-                shape (batch_size, num_classes).
+            x (np.ndarray): The input data (logits) from the previous layer,
+                with shape (batch_size, num_classes).
 
         Returns:
-            np.ndarray: As probabilidades de saída, com o mesmo shape da entrada.
+            np.ndarray: The output probabilities, with the same shape as the input.
         """
-        # A subtração pelo máximo é um truque para estabilidade numérica,
-        # prevenindo overflow com valores de entrada muito grandes.
+        # Subtracting the max value is a trick for numerical stability,
+        # preventing overflow with large input values.
         exp_values = np.exp(x - np.max(x, axis=1, keepdims=True))
         self.probs = exp_values / np.sum(exp_values, axis=1, keepdims=True)
         return self.probs
 
     def backward(self, grad_output):
-        """Executa a passagem para trás (backward pass) da camada.
+        """Performs the backward pass of the layer.
 
-        NOTA IMPORTANTE: Este é um backward pass simplificado que SÓ funciona
-        quando a Softmax é usada em conjunto com a função de perda de
-        Entropia Cruzada Categórica. A derivada complexa da Softmax é
-        convenientemente cancelada pela derivada da Entropia Cruzada,
-        resultando em uma simples passagem do gradiente.
+        IMPORTANT NOTE: This is a simplified backward pass that is ONLY valid
+        when Softmax is used in conjunction with the Categorical Cross-Entropy
+        loss function. The complex Jacobian of the Softmax is conveniently
+        canceled out by the derivative of the Cross-Entropy loss, resulting in
+        a simple pass-through of the gradient.
 
         Args:
-            grad_output (np.ndarray): O gradiente da perda em relação à saída
-                desta camada. Neste design, ele será (y_previsto - y_real).
+            grad_output (np.ndarray): The gradient of the loss with respect to
+                this layer's output. In our design, this will be (y_pred - y_true).
 
         Returns:
-            tuple[np.ndarray, None]: Uma tupla contendo:
-                - O gradiente em relação à entrada da camada.
-                - None, pois a Softmax não possui parâmetros treináveis.
+            tuple[np.ndarray, None]: A tuple containing:
+                - The gradient with respect to the layer's input.
+                - None, since Softmax has no trainable parameters.
         """
-        # O gradiente simplesmente passa direto pela camada.
+        # The gradient simply passes through the layer.
         return grad_output, None

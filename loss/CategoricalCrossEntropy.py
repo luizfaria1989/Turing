@@ -1,55 +1,56 @@
 import numpy as np
-from loss.base import LossFunction  # Supondo que sua classe base esteja aqui
+from loss.base import LossFunction  # Assuming your base class is here
 
 
 class CategoricalCrossEntropy(LossFunction):
-    """Implementa a função de perda de Entropia Cruzada Categórica.
+    """Implements the Categorical Cross-Entropy loss function.
 
-    Esta é a função de perda padrão para problemas de classificação multi-classe.
-    Ela mede a dissimilaridade entre a distribuição de probabilidade prevista
-    pela rede (saída da Softmax) e a distribuição real (os rótulos one-hot).
+    This is the standard loss function for multi-class classification problems.
+    It measures the dissimilarity between the predicted probability distribution
+    (from Softmax) and the true distribution (the one-hot encoded labels).
     """
 
     def __init__(self):
-        """Inicializa a função de perda."""
+        """Initializes the loss function."""
         super().__init__()
 
     def forward(self, y_pred, y_true):
-        """Calcula a perda média de Entropia Cruzada Categórica para um lote.
+        """Calculates the mean Categorical Cross-Entropy loss for a batch.
 
         Args:
-            y_pred (np.ndarray): As distribuições de probabilidade previstas pela
-                rede, com shape (batch_size, num_classes).
-            y_true (np.ndarray): Os rótulos verdadeiros em formato one-hot, com
-                o mesmo shape de y_pred.
+            y_pred (np.ndarray): The predicted probability distributions from the
+                network, with shape (batch_size, num_classes).
+            y_true (np.ndarray): The true labels in one-hot encoded format, with
+                the same shape as y_pred.
 
         Returns:
-            float: O valor da perda média para o lote.
+            float: The mean loss value for the batch.
         """
-        # Número de amostras no lote
+        # Number of samples in the batch
         m = y_true.shape[0]
-        # "Clipamos" as previsões para evitar o log(0), que resultaria em erro (nan)
+        # Clip predictions to avoid log(0), which would result in nan error
         y_pred_clipped = np.clip(y_pred, 1e-9, 1 - 1e-9)
 
-        # Calcula a perda total e a normaliza pelo tamanho do lote
+        # Calculate the total loss and normalize it by the batch size
         loss = -np.sum(y_true * np.log(y_pred_clipped)) / m
         return loss
 
     def backward(self, y_pred, y_true):
-        """Calcula o gradiente inicial da perda para a retropropagação.
+        """Calculates the initial gradient of the loss for backpropagation.
 
-        NOTA: Esta é a derivada simplificada da combinação Softmax + Entropia Cruzada,
-        o que torna o cálculo do gradiente inicial muito eficiente.
+        NOTE: This is the simplified derivative of the combined Softmax and
+        Cross-Entropy functions, which makes the initial gradient calculation
+        very efficient.
 
         Args:
-            y_pred (np.ndarray): As distribuições de probabilidade previstas.
-            y_true (np.ndarray): Os rótulos verdadeiros em formato one-hot.
+            y_pred (np.ndarray): The predicted probability distributions.
+            y_true (np.ndarray): The true labels in one-hot encoded format.
 
         Returns:
-            np.ndarray: O gradiente da perda em relação à saída da rede, pronto
-                para ser passado para o backward da última camada.
+            np.ndarray: The gradient of the loss with respect to the network's
+                output, ready to be passed to the last layer's backward method.
         """
-        # Normaliza o gradiente pelo tamanho do lote
+        # Normalize the gradient by the batch size
         m = y_true.shape[0]
         grad_output = (y_pred - y_true) / m
         return grad_output

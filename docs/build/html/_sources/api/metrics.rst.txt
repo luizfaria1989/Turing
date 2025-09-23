@@ -1,7 +1,7 @@
 Metrics
 =======
 
-Este módulo contém todas as métricas da rede.
+This module contains metrics that are implemented in the API.
 
 Accuracy
 -----------

@@ -32,35 +32,35 @@
             
   <h1>Source code for model.Sequential</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="c1"># from layers.base import Layer # Supondo que você tenha uma classe base</span>
+<span class="c1"># from layers.base import Layer # Assuming you have a base class</span>
 
 <div class="viewcode-block" id="Sequential">
 <a class="viewcode-back" href="../../api/model.html#model.Sequential.Sequential">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Sequential</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Um container para empilhar camadas de rede neural em uma sequência.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A container for stacking neural network layers in a sequence.</span>
 
-<span class="sd">    Esta classe gerencia uma lista de camadas e orquestra a passagem de dados</span>
-<span class="sd">    para frente (forward) e a retropropagação de gradientes para trás (backward).</span>
+<span class="sd">    This class manages a list of layers and orchestrates the forward pass of</span>
+<span class="sd">    data and the backward pass of gradients.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        layers (list): A lista de objetos de camada que compõem a rede.</span>
-<span class="sd">        params (list): Uma lista de listas contendo os parâmetros treináveis</span>
-<span class="sd">            (pesos e biases) de todas as camadas na rede que os possuem.</span>
-<span class="sd">        grads (list): Uma lista de listas contendo os gradientes para cada</span>
-<span class="sd">            parâmetro. Esta lista é populada após cada chamada ao `backward`.</span>
+<span class="sd">        layers (list): The list of layer objects that make up the network.</span>
+<span class="sd">        params (list): A list of lists containing the trainable parameters</span>
+<span class="sd">            (weights and biases) from all layers in the network that have them.</span>
+<span class="sd">        grads (list): A list of lists containing the gradients for each</span>
+<span class="sd">            parameter. This list is populated after each call to `backward`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inicializa o modelo Sequencial.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the Sequential model.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            layers (list): Uma lista de objetos de camada (ex: [Dense(), ReLU()])</span>
-<span class="sd">                na ordem em que devem ser aplicados.</span>
+<span class="sd">            layers (list): A list of layer objects (e.g., [Dense(), ReLU()])</span>
+<span class="sd">                in the order they should be applied.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grads</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="c1"># Loop inteligente que só coleta parâmetros de camadas que realmente os têm</span>
+        <span class="c1"># Smart loop that only collects parameters from layers that actually have them</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s1">&#39;params&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">layer</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
@@ -68,13 +68,13 @@
 <div class="viewcode-block" id="Sequential.forward">
 <a class="viewcode-back" href="../../api/model.html#model.Sequential.Sequential.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa a passagem para frente (forward pass) para toda a rede.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass for the entire network.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            input_data (np.ndarray): Os dados de entrada para a primeira camada.</span>
+<span class="sd">            input_data (np.ndarray): The input data for the first layer.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            np.ndarray: A saída final da rede após passar por todas as camadas.</span>
+<span class="sd">            np.ndarray: The final output of the network after passing through all layers.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">input_data</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
@@ -84,25 +84,25 @@
 
 <div class="viewcode-block" id="Sequential.backward">
 <a class="viewcode-back" href="../../api/model.html#model.Sequential.Sequential.backward">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradiente_saida</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executa a passagem para trás (backward pass) para toda a rede.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass (backpropagation) for the entire network.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            gradiente_saida (np.ndarray): O gradiente inicial da função de perda</span>
-<span class="sd">                em relação à saída da rede.</span>
+<span class="sd">            output_gradient (np.ndarray): The initial gradient from the loss function</span>
+<span class="sd">                with respect to the network&#39;s output.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            list: Uma lista de listas contendo os gradientes para todos os</span>
-<span class="sd">                parâmetros treináveis da rede.</span>
+<span class="sd">            list: A list of lists containing the gradients for all trainable</span>
+<span class="sd">                parameters in the network.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grads</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">grad</span> <span class="o">=</span> <span class="n">gradiente_saida</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">output_gradient</span>
 
-        <span class="c1"># Itera sobre as camadas na ordem inversa</span>
+        <span class="c1"># Iterate over the layers in reverse order</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
             <span class="n">grad</span><span class="p">,</span> <span class="n">layer_grads</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
 
-            <span class="c1"># Coleta os gradientes apenas de camadas que os retornaram</span>
+            <span class="c1"># Collect gradients only from layers that returned them</span>
             <span class="k">if</span> <span class="n">layer_grads</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">grads</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">layer_grads</span><span class="p">)</span>
 
@@ -136,9 +136,9 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/metrics.html">Metrics</a></li>
