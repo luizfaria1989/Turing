@@ -1,0 +1,56 @@
+# Nome do workflow que aparecerá na aba "Actions" do GitHub
+name: Deploy Sphinx Documentation
+
+# Gatilho: rodar sempre que houver um push na branch 'main'
+on:
+  push:
+    branches:
+      - main  # Mude para 'master' se for o nome da sua branch principal
+
+# Permissões necessárias para o workflow poder publicar no GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Tarefas a serem executadas
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Baixa o código do seu repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configura o Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' # Use a versão do Python que preferir
+
+      # 3. Instala as dependências (Sphinx, seu tema, e numpy para o seu código)
+      - name: Install dependencies
+        run: |
+          pip install sphinx furo numpy
+          # Adicione aqui outras bibliotecas que seu código precise para ser importado
+          # pip install requests
+
+      # 4. Constrói o site HTML com a Sphinx
+      - name: Build Sphinx site
+        run: make html
+        working-directory: ./docs  # Executa o comando dentro da pasta docs
+
+      # 5. Prepara o artefato (a pasta com o site gerado) para o deploy
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      # 6. Faz o upload do site gerado para o GitHub Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs/build/html
+
+      # 7. Publica o site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
