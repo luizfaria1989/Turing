@@ -4,9 +4,9 @@ from layers.activation.ReLU import ReLU
 from layers.activation.Softmax import Softmax
 from loss.CategoricalCrossEntropy import CategoricalCrossEntropy
 from optimizers.GradientDescent import GradientDescent
-from Sequential import Sequential
+from model.Sequential import Sequential
 from datasets.mnist import load_mnist
-from metrics.accuracy import Accuracy
+from metrics.Accuracy import Accuracy
 
 # =====================
 # Carregar e preparar dados
