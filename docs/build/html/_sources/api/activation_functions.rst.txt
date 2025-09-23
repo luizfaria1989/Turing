@@ -11,4 +11,7 @@ This module contains all the activation functions that are implemented in the AP
    activation_functions/leaky_relu
    activation_functions/sigmoid
    activation_functions/tanh
+   activation_functions/softsign
+   activation_functions/hard_sigmoid
+   activation_functions/hard_tanh
    activation_functions/softmax
