@@ -3,7 +3,8 @@ Loss
 
 This module contains all loss functions that are implemented in the API.
 
-Categorical Cross Entropy
-------------
-.. automodule:: loss.CategoricalCrossEntropy
-   :members:
+.. toctree::
+   :maxdepth: 1
+   :caption: Loss Functions:
+
+   loss/categorical_cross_entropy

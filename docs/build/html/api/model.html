@@ -14,8 +14,8 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Datasets" href="datasets.html" />
-    <link rel="prev" title="Metrics" href="metrics.html" />
+    <link rel="next" title="Sequential" href="models/sequential.html" />
+    <link rel="prev" title="Accuracy" href="metrics/accuracy.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -36,91 +36,12 @@
   <section id="model">
 <h1>Model<a class="headerlink" href="#model" title="Link to this heading">¶</a></h1>
 <p>This module contains all the models that are implemented in the API.</p>
-<section id="module-model.Sequential">
-<span id="sequential"></span><h2>Sequential<a class="headerlink" href="#module-model.Sequential" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="model.Sequential.Sequential">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model.Sequential.</span></span><span class="sig-name descname"><span class="pre">Sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model/Sequential.html#Sequential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Sequential.Sequential" title="Link to this definition">¶</a></dt>
-<dd><p>A container for stacking neural network layers in a sequence.</p>
-<p>This class manages a list of layers and orchestrates the forward pass of
-data and the backward pass of gradients.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="model.Sequential.Sequential.layers">
-<span class="sig-name descname"><span class="pre">layers</span></span><a class="headerlink" href="#model.Sequential.Sequential.layers" title="Link to this definition">¶</a></dt>
-<dd><p>The list of layer objects that make up the network.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="model.Sequential.Sequential.params">
-<span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#model.Sequential.Sequential.params" title="Link to this definition">¶</a></dt>
-<dd><p>A list of lists containing the trainable parameters
-(weights and biases) from all layers in the network that have them.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="model.Sequential.Sequential.grads">
-<span class="sig-name descname"><span class="pre">grads</span></span><a class="headerlink" href="#model.Sequential.Sequential.grads" title="Link to this definition">¶</a></dt>
-<dd><p>A list of lists containing the gradients for each
-parameter. This list is populated after each call to <cite>backward</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="model.Sequential.Sequential.backward">
-<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model/Sequential.html#Sequential.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Sequential.Sequential.backward" title="Link to this definition">¶</a></dt>
-<dd><p>Performs the backward pass (backpropagation) for the entire network.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>output_gradient</strong> (<em>np.ndarray</em>) – The initial gradient from the loss function
-with respect to the network’s output.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>A list of lists containing the gradients for all trainable</dt><dd><p>parameters in the network.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="model.Sequential.Sequential.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model/Sequential.html#Sequential.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Sequential.Sequential.forward" title="Link to this definition">¶</a></dt>
-<dd><p>Performs the forward pass for the entire network.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>input_data</strong> (<em>np.ndarray</em>) – The input data for the first layer.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The final output of the network after passing through all layers.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="models/sequential.html">Sequential</a></li>
+</ul>
+</div>
 </section>
 
 
@@ -153,10 +74,11 @@ with respect to the network’s output.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activation_functions.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-model.Sequential">Sequential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/sequential.html">Sequential</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets</a></li>
@@ -166,8 +88,8 @@ with respect to the network’s output.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="metrics.html" title="previous chapter">Metrics</a></li>
-      <li>Next: <a href="datasets.html" title="next chapter">Datasets</a></li>
+      <li>Previous: <a href="metrics/accuracy.html" title="previous chapter">Accuracy</a></li>
+      <li>Next: <a href="models/sequential.html" title="next chapter">Sequential</a></li>
   </ul></li>
 </ul>
 </div>

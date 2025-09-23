@@ -3,7 +3,8 @@ Model
 
 This module contains all the models that are implemented in the API.
 
-Sequential
------------
-.. automodule:: model.Sequential
-   :members:
+.. toctree::
+   :maxdepth: 1
+   :caption: Models:
+
+   models/sequential

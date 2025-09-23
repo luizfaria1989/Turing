@@ -14,7 +14,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Layers" href="layers.html" />
+    <link rel="next" title="Gradient Descent" href="optimizers/gradient_descent.html" />
     <link rel="prev" title="Turing" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -36,42 +36,12 @@
   <section id="optimizers">
 <h1>Optimizers<a class="headerlink" href="#optimizers" title="Link to this heading">¶</a></h1>
 <p>This module contains all the optimizers that are implemented in the API.</p>
-<dl class="py class" id="module-optimizers.GradientDescent">
-<dt class="sig sig-object py" id="optimizers.GradientDescent.GradientDescent">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">optimizers.GradientDescent.</span></span><span class="sig-name descname"><span class="pre">GradientDescent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/optimizers/GradientDescent.html#GradientDescent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#optimizers.GradientDescent.GradientDescent" title="Link to this definition">¶</a></dt>
-<dd><p>Implements the classic Gradient Descent (GD) optimization algorithm.</p>
-<p>This class inherits from the base Optimizer class and implements the
-parameter update logic following the classic formula:
-θ_new = θ_old - α * ∇J(θ)</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="optimizers.GradientDescent.GradientDescent.lr">
-<span class="sig-name descname"><span class="pre">lr</span></span><a class="headerlink" href="#optimizers.GradientDescent.GradientDescent.lr" title="Link to this definition">¶</a></dt>
-<dd><p>The learning rate (α) used for the parameter updates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="optimizers.GradientDescent.GradientDescent.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/optimizers/GradientDescent.html#GradientDescent.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#optimizers.GradientDescent.GradientDescent.step" title="Link to this definition">¶</a></dt>
-<dd><p>Performs a single optimization step for all parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>list</em>) – A list of lists containing the model’s parameters.
-Expected structure: [[weights1, biases1], [weights2, biases2], …]</p></li>
-<li><p><strong>grads</strong> (<em>list</em>) – A list of lists containing the gradients for each
-parameter, with the same structure as <cite>params</cite>.</p></li>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Optimizers:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="optimizers/gradient_descent.html">Gradient Descent</a></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+</div>
 </section>
 
 
@@ -103,10 +73,11 @@ parameter, with the same structure as <cite>params</cite>.</p></li>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Optimizers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#optimizers.GradientDescent.GradientDescent"><code class="docutils literal notranslate"><span class="pre">GradientDescent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizers/gradient_descent.html">Gradient Descent</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activation_functions.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Model</a></li>
@@ -118,7 +89,7 @@ parameter, with the same structure as <cite>params</cite>.</p></li>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../index.html" title="previous chapter">Turing</a></li>
-      <li>Next: <a href="layers.html" title="next chapter">Layers</a></li>
+      <li>Next: <a href="optimizers/gradient_descent.html" title="next chapter">Gradient Descent</a></li>
   </ul></li>
 </ul>
 </div>

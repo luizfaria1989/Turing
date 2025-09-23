@@ -14,8 +14,8 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Model" href="model.html" />
-    <link rel="prev" title="Loss" href="loss.html" />
+    <link rel="next" title="Accuracy" href="metrics/accuracy.html" />
+    <link rel="prev" title="Categorical Cross Entropy" href="loss/categorical_cross_entropy.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -36,41 +36,12 @@
   <section id="metrics">
 <h1>Metrics<a class="headerlink" href="#metrics" title="Link to this heading">¶</a></h1>
 <p>This module contains metrics that are implemented in the API.</p>
-<section id="module-metrics.Accuracy">
-<span id="accuracy"></span><h2>Accuracy<a class="headerlink" href="#module-metrics.Accuracy" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="metrics.Accuracy.Accuracy">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metrics.Accuracy.</span></span><span class="sig-name descname"><span class="pre">Accuracy</span></span><a class="reference internal" href="../_modules/metrics/Accuracy.html#Accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.Accuracy.Accuracy" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates the accuracy metric for classification problems.</p>
-<p>Accuracy measures the proportion of correct predictions out of the
-total number of samples. It is calculated as:
-Accuracy = (Correct Predictions) / (Total Predictions)</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="metrics.Accuracy.Accuracy.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/metrics/Accuracy.html#Accuracy.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.Accuracy.Accuracy.calculate" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates the accuracy for a batch of predictions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted outputs from the model, typically
-as probability distributions (output from Softmax).
-Shape: (batch_size, num_classes).</p></li>
-<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true labels in one-hot encoded format.
-Shape: (batch_size, num_classes).</p></li>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Layers:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="metrics/accuracy.html">Accuracy</a></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The accuracy score, a value between 0 and 1.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
+</div>
 </section>
 
 
@@ -103,9 +74,10 @@ Shape: (batch_size, num_classes).</p></li>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activation_functions.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Metrics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-metrics.Accuracy">Accuracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/accuracy.html">Accuracy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Model</a></li>
@@ -116,8 +88,8 @@ Shape: (batch_size, num_classes).</p></li>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="loss.html" title="previous chapter">Loss</a></li>
-      <li>Next: <a href="model.html" title="next chapter">Model</a></li>
+      <li>Previous: <a href="loss/categorical_cross_entropy.html" title="previous chapter">Categorical Cross Entropy</a></li>
+      <li>Next: <a href="metrics/accuracy.html" title="next chapter">Accuracy</a></li>
   </ul></li>
 </ul>
 </div>

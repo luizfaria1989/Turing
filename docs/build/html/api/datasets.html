@@ -14,7 +14,8 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Model" href="model.html" />
+    <link rel="next" title="MNIST" href="datasets/mnist.html" />
+    <link rel="prev" title="Sequential" href="models/sequential.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -35,32 +36,12 @@
   <section id="datasets">
 <h1>Datasets<a class="headerlink" href="#datasets" title="Link to this heading">¶</a></h1>
 <p>This module explain about all the datasets that are implemented in this API.</p>
-<section id="module-datasets.mnist">
-<span id="mnist"></span><h2>MNIST<a class="headerlink" href="#module-datasets.mnist" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="datasets.mnist.load_mnist">
-<span class="sig-prename descclassname"><span class="pre">datasets.mnist.</span></span><span class="sig-name descname"><span class="pre">load_mnist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/datasets/mnist.html#load_mnist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasets.mnist.load_mnist" title="Link to this definition">¶</a></dt>
-<dd><p>This function downloads the MNIST dataset (if it doesn’t exist yet) and then loads it.
-The function starts by verifying that the MNIST dataset is downloaded by checking the file <cite>mnist.npz</cite> in
-the directory <cite>datasets/_data</cite>.
-If it doesn’t exist yet, it downloads the dataset from Keras/TensorFlow.
-And then loads the dataset into memory in a numpy array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A tuple containing four numpy arrays in the following order:
-(x_train, y_train, x_test, y_test).
-- x_train (np.ndarray): Train images with dimensions (60000, 28, 28).
-- y_train (np.ndarray): Train labels with dimensions (60000,).
-- x_test (np.ndarray): Test images with dimensions (10000, 28, 28).
-- y_test (np.ndarray): Test labels with dimensions (10000,).</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Layers:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datasets/mnist.html">MNIST</a></li>
+</ul>
+</div>
 </section>
 
 
@@ -89,15 +70,16 @@ And then loads the dataset into memory in a numpy array.</p>
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activation_functions.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Model</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Datasets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-datasets.mnist">MNIST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/mnist.html">MNIST</a></li>
 </ul>
 </li>
 </ul>
@@ -106,7 +88,8 @@ And then loads the dataset into memory in a numpy array.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="model.html" title="previous chapter">Model</a></li>
+      <li>Previous: <a href="models/sequential.html" title="previous chapter">Sequential</a></li>
+      <li>Next: <a href="datasets/mnist.html" title="next chapter">MNIST</a></li>
   </ul></li>
 </ul>
 </div>
