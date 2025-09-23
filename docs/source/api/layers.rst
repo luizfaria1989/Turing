@@ -9,3 +9,4 @@ This module contains all the layers that are implemented in the API.
 
    layers/dense
    layers/flatten
+   layers/max_pooling2d
