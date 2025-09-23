@@ -1,55 +1,55 @@
 import numpy as np
-from layers.base import Layer  # Supondo que sua classe base esteja aqui
+from layers.base import Layer  # Assuming your base class is here
 
 
 class ReLU(Layer):
-    """Implementa a camada de ativação ReLU (Rectified Linear Unit).
+    """Implements the ReLU (Rectified Linear Unit) activation layer.
 
-    A ReLU aplica a função não-linear f(x) = max(0, x) elemento a elemento.
-    É uma das funções de ativação mais comuns para camadas ocultas em redes
-    neurais por ser computacionalmente eficiente e ajudar a mitigar o problema
-    do desaparecimento do gradiente.
+    The Rectified Linear Unit is a non-linear function with the formula
+    f(x) = max(0, x). It is one of the most common activation functions used
+    in neural networks because it is computationally efficient and helps
+    mitigate the vanishing gradient problem.
 
     Attributes:
-        input (np.ndarray): Armazena a entrada do forward pass para ser usada
-            no cálculo do gradiente durante o backward pass.
+        input (np.ndarray): Stores the input from the forward pass, which is
+            needed to calculate the gradient in the backward pass.
     """
 
     def __init__(self):
-        """Inicializa a camada ReLU."""
+        """Initializes the ReLU activation layer."""
         super().__init__()
         self.input = None
 
     def forward(self, input_data):
-        """Executa a passagem para frente (forward pass) da camada.
+        """Performs the forward pass of the layer.
 
         Args:
-            input_data (np.ndarray): Os dados de entrada da camada anterior.
+            input_data (np.ndarray): The input data from the previous layer.
 
         Returns:
-            np.ndarray: A saída da camada após a aplicação da ReLU, com o
-                mesmo shape da entrada.
+            np.ndarray: The output of the layer after applying ReLU.
         """
-        # Guarda a entrada para o backward pass
+        # Caches the input for the backward pass
         self.input = input_data
         return np.maximum(0, self.input)
 
     def backward(self, grad_output):
-        """Executa a passagem para trás (backward pass) da camada.
+        """Performs the backward pass of the layer.
 
-        Calcula o gradiente da perda em relação à entrada da camada. A derivada
-        da ReLU é 1 para entradas > 0 e 0 caso contrário.
+        It computes the derivative of the ReLU function and applies it to the
+        incoming gradient from the next layer (using the chain rule).
 
         Args:
-            grad_output (np.ndarray): O gradiente da perda em relação à saída
-                desta camada.
+            grad_output (np.ndarray): The gradient of the loss with respect to
+                this layer's output.
 
         Returns:
-            tuple[np.ndarray, None]: Uma tupla contendo:
-                - O gradiente em relação à entrada da camada (para retropropagar).
-                - None, pois a ReLU não possui parâmetros treináveis.
+            tuple[np.ndarray, None]: A tuple containing:
+                - The gradient of the loss with respect to this layer's input.
+                - None, since ReLU has no trainable parameters.
         """
-        # Cria uma máscara booleana e a multiplica pelo gradiente de saída
-        grad_input = grad_output * (self.input > 0)
+        # The derivative of ReLU is 1 for inputs > 0, and 0 otherwise.
+        relu_grad = (self.input > 0)
 
-        return grad_input, None
+        # Apply the chain rule
+        return grad_output * relu_grad, None

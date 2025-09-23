@@ -1,9 +1,9 @@
 Layers
 =======
 
-Este módulo contém todas as camadas da rede.
+This module contains all the layers that are implemented in the API.
 
-Camada Base
+Base Layer
 -----------
 .. automodule:: layers.base
    :members:
@@ -13,7 +13,7 @@ Dense Layer
 .. automodule:: layers.Dense
    :members:
 
-Funções de Ativação
+Activation Functions
 -------------------
 .. automodule:: layers.activation.ReLU
    :members:
