@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Layers &#8212; Turing 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Loss" href="loss.html" />
+    <link rel="prev" title="Otimizadores" href="optimizers.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="layers">
+<h1>Layers<a class="headerlink" href="#layers" title="Link to this heading">¶</a></h1>
+<p>Este módulo contém todas as camadas da rede.</p>
+<section id="module-layers.base">
+<span id="camada-base"></span><h2>Camada Base<a class="headerlink" href="#module-layers.base" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-layers.Dense">
+<span id="dense-layer"></span><h2>Dense Layer<a class="headerlink" href="#module-layers.Dense" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="layers.Dense.Dense">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">layers.Dense.</span></span><span class="sig-name descname"><span class="pre">Dense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/layers/Dense.html#Dense"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.Dense.Dense" title="Link to this definition">¶</a></dt>
+<dd><p>Implementa uma camada densa (fully connected) da rede neural.</p>
+<p>Uma camada densa realiza uma transformação linear nos dados de entrada
+(Y = XW + b). É o principal bloco de construção para redes neurais.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="layers.Dense.Dense.w">
+<span class="sig-name descname"><span class="pre">w</span></span><a class="headerlink" href="#layers.Dense.Dense.w" title="Link to this definition">¶</a></dt>
+<dd><p>A matriz de pesos da camada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="layers.Dense.Dense.b">
+<span class="sig-name descname"><span class="pre">b</span></span><a class="headerlink" href="#layers.Dense.Dense.b" title="Link to this definition">¶</a></dt>
+<dd><p>O vetor de biases da camada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="layers.Dense.Dense.params">
+<span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#layers.Dense.Dense.params" title="Link to this definition">¶</a></dt>
+<dd><p>Uma lista contendo os parâmetros treináveis da camada, [w, b].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="layers.Dense.Dense.activation">
+<span class="sig-name descname"><span class="pre">activation</span></span><a class="headerlink" href="#layers.Dense.Dense.activation" title="Link to this definition">¶</a></dt>
+<dd><p>A camada de ativação a ser aplicada após a
+transformação linear.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Layer, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="layers.Dense.Dense.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/layers/Dense.html#Dense.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.Dense.Dense.backward" title="Link to this definition">¶</a></dt>
+<dd><p>Executa a passagem para trás (backward pass) da camada.</p>
+<p>Calcula os gradientes para os pesos, biases e para a entrada da camada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>output_gradient</strong> (<em>np.ndarray</em>) – O gradiente da perda em relação à saída desta camada.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Uma tupla contendo:</dt><dd><ul class="simple">
+<li><p>O gradiente em relação à entrada da camada (para retropropagar).</p></li>
+<li><p>Uma lista com os gradientes dos pesos e biases.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[np.ndarray, list]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="layers.Dense.Dense.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/layers/Dense.html#Dense.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.Dense.Dense.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Executa a passagem para frente (forward pass) da camada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>np.ndarray</em>) – Os dados de entrada com shape (batch_size, input_size).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A saída da camada com shape (batch_size, output_size).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-layers.activation.ReLU">
+<span id="funcoes-de-ativacao"></span><h2>Funções de Ativação<a class="headerlink" href="#module-layers.activation.ReLU" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="layers.activation.ReLU.ReLU">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">layers.activation.ReLU.</span></span><span class="sig-name descname"><span class="pre">ReLU</span></span><a class="reference internal" href="../_modules/layers/activation/ReLU.html#ReLU"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.activation.ReLU.ReLU" title="Link to this definition">¶</a></dt>
+<dd><p>Implementa a camada de ativação ReLU (Rectified Linear Unit).</p>
+<p>A ReLU aplica a função não-linear f(x) = max(0, x) elemento a elemento.
+É uma das funções de ativação mais comuns para camadas ocultas em redes
+neurais por ser computacionalmente eficiente e ajudar a mitigar o problema
+do desaparecimento do gradiente.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="layers.activation.ReLU.ReLU.input">
+<span class="sig-name descname"><span class="pre">input</span></span><a class="headerlink" href="#layers.activation.ReLU.ReLU.input" title="Link to this definition">¶</a></dt>
+<dd><p>Armazena a entrada do forward pass para ser usada
+no cálculo do gradiente durante o backward pass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="layers.activation.ReLU.ReLU.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad_output</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/layers/activation/ReLU.html#ReLU.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.activation.ReLU.ReLU.backward" title="Link to this definition">¶</a></dt>
+<dd><p>Executa a passagem para trás (backward pass) da camada.</p>
+<p>Calcula o gradiente da perda em relação à entrada da camada. A derivada
+da ReLU é 1 para entradas &gt; 0 e 0 caso contrário.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>grad_output</strong> (<em>np.ndarray</em>) – O gradiente da perda em relação à saída
+desta camada.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Uma tupla contendo:</dt><dd><ul class="simple">
+<li><p>O gradiente em relação à entrada da camada (para retropropagar).</p></li>
+<li><p>None, pois a ReLU não possui parâmetros treináveis.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[np.ndarray, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="layers.activation.ReLU.ReLU.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/layers/activation/ReLU.html#ReLU.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.activation.ReLU.ReLU.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Executa a passagem para frente (forward pass) da camada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>np.ndarray</em>) – Os dados de entrada da camada anterior.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A saída da camada após a aplicação da ReLU, com o</dt><dd><p>mesmo shape da entrada.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-layers.activation.Softmax">
+<dt class="sig sig-object py" id="layers.activation.Softmax.Softmax">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">layers.activation.Softmax.</span></span><span class="sig-name descname"><span class="pre">Softmax</span></span><a class="reference internal" href="../_modules/layers/activation/Softmax.html#Softmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.activation.Softmax.Softmax" title="Link to this definition">¶</a></dt>
+<dd><p>Implementa a camada de ativação Softmax.</p>
+<p>A Softmax é tipicamente usada como a camada de ativação final em problemas
+de classificação multi-classe. Ela transforma um vetor de scores (logits)
+em uma distribuição de probabilidades, onde cada valor está no intervalo
+[0, 1] e a soma de todos os valores é 1.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="layers.activation.Softmax.Softmax.probs">
+<span class="sig-name descname"><span class="pre">probs</span></span><a class="headerlink" href="#layers.activation.Softmax.Softmax.probs" title="Link to this definition">¶</a></dt>
+<dd><p>Armazena as probabilidades de saída do forward pass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="layers.activation.Softmax.Softmax.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad_output</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/layers/activation/Softmax.html#Softmax.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.activation.Softmax.Softmax.backward" title="Link to this definition">¶</a></dt>
+<dd><p>Executa a passagem para trás (backward pass) da camada.</p>
+<p>NOTA IMPORTANTE: Este é um backward pass simplificado que SÓ funciona
+quando a Softmax é usada em conjunto com a função de perda de
+Entropia Cruzada Categórica. A derivada complexa da Softmax é
+convenientemente cancelada pela derivada da Entropia Cruzada,
+resultando em uma simples passagem do gradiente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>grad_output</strong> (<em>np.ndarray</em>) – O gradiente da perda em relação à saída
+desta camada. Neste design, ele será (y_previsto - y_real).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Uma tupla contendo:</dt><dd><ul class="simple">
+<li><p>O gradiente em relação à entrada da camada.</p></li>
+<li><p>None, pois a Softmax não possui parâmetros treináveis.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[np.ndarray, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="layers.activation.Softmax.Softmax.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/layers/activation/Softmax.html#Softmax.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.activation.Softmax.Softmax.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Executa a passagem para frente (forward pass) da camada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>np.ndarray</em>) – Os dados de entrada (logits) da camada anterior, com
+shape (batch_size, num_classes).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>As probabilidades de saída, com o mesmo shape da entrada.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Turing</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Layers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-layers.base">Camada Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-layers.Dense">Dense Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-layers.activation.ReLU">Funções de Ativação</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="loss.html">Loss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="optimizers.html" title="previous chapter">Otimizadores</a></li>
+      <li>Next: <a href="loss.html" title="next chapter">Loss</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Luiz Faria.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/layers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>datasets.mnist &#8212; Turing 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for datasets.mnist</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<div class="viewcode-block" id="load_mnist">
+<a class="viewcode-back" href="../../api/datasets.html#datasets.mnist.load_mnist">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_mnist</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Baixa o dataset MNIST (se não existir localmente) e o carrega.</span>
+
+<span class="sd">    A função verifica se o arquivo `mnist.npz` existe na pasta `datasets/_data/`.</span>
+<span class="sd">    Se não existir, ele é baixado da fonte de datasets do Keras/TensorFlow.</span>
+<span class="sd">    Em seguida, os dados são carregados em arrays NumPy.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: Uma tupla contendo quatro arrays NumPy na seguinte ordem:</span>
+<span class="sd">        (x_train, y_train, x_test, y_test).</span>
+<span class="sd">        - x_train (np.ndarray): Imagens de treino com shape (60000, 28, 28).</span>
+<span class="sd">        - y_train (np.ndarray): Rótulos de treino com shape (60000,).</span>
+<span class="sd">        - x_test (np.ndarray): Imagens de teste com shape (10000, 28, 28).</span>
+<span class="sd">        - y_test (np.ndarray): Rótulos de teste com shape (10000,).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Garante que o diretório de dados exista</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;datasets/_data&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;datasets/_data/mnist.npz&quot;</span>
+
+    <span class="c1"># Baixa o arquivo apenas se ele não existir</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Baixando o dataset MNIST...&quot;</span><span class="p">)</span>
+        <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span>
+            <span class="s2">&quot;https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz&quot;</span><span class="p">,</span>
+            <span class="n">data_path</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download completo.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Carrega os dados do arquivo .npz</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">mnist</span><span class="p">:</span>
+        <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;x_train&quot;</span><span class="p">],</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;y_train&quot;</span><span class="p">]</span>
+        <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;x_test&quot;</span><span class="p">],</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;y_test&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Turing</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/loss.html">Loss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/datasets.html">Datasets</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Luiz Faria.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

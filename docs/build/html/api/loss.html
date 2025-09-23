@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Loss &#8212; Turing 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Metrics" href="metrics.html" />
+    <link rel="prev" title="Layers" href="layers.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="loss">
+<h1>Loss<a class="headerlink" href="#loss" title="Link to this heading">¶</a></h1>
+<p>Este módulo contém todas as funções de perda da rede.</p>
+<section id="module-loss.base">
+<span id="camada-base"></span><h2>Camada Base<a class="headerlink" href="#module-loss.base" title="Link to this heading">¶</a></h2>
+</section>
+<section id="categorical-cross-entropy">
+<h2>Categorical Cross Entropy<a class="headerlink" href="#categorical-cross-entropy" title="Link to this heading">¶</a></h2>
+<dl class="py class" id="module-loss.CategoricalCrossEntropy">
+<dt class="sig sig-object py" id="loss.CategoricalCrossEntropy.CategoricalCrossEntropy">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loss.CategoricalCrossEntropy.</span></span><span class="sig-name descname"><span class="pre">CategoricalCrossEntropy</span></span><a class="reference internal" href="../_modules/loss/CategoricalCrossEntropy.html#CategoricalCrossEntropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loss.CategoricalCrossEntropy.CategoricalCrossEntropy" title="Link to this definition">¶</a></dt>
+<dd><p>Implementa a função de perda de Entropia Cruzada Categórica.</p>
+<p>Esta é a função de perda padrão para problemas de classificação multi-classe.
+Ela mede a dissimilaridade entre a distribuição de probabilidade prevista
+pela rede (saída da Softmax) e a distribuição real (os rótulos one-hot).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="loss.CategoricalCrossEntropy.CategoricalCrossEntropy.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/loss/CategoricalCrossEntropy.html#CategoricalCrossEntropy.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loss.CategoricalCrossEntropy.CategoricalCrossEntropy.backward" title="Link to this definition">¶</a></dt>
+<dd><p>Calcula o gradiente inicial da perda para a retropropagação.</p>
+<p>NOTA: Esta é a derivada simplificada da combinação Softmax + Entropia Cruzada,
+o que torna o cálculo do gradiente inicial muito eficiente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – As distribuições de probabilidade previstas.</p></li>
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – Os rótulos verdadeiros em formato one-hot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>O gradiente da perda em relação à saída da rede, pronto</dt><dd><p>para ser passado para o backward da última camada.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loss.CategoricalCrossEntropy.CategoricalCrossEntropy.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/loss/CategoricalCrossEntropy.html#CategoricalCrossEntropy.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loss.CategoricalCrossEntropy.CategoricalCrossEntropy.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Calcula a perda média de Entropia Cruzada Categórica para um lote.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – As distribuições de probabilidade previstas pela
+rede, com shape (batch_size, num_classes).</p></li>
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – Os rótulos verdadeiros em formato one-hot, com
+o mesmo shape de y_pred.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>O valor da perda média para o lote.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Turing</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Loss</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-loss.base">Camada Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#categorical-cross-entropy">Categorical Cross Entropy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="layers.html" title="previous chapter">Layers</a></li>
+      <li>Next: <a href="metrics.html" title="next chapter">Metrics</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Luiz Faria.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/loss.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
