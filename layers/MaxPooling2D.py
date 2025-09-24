@@ -15,7 +15,7 @@ class MaxPooling2D(Layer):
              values from the forward pass, needed for backpropagation.
      """
 
-    def __init__(self, pool_size=(2,2), stride=None, mode='vectorized'):
+    def __init__(self, pool_size=(2,2), stride=None):
         """Initializes the MaxPooling2D layer.
 
         Args:
@@ -30,27 +30,8 @@ class MaxPooling2D(Layer):
         self.pool_size = pool_size
         self.stride = stride if stride is not None else pool_size
         self.cache = None
-        self.mode = mode
 
     def forward(self, input_data):
-        """Dispatches to the appropriate forward implementation based on mode"""
-        if self.mode == 'naive':
-            return self._forward_naive(input_data)
-        elif self.mode == 'vectorized':
-            return self._forward_vectorized(input_data)
-        else:
-            raise ValueError("Invalid mode. Choose 'naive' or 'vectorized'.")
-
-    def backward(self, output_gradient):
-        """Dispatches to the appropriate backward implementation based on mode."""
-        if self.mode == 'naive':
-            return self._backward_naive(output_gradient)
-        elif self.mode == 'vectorized':
-            return self._backward_vectorized(output_gradient)
-        else:
-            raise ValueError("Invalid mode. Choose 'naive' or 'vectorized'.")
-
-    def _forward_naive(self, input_data):
         """Performs the forward pass of the MaxPooling layer.
 
         Args:
@@ -103,7 +84,7 @@ class MaxPooling2D(Layer):
 
         return output_matrix
 
-    def _backward_naive(self, output_gradient):
+    def backward(self, output_gradient):
         """Performs the backward pass of the MaxPooling layer.
 
         Distributes the incoming gradient to the locations that had the maximum
@@ -124,65 +105,3 @@ class MaxPooling2D(Layer):
         grad_input = upsampled_grad * self.cache
 
         return grad_input, None
-
-    def _forward_vectorized(self, input_data):
-        """Performs the forward pass of the MaxPooling layer.
-
-        Args:
-            input_data (np.ndarray): The input data with shape
-                (batch_size, input_height, input_width, channels).
-
-        Returns:
-            np.ndarray: The downsampled output with shape
-                (batch_size, output_height, output_width, channels).
-        """
-
-        (batch_size, input_height, input_width, channels) = input_data.shape
-        pool_height, pool_width = self.pool_size
-        stride_height, stride_width = self.stride
-
-        output_height = int((input_height - pool_height) / stride_height) + 1
-        output_width = int((input_width - pool_width) / stride_width) + 1
-
-        output_matrix = np.zeros((batch_size, output_height, output_width, channels))
-        self.cache = np.zeros_like(input_data)
-
-        for n in range(batch_size):
-            for c in range(channels):
-                for h in range(output_height):
-                    for w in range(output_width):
-                        start_height, start_width = h * stride_height, w * stride_width
-                        end_h, end_w = start_height + pool_height, start_width + pool_width
-
-                        window = input_data[n, start_height:end_h, start_width:end_w, c]
-                        max_value = np.max(window)
-                        output_matrix[n, h, w, c] = max_value
-
-                        mask = (window == max_value)
-                        self.cache[n, start_height:end_h, start_width:end_w, c] = mask
-
-        return output_matrix
-
-    def _backward_vectorized(self, output_gradient):
-        """Performs the backward pass of the MaxPooling layer.
-
-        Distributes the incoming gradient to the locations that had the maximum
-        value during the forward pass.
-
-        Args:
-            output_gradient (np.ndarray): The gradient of the loss with respect
-                to the output of this layer.
-
-        Returns:
-            tuple[np.ndarray, None]: A tuple containing:
-                - The gradient with respect to this layer's input.
-        """
-
-        # "Stretches" the output gradient to the size of the original input
-        upsampled_grad = np.repeat(output_gradient, self.pool_size[0], axis=1)
-        upsampled_grad = np.repeat(upsampled_grad, self.pool_size[1], axis=2)
-
-        # Multiplies by the mask to pass the gradient only to the correct locations
-        input_grad = upsampled_grad * self.cache
-
-        return input_grad, None
