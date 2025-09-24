@@ -1,8 +1,5 @@
 import numpy as np
-from pygments.lexers import q
-
 from layers.base import Layer
-
 
 class MaxPooling2D(Layer):
     """Implements a MaxPooling layer for 2D inputs (e.g., images).

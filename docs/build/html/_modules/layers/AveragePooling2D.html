@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>layers.MaxPooling2D &#8212; Turing 0.1 documentation</title>
+    <title>layers.AveragePooling2D &#8212; Turing 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
@@ -30,32 +30,30 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for layers.MaxPooling2D</h1><div class="highlight"><pre>
+  <h1>Source code for layers.AveragePooling2D</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span>
 
-<div class="viewcode-block" id="MaxPooling2D">
-<a class="viewcode-back" href="../../api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">MaxPooling2D</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a MaxPooling layer for 2D inputs (e.g., images).</span>
+<div class="viewcode-block" id="AveragePooling2D">
+<a class="viewcode-back" href="../../api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AveragePooling2D</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements an AveragePooling layer for 2D inputs (e.g., images).</span>
 
-<span class="sd">     MaxPooling is a downsampling operation that reduces the spatial dimensions</span>
-<span class="sd">     (height, width) of the input, helping to make the model more efficient and</span>
-<span class="sd">     invariant to small translations in the input features.</span>
+<span class="sd">    AveragePooling is a downsampling operation that reduces the spatial</span>
+<span class="sd">    dimensions (height, width) of the input by taking the average value</span>
+<span class="sd">    over a defined window.</span>
 
-<span class="sd">     Attributes:</span>
-<span class="sd">         pool_size (tuple): The size of the window to max pool over.</span>
-<span class="sd">         stride (tuple): The step size of the pooling window.</span>
-<span class="sd">         cache (np.ndarray): Stores a mask indicating the location of the max</span>
-<span class="sd">             values from the forward pass, needed for backpropagation.</span>
-<span class="sd">     &quot;&quot;&quot;</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        pool_size (tuple): The size of the window to average pool over.</span>
+<span class="sd">        stride (tuple): The step size of the pooling window.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">stride</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the MaxPooling2D layer.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">stride</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the AveragePooling2D layer.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            pool_size (tuple, optional): A tuple of 2 integers (height, width)</span>
-<span class="sd">                specifying the size of the window to max pool over.</span>
+<span class="sd">                specifying the size of the window to average pool over.</span>
 <span class="sd">                Defaults to (2, 2).</span>
 <span class="sd">            stride (int or tuple, optional): The step size of the pooling window.</span>
 <span class="sd">                If None, the stride will default to the pool size.</span>
@@ -64,12 +62,11 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span> <span class="o">=</span> <span class="n">pool_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span> <span class="k">if</span> <span class="n">stride</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">pool_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="MaxPooling2D.forward">
-<a class="viewcode-back" href="../../api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.forward">[docs]</a>
+<div class="viewcode-block" id="AveragePooling2D.forward">
+<a class="viewcode-back" href="../../api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the MaxPooling layer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the AveragePooling layer.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            input_data (np.ndarray): The input data with shape</span>
@@ -79,55 +76,37 @@
 <span class="sd">            np.ndarray: The downsampled output with shape</span>
 <span class="sd">                (batch_size, output_height, output_width, channels).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="p">(</span><span class="n">batches</span><span class="p">,</span> <span class="n">input_height</span><span class="p">,</span> <span class="n">input_width</span><span class="p">,</span> <span class="n">channels</span><span class="p">)</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span>
-
         <span class="n">pool_h</span><span class="p">,</span> <span class="n">pool_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span>
         <span class="n">stride_h</span><span class="p">,</span> <span class="n">stride_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
 
         <span class="n">output_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_height</span> <span class="o">-</span> <span class="n">pool_h</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_h</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">output_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_width</span> <span class="o">-</span> <span class="n">pool_w</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_w</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
-        <span class="c1"># Create the output matrix and the cache for the backward pass</span>
         <span class="n">output_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">batches</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">channels</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">batches</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">channels</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batches</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">channels</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_height</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_width</span><span class="p">):</span>
-
-                        <span class="c1"># Define the limits of the current window</span>
                         <span class="n">start_h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">stride_h</span>
                         <span class="n">start_w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">stride_w</span>
                         <span class="n">end_h</span> <span class="o">=</span> <span class="n">start_h</span> <span class="o">+</span> <span class="n">pool_h</span>
                         <span class="n">end_w</span> <span class="o">=</span> <span class="n">start_w</span> <span class="o">+</span> <span class="n">pool_w</span>
 
-                        <span class="c1"># Slice the window from the input</span>
                         <span class="n">pooling_window</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_h</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_w</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
-
-                        <span class="c1"># Find the maximum value</span>
-                        <span class="n">max_arg_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">pooling_window</span><span class="p">)</span>
-
-                        <span class="c1"># Place the max value in the output matrix</span>
-                        <span class="n">output_matrix</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_arg_value</span>
-
-                        <span class="c1"># Create a mask to mark the location of the max value</span>
-                        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">pooling_window</span> <span class="o">==</span> <span class="n">max_arg_value</span><span class="p">)</span>
-
-                        <span class="c1"># Store the mask in the cache</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_h</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_w</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+                        <span class="n">output_matrix</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pooling_window</span><span class="p">)</span>  <span class="c1"># Changed to mean</span>
 
         <span class="k">return</span> <span class="n">output_matrix</span></div>
 
 
-<div class="viewcode-block" id="MaxPooling2D.backward">
-<a class="viewcode-back" href="../../api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.backward">[docs]</a>
+<div class="viewcode-block" id="AveragePooling2D.backward">
+<a class="viewcode-back" href="../../api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D.backward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass of the MaxPooling layer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass of the AveragePooling layer.</span>
 
-<span class="sd">        Distributes the incoming gradient to the locations that had the maximum</span>
-<span class="sd">        value during the forward pass.</span>
+<span class="sd">        Distributes the incoming gradient equally among all the elements</span>
+<span class="sd">        in the original pooling window.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            output_gradient (np.ndarray): The gradient of the loss with respect</span>
@@ -136,14 +115,18 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple[np.ndarray, None]: A tuple containing:</span>
 <span class="sd">                - The gradient with respect to this layer&#39;s input.</span>
+<span class="sd">                - None, since this layer has no trainable parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pool_h</span><span class="p">,</span> <span class="n">pool_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span>
 
-        <span class="n">upsampled_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">upsampled_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">upsampled_grad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># Calculate the value of the distributed gradient</span>
+        <span class="n">distributed_grad</span> <span class="o">=</span> <span class="n">output_gradient</span> <span class="o">/</span> <span class="p">(</span><span class="n">pool_h</span> <span class="o">*</span> <span class="n">pool_w</span><span class="p">)</span>
 
-        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">upsampled_grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span>
+        <span class="c1"># Upsample the distributed gradient to the size of the original input</span>
+        <span class="n">upsampled_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">distributed_grad</span><span class="p">,</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">upsampled_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">upsampled_grad</span><span class="p">,</span> <span class="n">pool_w</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">grad_input</span><span class="p">,</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="n">upsampled_grad</span><span class="p">,</span> <span class="kc">None</span></div>
 </div>
 
 </pre></div>

@@ -42,6 +42,7 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
@@ -57,11 +58,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/metrics/accuracy.html#metrics.Accuracy.Accuracy">Accuracy (class in metrics.Accuracy)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/layers/dense.html#layers.Dense.Dense.activation">activation (layers.Dense.Dense attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/activation_functions/leaky_relu.html#layers.activation.LeakyReLU.LeakyReLU.alpha">alpha (layers.activation.LeakyReLU.LeakyReLU attribute)</a>
+</li>
+      <li><a href="api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D">AveragePooling2D (class in layers.AveragePooling2D)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -88,9 +91,15 @@
 </li>
         <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh.backward">(layers.activation.Tanh.Tanh method)</a>
 </li>
+        <li><a href="api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D.backward">(layers.AveragePooling2D.AveragePooling2D method)</a>
+</li>
+        <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.backward">(layers.Convolution2D.Convolution2D method)</a>
+</li>
         <li><a href="api/layers/dense.html#layers.Dense.Dense.backward">(layers.Dense.Dense method)</a>
 </li>
         <li><a href="api/layers/flatten.html#layers.Flatten.Flatten.backward">(layers.Flatten.Flatten method)</a>
+</li>
+        <li><a href="api/layers/global_average_pooling2d.html#layers.GlobalAveragePooling2D.GlobalAveragePooling2D.backward">(layers.GlobalAveragePooling2D.GlobalAveragePooling2D method)</a>
 </li>
         <li><a href="api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.backward">(layers.MaxPooling2D.MaxPooling2D method)</a>
 </li>
@@ -100,6 +109,10 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.biases">biases (layers.Convolution2D.Convolution2D attribute)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
@@ -107,11 +120,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.cache">cache (layers.MaxPooling2D.MaxPooling2D attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/metrics/accuracy.html#metrics.Accuracy.Accuracy.calculate">calculate() (metrics.Accuracy.Accuracy method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/loss/categorical_cross_entropy.html#loss.CategoricalCrossEntropy.CategoricalCrossEntropy">CategoricalCrossEntropy (class in loss.CategoricalCrossEntropy)</a>
+</li>
+      <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D">Convolution2D (class in layers.Convolution2D)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -155,9 +170,15 @@
 </li>
         <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh.forward">(layers.activation.Tanh.Tanh method)</a>
 </li>
+        <li><a href="api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D.forward">(layers.AveragePooling2D.AveragePooling2D method)</a>
+</li>
+        <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.forward">(layers.Convolution2D.Convolution2D method)</a>
+</li>
         <li><a href="api/layers/dense.html#layers.Dense.Dense.forward">(layers.Dense.Dense method)</a>
 </li>
         <li><a href="api/layers/flatten.html#layers.Flatten.Flatten.forward">(layers.Flatten.Flatten method)</a>
+</li>
+        <li><a href="api/layers/global_average_pooling2d.html#layers.GlobalAveragePooling2D.GlobalAveragePooling2D.forward">(layers.GlobalAveragePooling2D.GlobalAveragePooling2D method)</a>
 </li>
         <li><a href="api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.forward">(layers.MaxPooling2D.MaxPooling2D method)</a>
 </li>
@@ -172,10 +193,12 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent">GradientDescent (class in optimizers.GradientDescent)</a>
+      <li><a href="api/layers/global_average_pooling2d.html#layers.GlobalAveragePooling2D.GlobalAveragePooling2D">GlobalAveragePooling2D (class in layers.GlobalAveragePooling2D)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent">GradientDescent (class in optimizers.GradientDescent)</a>
+</li>
       <li><a href="api/models/sequential.html#model.Sequential.Sequential.grads">grads (model.Sequential.Sequential attribute)</a>
 </li>
   </ul></td>
@@ -211,6 +234,18 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/layers/flatten.html#layers.Flatten.Flatten.input_shape">input_shape (layers.Flatten.Flatten attribute)</a>
+
+      <ul>
+        <li><a href="api/layers/global_average_pooling2d.html#layers.GlobalAveragePooling2D.GlobalAveragePooling2D.input_shape">(layers.GlobalAveragePooling2D.GlobalAveragePooling2D attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.kernels">kernels (layers.Convolution2D.Convolution2D attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -269,13 +304,27 @@
         <li><a href="api/activation_functions/softsign.html#module-layers.activation.Softsign">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     layers.activation.Tanh
 
       <ul>
         <li><a href="api/activation_functions/tanh.html#module-layers.activation.Tanh">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    layers.AveragePooling2D
+
+      <ul>
+        <li><a href="api/layers/average_pooling2d.html#module-layers.AveragePooling2D">module</a>
+</li>
+      </ul></li>
+      <li>
+    layers.Convolution2D
+
+      <ul>
+        <li><a href="api/layers/convolution2d.html#module-layers.Convolution2D">module</a>
 </li>
       </ul></li>
       <li>
@@ -290,6 +339,13 @@
 
       <ul>
         <li><a href="api/layers/flatten.html#module-layers.Flatten">module</a>
+</li>
+      </ul></li>
+      <li>
+    layers.GlobalAveragePooling2D
+
+      <ul>
+        <li><a href="api/layers/global_average_pooling2d.html#module-layers.GlobalAveragePooling2D">module</a>
 </li>
       </ul></li>
       <li>
@@ -356,9 +412,15 @@
 </li>
         <li><a href="api/activation_functions/tanh.html#module-layers.activation.Tanh">layers.activation.Tanh</a>
 </li>
+        <li><a href="api/layers/average_pooling2d.html#module-layers.AveragePooling2D">layers.AveragePooling2D</a>
+</li>
+        <li><a href="api/layers/convolution2d.html#module-layers.Convolution2D">layers.Convolution2D</a>
+</li>
         <li><a href="api/layers/dense.html#module-layers.Dense">layers.Dense</a>
 </li>
         <li><a href="api/layers/flatten.html#module-layers.Flatten">layers.Flatten</a>
+</li>
+        <li><a href="api/layers/global_average_pooling2d.html#module-layers.GlobalAveragePooling2D">layers.GlobalAveragePooling2D</a>
 </li>
         <li><a href="api/layers/max_pooling2d.html#module-layers.MaxPooling2D">layers.MaxPooling2D</a>
 </li>
@@ -390,16 +452,24 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/layers/dense.html#layers.Dense.Dense.params">params (layers.Dense.Dense attribute)</a>
+      <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.padding">padding (layers.Convolution2D.Convolution2D attribute)</a>
+</li>
+      <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.params">params (layers.Convolution2D.Convolution2D attribute)</a>
 
       <ul>
+        <li><a href="api/layers/dense.html#layers.Dense.Dense.params">(layers.Dense.Dense attribute)</a>
+</li>
         <li><a href="api/models/sequential.html#model.Sequential.Sequential.params">(model.Sequential.Sequential attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.pool_size">pool_size (layers.MaxPooling2D.MaxPooling2D attribute)</a>
+      <li><a href="api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D.pool_size">pool_size (layers.AveragePooling2D.AveragePooling2D attribute)</a>
+
+      <ul>
+        <li><a href="api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.pool_size">(layers.MaxPooling2D.MaxPooling2D attribute)</a>
 </li>
+      </ul></li>
       <li><a href="api/activation_functions/softmax.html#layers.activation.Softmax.Softmax.probs">probs (layers.activation.Softmax.Softmax attribute)</a>
 </li>
   </ul></td>
@@ -422,16 +492,22 @@
 </li>
       <li><a href="api/activation_functions/sigmoid.html#layers.activation.Sigmoid.Sigmoid.sigmoid_output">sigmoid_output (layers.activation.Sigmoid.Sigmoid attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/activation_functions/softmax.html#layers.activation.Softmax.Softmax">Softmax (class in layers.activation.Softmax)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/activation_functions/softsign.html#layers.activation.Softsign.Softsign">Softsign (class in layers.activation.Softsign)</a>
 </li>
       <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent.step">step() (optimizers.GradientDescent.GradientDescent method)</a>
 </li>
-      <li><a href="api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.stride">stride (layers.MaxPooling2D.MaxPooling2D attribute)</a>
+      <li><a href="api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D.stride">stride (layers.AveragePooling2D.AveragePooling2D attribute)</a>
+
+      <ul>
+        <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.stride">(layers.Convolution2D.Convolution2D attribute)</a>
 </li>
+        <li><a href="api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.stride">(layers.MaxPooling2D.MaxPooling2D attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
