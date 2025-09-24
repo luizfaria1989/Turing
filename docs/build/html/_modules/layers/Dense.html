@@ -36,7 +36,7 @@
 
 
 <div class="viewcode-block" id="Dense">
-<a class="viewcode-back" href="../../api/layers.html#layers.Dense.Dense">[docs]</a>
+<a class="viewcode-back" href="../../api/layers/dense.html#layers.Dense.Dense">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Dense</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a fully connected (dense) neural network layer.</span>
 
@@ -68,7 +68,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
 
 <div class="viewcode-block" id="Dense.forward">
-<a class="viewcode-back" href="../../api/layers.html#layers.Dense.Dense.forward">[docs]</a>
+<a class="viewcode-back" href="../../api/layers/dense.html#layers.Dense.Dense.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the layer.</span>
 
@@ -90,7 +90,7 @@
 
 
 <div class="viewcode-block" id="Dense.backward">
-<a class="viewcode-back" href="../../api/layers.html#layers.Dense.Dense.backward">[docs]</a>
+<a class="viewcode-back" href="../../api/layers/dense.html#layers.Dense.Dense.backward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass (backpropagation) through the layer.</span>
 
@@ -111,13 +111,13 @@
             <span class="n">output_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">)</span>
 
         <span class="c1"># Gradients for the parameters (weights and biases)</span>
-        <span class="n">grad_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">output_gradient</span>
-        <span class="n">grad_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">grad_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">output_gradient</span>
+        <span class="n">grad_biases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Gradient to pass to the previous layer</span>
         <span class="n">input_gradient</span> <span class="o">=</span> <span class="n">output_gradient</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">T</span>
 
-        <span class="k">return</span> <span class="n">input_gradient</span><span class="p">,</span> <span class="p">[</span><span class="n">grad_w</span><span class="p">,</span> <span class="n">grad_b</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">input_gradient</span><span class="p">,</span> <span class="p">[</span><span class="n">grad_weights</span><span class="p">,</span> <span class="n">grad_biases</span><span class="p">]</span></div>
 </div>
 
 </pre></div>
@@ -147,10 +147,11 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">API da Biblioteca:</span></p>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/optimizers.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/optimizers.html">Optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/activation_functions.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/model.html">Model</a></li>

@@ -71,10 +71,10 @@ class Dense(Layer):
             output_gradient = self.activation.backward(output_gradient)
 
         # Gradients for the parameters (weights and biases)
-        grad_w = self.input.T @ output_gradient
-        grad_b = np.sum(output_gradient, axis=0, keepdims=True)
+        grad_weights = self.input.T @ output_gradient
+        grad_biases = np.sum(output_gradient, axis=0, keepdims=True)
 
         # Gradient to pass to the previous layer
         input_gradient = output_gradient @ self.w.T
 
-        return input_gradient, [grad_w, grad_b]
+        return input_gradient, [grad_weights, grad_biases]

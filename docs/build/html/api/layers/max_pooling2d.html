@@ -14,8 +14,8 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Activation Functions" href="../activation_functions.html" />
-    <link rel="prev" title="Flatten" href="flatten.html" />
+    <link rel="next" title="AveragePooling2D" href="average_pooling2d.html" />
+    <link rel="prev" title="Convolution2D" href="convolution2d.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -33,11 +33,11 @@
 
           <div class="body" role="main">
             
-  <section id="maxpooling2d">
-<h1>MaxPooling2D<a class="headerlink" href="#maxpooling2d" title="Link to this heading">¶</a></h1>
-<dl class="py class" id="module-layers.MaxPooling2D">
+  <section id="module-layers.MaxPooling2D">
+<span id="maxpooling2d"></span><h1>MaxPooling2D<a class="headerlink" href="#module-layers.MaxPooling2D" title="Link to this heading">¶</a></h1>
+<dl class="py class">
 <dt class="sig sig-object py" id="layers.MaxPooling2D.MaxPooling2D">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">layers.MaxPooling2D.</span></span><span class="sig-name descname"><span class="pre">MaxPooling2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(2,</span> <span class="pre">2)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/layers/MaxPooling2D.html#MaxPooling2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.MaxPooling2D.MaxPooling2D" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">layers.MaxPooling2D.</span></span><span class="sig-name descname"><span class="pre">MaxPooling2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(2,</span> <span class="pre">2)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vectorized'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/layers/MaxPooling2D.html#MaxPooling2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.MaxPooling2D.MaxPooling2D" title="Link to this definition">¶</a></dt>
 <dd><p>Implements a MaxPooling layer for 2D inputs (e.g., images).</p>
 <p>MaxPooling is a downsampling operation that reduces the spatial dimensions
 (height, width) of the input, helping to make the model more efficient and
@@ -79,49 +79,13 @@ values from the forward pass, needed for backpropagation.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="layers.MaxPooling2D.MaxPooling2D.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/layers/MaxPooling2D.html#MaxPooling2D.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.MaxPooling2D.MaxPooling2D.backward" title="Link to this definition">¶</a></dt>
-<dd><p>Performs the backward pass of the MaxPooling layer.</p>
-<p>Distributes the incoming gradient to the locations that had the maximum
-value during the forward pass.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>output_gradient</strong> (<em>np.ndarray</em>) – The gradient of the loss with respect
-to the output of this layer.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>A tuple containing:</dt><dd><ul class="simple">
-<li><p>The gradient with respect to this layer’s input.</p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple[np.ndarray, None]</p>
-</dd>
-</dl>
+<dd><p>Dispatches to the appropriate backward implementation based on mode.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="layers.MaxPooling2D.MaxPooling2D.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/layers/MaxPooling2D.html#MaxPooling2D.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.MaxPooling2D.MaxPooling2D.forward" title="Link to this definition">¶</a></dt>
-<dd><p>Performs the forward pass of the MaxPooling layer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>input_data</strong> (<em>np.ndarray</em>) – The input data with shape
-(batch_size, input_height, input_width, channels).</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>The downsampled output with shape</dt><dd><p>(batch_size, output_height, output_width, channels).</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
+<dd><p>Dispatches to the appropriate forward implementation based on mode</p>
 </dd></dl>
 
 </dd></dl>
@@ -160,7 +124,10 @@ to the output of this layer.</p>
 <li class="toctree-l1 current"><a class="reference internal" href="../layers.html">Layers</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dense.html">Dense</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flatten.html">Flatten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="convolution2d.html">Convolution2D</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">MaxPooling2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="average_pooling2d.html">AveragePooling2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="global_average_pooling2d.html">GlobalAveragePooling2D</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../activation_functions.html">Activation Functions</a></li>
@@ -175,8 +142,8 @@ to the output of this layer.</p>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../layers.html">Layers</a><ul>
-      <li>Previous: <a href="flatten.html" title="previous chapter">Flatten</a></li>
-      <li>Next: <a href="../activation_functions.html" title="next chapter">Activation Functions</a></li>
+      <li>Previous: <a href="convolution2d.html" title="previous chapter">Convolution2D</a></li>
+      <li>Next: <a href="average_pooling2d.html" title="next chapter">AveragePooling2D</a></li>
   </ul></li>
   </ul></li>
 </ul>

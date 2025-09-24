@@ -32,97 +32,116 @@
             
   <h1>Source code for layers.Convolution2D</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span>  <span class="c1"># Assuming your base class is here</span>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">layers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils.im2col</span><span class="w"> </span><span class="kn">import</span> <span class="n">im2col_indices</span><span class="p">,</span> <span class="n">col2im_indices</span>
 
 <div class="viewcode-block" id="Convolution2D">
 <a class="viewcode-back" href="../../api/layers/convolution2d.html#layers.Convolution2D.Convolution2D">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Convolution2D</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a 2D Convolutional layer.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a 2D Convolutional layer with both a naive and vectorized version.</span>
 
-<span class="sd">    This layer creates a convolution kernel that is convolved with the layer</span>
-<span class="sd">    input to produce a tensor of outputs (feature maps). It is the core</span>
-<span class="sd">    building block for Convolutional Neural Networks (CNNs).</span>
+<span class="sd">    This layer creates convolution kernels that are convolved with the layer input</span>
+<span class="sd">    to produce a tensor of outputs (feature maps). It is the core building block</span>
+<span class="sd">    for Convolutional Neural Networks (CNNs).</span>
+
+<span class="sd">    The implementation can be chosen via the `mode` parameter.</span>
+<span class="sd">    - &#39;naive&#39;: Uses nested Python for-loops. Easy to understand but very slow.</span>
+<span class="sd">    - &#39;vectorized&#39;: Uses an im2col transformation to perform convolution via a</span>
+<span class="sd">      single, highly efficient matrix multiplication.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        kernels (np.ndarray): The weights (filters) of the layer.</span>
 <span class="sd">        biases (np.ndarray): The bias vector of the layer.</span>
 <span class="sd">        params (list): A list containing the trainable parameters [kernels, biases].</span>
-<span class="sd">        stride (tuple): The stride of the convolution.</span>
-<span class="sd">        padding (int): The amount of zero-padding added to the input.</span>
+<span class="sd">        mode (str): The implementation mode (&#39;naive&#39; or &#39;vectorized&#39;).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the Convolution2D layer.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            num_filters (int): The number of filters the layer will learn. This</span>
-<span class="sd">                determines the number of output channels.</span>
-<span class="sd">            kernel_size (tuple): A tuple of 2 integers for kernel height and width.</span>
-<span class="sd">            input_channels (int): The number of channels in the input image.</span>
-<span class="sd">            stride (int or tuple, optional): The stride of the convolution. Defaults to 1.</span>
-<span class="sd">            padding (int, optional): The amount of zero-padding. Defaults to 0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;vectorized&#39;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_channels</span> <span class="o">=</span> <span class="n">input_channels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_filters</span> <span class="o">=</span> <span class="n">num_filters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span> <span class="o">=</span> <span class="n">kernel_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">input_channels</span> <span class="o">=</span> <span class="n">input_channels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="p">(</span><span class="n">stride</span><span class="p">,</span> <span class="n">stride</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stride</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">stride</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
 
         <span class="c1"># Initialize weights (kernels) and biases</span>
-        <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_channels</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">biases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">))</span>
+        <span class="c1"># Kernels are initialized in (F, C, K_h, K_w) format for im2col compatibility</span>
+        <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">biases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_filters</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">input_padded</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Convolution2D.forward">
 <a class="viewcode-back" href="../../api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the convolution.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dispatches to the appropriate forward implementation based on mode&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;naive&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_naive</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;vectorized&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_vectorized</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid mode. Choose &#39;naive&#39; or &#39;vectorized&#39;.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Convolution2D.backward">
+<a class="viewcode-back" href="../../api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.backward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dispatches to the appropriate backward implementation based on mode.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;naive&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backward_naive</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;vectorized&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backward_vectorized</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid mode. Choose &#39;naive&#39; or &#39;vectorized&#39;.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># --- NAIVE (LOOP-BASED) IMPLEMENTATION ---</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_forward_naive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a naive forward pass using nested for-loops..</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            input_data (np.ndarray): Input data with shape (N, H_in, W_in, C_in).</span>
+<span class="sd">            input_data (np.ndarray): Input data with shape (batch_size, input_height, input_width, input_channels).</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            np.ndarray: Output feature map with shape (N, H_out, W_out, F).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">input_height</span><span class="p">,</span> <span class="n">input_width</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span>
-        <span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">input_height</span><span class="p">,</span> <span class="n">input_width</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">)</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">filters</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">stride_height</span><span class="p">,</span> <span class="n">stride_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
 
         <span class="c1"># Apply padding</span>
         <span class="n">pad_config</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">input_padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">pad_config</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">)</span>
+        <span class="n">input_padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">pad_config</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">input_padded</span>
 
         <span class="c1"># Calculate output dimensions</span>
         <span class="n">output_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_height</span> <span class="o">-</span> <span class="n">kernel_height</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_height</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">output_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_width</span> <span class="o">-</span> <span class="n">kernel_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_width</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="c1"># Create output matrix</span>
-        <span class="n">output_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_filters</span><span class="p">))</span>
+        <span class="n">output_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">filters</span><span class="p">))</span>
 
         <span class="c1"># Perform convolution</span>
-        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_filters</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">filters</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_height</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_width</span><span class="p">):</span>
-                        <span class="n">start_h</span><span class="p">,</span> <span class="n">start_w</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">stride_height</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">stride_width</span>
-                        <span class="n">end_h</span><span class="p">,</span> <span class="n">end_w</span> <span class="o">=</span> <span class="n">start_h</span> <span class="o">+</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">start_w</span> <span class="o">+</span> <span class="n">kernel_width</span>
+                        <span class="n">start_height</span><span class="p">,</span> <span class="n">start_width</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">stride_height</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">stride_width</span>
+                        <span class="n">end_height</span><span class="p">,</span> <span class="n">end_width</span> <span class="o">=</span> <span class="n">start_height</span> <span class="o">+</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">start_width</span> <span class="o">+</span> <span class="n">kernel_width</span>
 
-                        <span class="n">window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_padded</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_h</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_w</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="p">:]</span>
+                        <span class="n">window</span> <span class="o">=</span> <span class="n">input_padded</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span><span class="n">end_height</span><span class="p">,</span> <span class="n">start_width</span><span class="p">:</span><span class="n">end_width</span><span class="p">,</span> <span class="p">:]</span>
+                        <span class="n">current_kernel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-                        <span class="n">conv_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">window</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
-                        <span class="n">output_matrix</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">conv_sum</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="p">]</span>
+                        <span class="n">conv_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">window</span> <span class="o">*</span> <span class="n">current_kernel</span><span class="p">)</span>
+                        <span class="n">output_matrix</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">conv_sum</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">output_matrix</span></div>
+        <span class="k">return</span> <span class="n">output_matrix</span>
 
-
-<div class="viewcode-block" id="Convolution2D.backward">
-<a class="viewcode-back" href="../../api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.backward">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass (backpropagation) for the convolution.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_backward_naive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a naive backward pass using nested for-loops.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            output_gradient (np.ndarray): Gradient of the loss with respect to</span>
@@ -133,39 +152,119 @@
 <span class="sd">                - The gradient with respect to the layer&#39;s input.</span>
 <span class="sd">                - A list with the gradients for the kernels and biases.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">shape</span>
-        <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">output_gradient</span><span class="o">.</span><span class="n">shape</span>
-        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">output_gradient</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="n">input_padded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span>
+        <span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">shape</span>
+        <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">output_gradient</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">stride_height</span><span class="p">,</span> <span class="n">stride_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
 
-        <span class="n">d_kernels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">)</span>
-        <span class="n">d_biases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">)</span>
-        <span class="n">d_input_padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_padded</span><span class="p">)</span>
+        <span class="n">grad_kernels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="n">grad_biases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">)</span>
+        <span class="n">grad_input_padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">input_padded</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">filters</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_height</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_width</span><span class="p">):</span>
-                        <span class="n">start_h</span><span class="p">,</span> <span class="n">start_w</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">stride_height</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">stride_width</span>
-                        <span class="n">end_h</span><span class="p">,</span> <span class="n">end_w</span> <span class="o">=</span> <span class="n">start_h</span> <span class="o">+</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">start_w</span> <span class="o">+</span> <span class="n">kernel_width</span>
+                        <span class="n">start_height</span><span class="p">,</span> <span class="n">start_width</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">stride_height</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">stride_width</span>
+                        <span class="n">end_height</span><span class="p">,</span> <span class="n">end_width</span> <span class="o">=</span> <span class="n">start_height</span> <span class="o">+</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">start_width</span> <span class="o">+</span> <span class="n">kernel_width</span>
 
-                        <span class="n">window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_padded</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_h</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_w</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="p">:]</span>
-                        <span class="n">grad_pixel</span> <span class="o">=</span> <span class="n">output_gradient</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">]</span>
+                        <span class="n">window</span> <span class="o">=</span> <span class="n">input_padded</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span><span class="n">end_height</span><span class="p">,</span> <span class="n">start_width</span><span class="p">:</span><span class="n">end_width</span><span class="p">,</span> <span class="p">:]</span>
+                        <span class="n">grad_pixel</span> <span class="o">=</span> <span class="n">output_gradient</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">]</span>
 
                         <span class="c1"># Accumulate gradients</span>
-                        <span class="n">d_kernels</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">+=</span> <span class="n">window</span> <span class="o">*</span> <span class="n">grad_pixel</span>
-                        <span class="n">d_biases</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="p">]</span> <span class="o">+=</span> <span class="n">grad_pixel</span>
-                        <span class="n">d_input_padded</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_h</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_w</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">*</span> <span class="n">grad_pixel</span>
-
+                        <span class="n">grad_kernels</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">+=</span> <span class="n">window</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">grad_pixel</span>
+                        <span class="n">grad_biases</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">+=</span> <span class="n">grad_pixel</span>
+                        <span class="n">grad_input_padded</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span><span class="n">end_height</span><span class="p">,</span> <span class="n">start_width</span><span class="p">:</span><span class="n">end_width</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
+                                                                                                             <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">grad_pixel</span>
         <span class="c1"># Remove padding from the input gradient</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span>
-            <span class="n">d_input</span> <span class="o">=</span> <span class="n">d_input_padded</span><span class="p">[:,</span> <span class="n">p</span><span class="p">:</span><span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span><span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_input_padded</span><span class="p">[:,</span> <span class="n">p</span><span class="p">:</span><span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span><span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="p">:]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">d_input</span> <span class="o">=</span> <span class="n">d_input_padded</span>
+            <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_input_padded</span>
+        <span class="k">return</span> <span class="n">grad_input</span><span class="p">,</span> <span class="p">[</span><span class="n">grad_kernels</span><span class="p">,</span> <span class="n">grad_biases</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">d_input</span><span class="p">,</span> <span class="p">[</span><span class="n">d_kernels</span><span class="p">,</span> <span class="n">d_biases</span><span class="p">]</span></div>
-</div>
+    <span class="c1"># --- VECTORIZED (IM2COL-BASED) IMPLEMENTATION ---</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_forward_vectorized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a fast forward pass using im2col transformation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            output_gradient (np.ndarray): Gradient of the loss with respect to</span>
+<span class="sd">                the output of this layer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple[np.ndarray, list]: A tuple containing:</span>
+<span class="sd">                - The gradient with respect to the layer&#39;s input.</span>
+<span class="sd">                - A list with the gradients for the kernels and biases.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">input_height</span><span class="p">,</span> <span class="n">input_width</span><span class="p">,</span> <span class="n">input_channels</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">filters</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">stride_height</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
+
+        <span class="c1"># Calculate output dimensions</span>
+        <span class="n">output_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_height</span> <span class="o">-</span> <span class="n">kernel_height</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_height</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">output_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_width</span> <span class="o">-</span> <span class="n">kernel_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_height</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># Convert from NHWC (batch, height, width, channels) (library standard)</span>
+        <span class="c1"># to NCHW (batch, channels, height, width) (im2col standard)</span>
+        <span class="n">transposed_input_data</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Unroll image windows into columns</span>
+        <span class="n">input_col</span> <span class="o">=</span> <span class="n">im2col_indices</span><span class="p">(</span><span class="n">transposed_input_data</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride_height</span><span class="p">)</span>
+        <span class="n">weights_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># The core convolution is now a single matrix multiplication</span>
+        <span class="n">output_matrix</span> <span class="o">=</span> <span class="n">weights_row</span> <span class="o">@</span> <span class="n">input_col</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span>
+
+        <span class="c1"># Reshape the output back to image format</span>
+        <span class="n">output_matrix</span> <span class="o">=</span> <span class="n">output_matrix</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+
+        <span class="c1"># Convert the output back to the library&#39;s standard NHWC format</span>
+        <span class="n">output_matrix</span> <span class="o">=</span> <span class="n">output_matrix</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Cache necessary variables for the backward pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">input_col</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output_matrix</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_backward_vectorized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a fast backward pass using col2im transformation.</span>
+
+<span class="sd">         Args:</span>
+<span class="sd">             output_gradient (np.ndarray): Gradient of the loss with respect to</span>
+<span class="sd">                 the output of this layer.</span>
+
+<span class="sd">         Returns:</span>
+<span class="sd">             tuple[np.ndarray, list]: A tuple containing:</span>
+<span class="sd">                 - The gradient with respect to the layer&#39;s input.</span>
+<span class="sd">                 - A list with the gradients for the kernels and biases.</span>
+<span class="sd">         &quot;&quot;&quot;</span>
+
+        <span class="n">input_data</span><span class="p">,</span> <span class="n">input_data_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span>
+        <span class="n">filters</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Gradient for biases is the sum of the output gradient over all but the filter dimension</span>
+        <span class="n">grad_biases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Reshape output gradient for matrix multiplication</span>
+        <span class="n">output_gradient_transposed</span> <span class="o">=</span> <span class="n">output_gradient</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Calculate gradient for kernels (flattened)</span>
+        <span class="n">grad_kernels_flat</span> <span class="o">=</span> <span class="n">output_gradient_transposed</span> <span class="o">@</span> <span class="n">input_data_col</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">grad_kernels</span> <span class="o">=</span> <span class="n">grad_kernels_flat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="c1"># Calculate gradient for the input (in column format)</span>
+        <span class="n">weights_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">grad_input_col</span> <span class="o">=</span> <span class="n">weights_row</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">output_gradient_transposed</span>
+
+        <span class="c1"># Reconstruct input gradient from columns back to image format (NCHW)</span>
+        <span class="n">input_nchw_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">grad_input_nchw</span> <span class="o">=</span> <span class="n">col2im_indices</span><span class="p">(</span><span class="n">grad_input_col</span><span class="p">,</span> <span class="n">input_nchw_shape</span><span class="p">,</span> <span class="n">kernel_height</span><span class="p">,</span> <span class="n">kernel_width</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_input_nchw</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">grad_input</span><span class="p">,</span> <span class="p">[</span><span class="n">grad_kernels</span><span class="p">,</span> <span class="n">grad_biases</span><span class="p">]</span></div>
 
 </pre></div>
 

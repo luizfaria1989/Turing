@@ -14,6 +14,8 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MaxPooling2D" href="max_pooling2d.html" />
+    <link rel="prev" title="Flatten" href="flatten.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -35,11 +37,17 @@
 <span id="convolution2d"></span><h1>Convolution2D<a class="headerlink" href="#module-layers.Convolution2D" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="layers.Convolution2D.Convolution2D">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">layers.Convolution2D.</span></span><span class="sig-name descname"><span class="pre">Convolution2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/layers/Convolution2D.html#Convolution2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.Convolution2D.Convolution2D" title="Link to this definition">¶</a></dt>
-<dd><p>Implements a 2D Convolutional layer.</p>
-<p>This layer creates a convolution kernel that is convolved with the layer
-input to produce a tensor of outputs (feature maps). It is the core
-building block for Convolutional Neural Networks (CNNs).</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">layers.Convolution2D.</span></span><span class="sig-name descname"><span class="pre">Convolution2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vectorized'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/layers/Convolution2D.html#Convolution2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.Convolution2D.Convolution2D" title="Link to this definition">¶</a></dt>
+<dd><p>Implements a 2D Convolutional layer with both a naive and vectorized version.</p>
+<p>This layer creates convolution kernels that are convolved with the layer input
+to produce a tensor of outputs (feature maps). It is the core building block
+for Convolutional Neural Networks (CNNs).</p>
+<p>The implementation can be chosen via the <cite>mode</cite> parameter.
+- ‘naive’: Uses nested Python for-loops. Easy to understand but very slow.
+- ‘vectorized’: Uses an im2col transformation to perform convolution via a</p>
+<blockquote>
+<div><p>single, highly efficient matrix multiplication.</p>
+</div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="layers.Convolution2D.Convolution2D.kernels">
 <span class="sig-name descname"><span class="pre">kernels</span></span><a class="headerlink" href="#layers.Convolution2D.Convolution2D.kernels" title="Link to this definition">¶</a></dt>
@@ -74,23 +82,12 @@ building block for Convolutional Neural Networks (CNNs).</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="layers.Convolution2D.Convolution2D.stride">
-<span class="sig-name descname"><span class="pre">stride</span></span><a class="headerlink" href="#layers.Convolution2D.Convolution2D.stride" title="Link to this definition">¶</a></dt>
-<dd><p>The stride of the convolution.</p>
+<dt class="sig sig-object py" id="layers.Convolution2D.Convolution2D.mode">
+<span class="sig-name descname"><span class="pre">mode</span></span><a class="headerlink" href="#layers.Convolution2D.Convolution2D.mode" title="Link to this definition">¶</a></dt>
+<dd><p>The implementation mode (‘naive’ or ‘vectorized’).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="layers.Convolution2D.Convolution2D.padding">
-<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#layers.Convolution2D.Convolution2D.padding" title="Link to this definition">¶</a></dt>
-<dd><p>The amount of zero-padding added to the input.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -98,43 +95,13 @@ building block for Convolutional Neural Networks (CNNs).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="layers.Convolution2D.Convolution2D.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/layers/Convolution2D.html#Convolution2D.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.Convolution2D.Convolution2D.backward" title="Link to this definition">¶</a></dt>
-<dd><p>Performs the backward pass (backpropagation) for the convolution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>output_gradient</strong> (<em>np.ndarray</em>) – Gradient of the loss with respect to
-the output of this layer.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>A tuple containing:</dt><dd><ul class="simple">
-<li><p>The gradient with respect to the layer’s input.</p></li>
-<li><p>A list with the gradients for the kernels and biases.</p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple[np.ndarray, list]</p>
-</dd>
-</dl>
+<dd><p>Dispatches to the appropriate backward implementation based on mode.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="layers.Convolution2D.Convolution2D.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/layers/Convolution2D.html#Convolution2D.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#layers.Convolution2D.Convolution2D.forward" title="Link to this definition">¶</a></dt>
-<dd><p>Performs the forward pass of the convolution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>input_data</strong> (<em>np.ndarray</em>) – Input data with shape (N, H_in, W_in, C_in).</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Output feature map with shape (N, H_out, W_out, F).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
+<dd><p>Dispatches to the appropriate forward implementation based on mode</p>
 </dd></dl>
 
 </dd></dl>
@@ -168,9 +135,17 @@ the output of this layer.</p>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../optimizers.html">Optimizers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../layers.html">Layers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../layers.html">Layers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dense.html">Dense</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flatten</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Convolution2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="max_pooling2d.html">MaxPooling2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="average_pooling2d.html">AveragePooling2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="global_average_pooling2d.html">GlobalAveragePooling2D</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../activation_functions.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loss.html">Loss</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../metrics.html">Metrics</a></li>
@@ -182,6 +157,10 @@ the output of this layer.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../layers.html">Layers</a><ul>
+      <li>Previous: <a href="flatten.html" title="previous chapter">Flatten</a></li>
+      <li>Next: <a href="max_pooling2d.html" title="next chapter">MaxPooling2D</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

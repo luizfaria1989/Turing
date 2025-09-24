@@ -50,7 +50,7 @@
 <span class="sd">             values from the forward pass, needed for backpropagation.</span>
 <span class="sd">     &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">stride</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">stride</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;vectorized&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the MaxPooling2D layer.</span>
 
 <span class="sd">        Args:</span>
@@ -65,10 +65,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span> <span class="o">=</span> <span class="n">pool_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span> <span class="k">if</span> <span class="n">stride</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">pool_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
 
 <div class="viewcode-block" id="MaxPooling2D.forward">
 <a class="viewcode-back" href="../../api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dispatches to the appropriate forward implementation based on mode&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;naive&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_naive</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;vectorized&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_vectorized</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid mode. Choose &#39;naive&#39; or &#39;vectorized&#39;.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MaxPooling2D.backward">
+<a class="viewcode-back" href="../../api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.backward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dispatches to the appropriate backward implementation based on mode.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;naive&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backward_naive</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;vectorized&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backward_vectorized</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid mode. Choose &#39;naive&#39; or &#39;vectorized&#39;.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_forward_naive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the MaxPooling layer.</span>
 
 <span class="sd">        Args:</span>
@@ -82,15 +105,16 @@
 
         <span class="p">(</span><span class="n">batches</span><span class="p">,</span> <span class="n">input_height</span><span class="p">,</span> <span class="n">input_width</span><span class="p">,</span> <span class="n">channels</span><span class="p">)</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span>
 
-        <span class="n">pool_h</span><span class="p">,</span> <span class="n">pool_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span>
-        <span class="n">stride_h</span><span class="p">,</span> <span class="n">stride_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
+        <span class="n">pool_height</span><span class="p">,</span> <span class="n">pool_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span>
+        <span class="n">stride_height</span><span class="p">,</span> <span class="n">stride_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
 
-        <span class="n">output_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_height</span> <span class="o">-</span> <span class="n">pool_h</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_h</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">output_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_width</span> <span class="o">-</span> <span class="n">pool_w</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_w</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># Calculates the output height and width</span>
+        <span class="n">output_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_height</span> <span class="o">-</span> <span class="n">pool_height</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_height</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">output_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_width</span> <span class="o">-</span> <span class="n">pool_width</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_width</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="c1"># Create the output matrix and the cache for the backward pass</span>
         <span class="n">output_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">batches</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">channels</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">batches</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">channels</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batches</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">channels</span><span class="p">):</span>
@@ -98,13 +122,13 @@
                     <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_width</span><span class="p">):</span>
 
                         <span class="c1"># Define the limits of the current window</span>
-                        <span class="n">start_h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">stride_h</span>
-                        <span class="n">start_w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">stride_w</span>
-                        <span class="n">end_h</span> <span class="o">=</span> <span class="n">start_h</span> <span class="o">+</span> <span class="n">pool_h</span>
-                        <span class="n">end_w</span> <span class="o">=</span> <span class="n">start_w</span> <span class="o">+</span> <span class="n">pool_w</span>
+                        <span class="n">start_height</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">stride_height</span>
+                        <span class="n">start_width</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">stride_width</span>
+                        <span class="n">end_height</span> <span class="o">=</span> <span class="n">start_height</span> <span class="o">+</span> <span class="n">pool_height</span>
+                        <span class="n">end_width</span> <span class="o">=</span> <span class="n">start_width</span> <span class="o">+</span> <span class="n">pool_width</span>
 
                         <span class="c1"># Slice the window from the input</span>
-                        <span class="n">pooling_window</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_h</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_w</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+                        <span class="n">pooling_window</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span><span class="n">end_height</span><span class="p">,</span> <span class="n">start_width</span><span class="p">:</span><span class="n">end_width</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
 
                         <span class="c1"># Find the maximum value</span>
                         <span class="n">max_arg_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">pooling_window</span><span class="p">)</span>
@@ -116,14 +140,11 @@
                         <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">pooling_window</span> <span class="o">==</span> <span class="n">max_arg_value</span><span class="p">)</span>
 
                         <span class="c1"># Store the mask in the cache</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_h</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_w</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span><span class="n">end_height</span><span class="p">,</span> <span class="n">start_width</span><span class="p">:</span><span class="n">end_width</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
 
-        <span class="k">return</span> <span class="n">output_matrix</span></div>
+        <span class="k">return</span> <span class="n">output_matrix</span>
 
-
-<div class="viewcode-block" id="MaxPooling2D.backward">
-<a class="viewcode-back" href="../../api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D.backward">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_backward_naive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass of the MaxPooling layer.</span>
 
 <span class="sd">        Distributes the incoming gradient to the locations that had the maximum</span>
@@ -143,8 +164,69 @@
 
         <span class="n">grad_input</span> <span class="o">=</span> <span class="n">upsampled_grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span>
 
-        <span class="k">return</span> <span class="n">grad_input</span><span class="p">,</span> <span class="kc">None</span></div>
-</div>
+        <span class="k">return</span> <span class="n">grad_input</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_forward_vectorized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the forward pass of the MaxPooling layer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            input_data (np.ndarray): The input data with shape</span>
+<span class="sd">                (batch_size, input_height, input_width, channels).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: The downsampled output with shape</span>
+<span class="sd">                (batch_size, output_height, output_width, channels).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">input_height</span><span class="p">,</span> <span class="n">input_width</span><span class="p">,</span> <span class="n">channels</span><span class="p">)</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">pool_height</span><span class="p">,</span> <span class="n">pool_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span>
+        <span class="n">stride_height</span><span class="p">,</span> <span class="n">stride_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
+
+        <span class="n">output_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_height</span> <span class="o">-</span> <span class="n">pool_height</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_height</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">output_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">input_width</span> <span class="o">-</span> <span class="n">pool_width</span><span class="p">)</span> <span class="o">/</span> <span class="n">stride_width</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">output_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">output_height</span><span class="p">,</span> <span class="n">output_width</span><span class="p">,</span> <span class="n">channels</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">channels</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_height</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">output_width</span><span class="p">):</span>
+                        <span class="n">start_height</span><span class="p">,</span> <span class="n">start_width</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">stride_height</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">stride_width</span>
+                        <span class="n">end_h</span><span class="p">,</span> <span class="n">end_w</span> <span class="o">=</span> <span class="n">start_height</span> <span class="o">+</span> <span class="n">pool_height</span><span class="p">,</span> <span class="n">start_width</span> <span class="o">+</span> <span class="n">pool_width</span>
+
+                        <span class="n">window</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_width</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+                        <span class="n">max_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+                        <span class="n">output_matrix</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_value</span>
+
+                        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">window</span> <span class="o">==</span> <span class="n">max_value</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span><span class="n">end_h</span><span class="p">,</span> <span class="n">start_width</span><span class="p">:</span><span class="n">end_w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+
+        <span class="k">return</span> <span class="n">output_matrix</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_backward_vectorized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_gradient</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the backward pass of the MaxPooling layer.</span>
+
+<span class="sd">        Distributes the incoming gradient to the locations that had the maximum</span>
+<span class="sd">        value during the forward pass.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            output_gradient (np.ndarray): The gradient of the loss with respect</span>
+<span class="sd">                to the output of this layer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple[np.ndarray, None]: A tuple containing:</span>
+<span class="sd">                - The gradient with respect to this layer&#39;s input.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># &quot;Stretches&quot; the output gradient to the size of the original input</span>
+        <span class="n">upsampled_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">output_gradient</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">upsampled_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">upsampled_grad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Multiplies by the mask to pass the gradient only to the correct locations</span>
+        <span class="n">input_grad</span> <span class="o">=</span> <span class="n">upsampled_grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span>
+
+        <span class="k">return</span> <span class="n">input_grad</span><span class="p">,</span> <span class="kc">None</span></div>
 
 </pre></div>
 
