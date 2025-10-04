@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Adam &#8212; Turing 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Layers" href="../layers.html" />
+    <link rel="prev" title="RMSProp" href="rmsprop.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-optimizers.Adam">
+<span id="adam"></span><h1>Adam<a class="headerlink" href="#module-optimizers.Adam" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">optimizers.Adam.</span></span><span class="sig-name descname"><span class="pre">Adam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/optimizers/Adam.html#Adam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#optimizers.Adam.Adam" title="Link to this definition">¶</a></dt>
+<dd><p>Implements the Adam (Adaptive Moment Estimation) optimizer.</p>
+<p>Adam combines the ideas of Momentum (using a moving average of the gradient)
+and RMSProp (using a moving average of the squared gradient). It computes
+adaptive learning rates for each parameter and includes a bias-correction
+step to account for the initialization of the moving averages at zero.</p>
+<p>The update formulas are:
+1. m_t = β1 * m_{t-1} + (1 - β1) * g_t
+2. v_t = β2 * v_{t-1} + (1 - β2) * g_t^2
+3. m_hat = m_t / (1 - β1^t)
+4. v_hat = v_t / (1 - β2^t)
+5. θ_t = θ_{t-1} - η * m_hat / (sqrt(v_hat) + ε)</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam.lr">
+<span class="sig-name descname"><span class="pre">lr</span></span><a class="headerlink" href="#optimizers.Adam.Adam.lr" title="Link to this definition">¶</a></dt>
+<dd><p>The learning rate (η).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam.beta_1">
+<span class="sig-name descname"><span class="pre">beta_1</span></span><a class="headerlink" href="#optimizers.Adam.Adam.beta_1" title="Link to this definition">¶</a></dt>
+<dd><p>The decay rate for the first moment estimate (m).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam.beta_2">
+<span class="sig-name descname"><span class="pre">beta_2</span></span><a class="headerlink" href="#optimizers.Adam.Adam.beta_2" title="Link to this definition">¶</a></dt>
+<dd><p>The decay rate for the second moment estimate (v).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam.epsilon">
+<span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#optimizers.Adam.Adam.epsilon" title="Link to this definition">¶</a></dt>
+<dd><p>A small constant for numerical stability (ε).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam.m">
+<span class="sig-name descname"><span class="pre">m</span></span><a class="headerlink" href="#optimizers.Adam.Adam.m" title="Link to this definition">¶</a></dt>
+<dd><p>The ‘memory’ for the first moment (mean of gradients).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam.v">
+<span class="sig-name descname"><span class="pre">v</span></span><a class="headerlink" href="#optimizers.Adam.Adam.v" title="Link to this definition">¶</a></dt>
+<dd><p>The ‘memory’ for the second moment (uncentered variance).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#optimizers.Adam.Adam.t" title="Link to this definition">¶</a></dt>
+<dd><p>The timestep counter for bias correction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="optimizers.Adam.Adam.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/optimizers/Adam.html#Adam.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#optimizers.Adam.Adam.step" title="Link to this definition">¶</a></dt>
+<dd><p>Performs a single optimization step.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Turing</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../optimizers.html">Optimizers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gradient_descent_with_momentum.html">Gradient Descent With Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nesterov_accelerated_gradient.html">Nesterov Accelerated Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adagrad.html">AdaGrad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rmsprop.html">RMSProp</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Adam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../activation_functions.html">Activation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loss.html">Loss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../optimizers.html">Optimizers</a><ul>
+      <li>Previous: <a href="rmsprop.html" title="previous chapter">RMSProp</a></li>
+      <li>Next: <a href="../layers.html" title="next chapter">Layers</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Luiz Faria.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/api/optimizers/adam.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

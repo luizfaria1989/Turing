@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Nesterov Accelerated Gradient &#8212; Turing 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AdaGrad" href="adagrad.html" />
+    <link rel="prev" title="Gradient Descent With Momentum" href="gradient_descent_with_momentum.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-optimizers.NesterovAcceleratedGradient">
+<span id="nesterov-accelerated-gradient"></span><h1>Nesterov Accelerated Gradient<a class="headerlink" href="#module-optimizers.NesterovAcceleratedGradient" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">optimizers.NesterovAcceleratedGradient.</span></span><span class="sig-name descname"><span class="pre">NesterovAcceleratedGradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momentum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/optimizers/NesterovAcceleratedGradient.html#NesterovAcceleratedGradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient" title="Link to this definition">¶</a></dt>
+<dd><p>Implements the Nesterov Accelerated Gradient (NAG) optimizer.</p>
+<p>NAG is an improvement over standard Momentum. It is ‘smarter’ because
+it calculates the gradient after a ‘lookahead’ step in the direction of the
+momentum. This results in more responsive updates and often faster
+convergence.</p>
+<p>The update formulas for this implementation are:
+1. v_t = momentum * v_{t-1} - learning_rate * g_t
+2. θ_t = θ_{t-1} + momentum * v_t - learning_rate * g_t</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.lr">
+<span class="sig-name descname"><span class="pre">lr</span></span><a class="headerlink" href="#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.lr" title="Link to this definition">¶</a></dt>
+<dd><p>The learning rate (ε).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.momentum">
+<span class="sig-name descname"><span class="pre">momentum</span></span><a class="headerlink" href="#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.momentum" title="Link to this definition">¶</a></dt>
+<dd><p>The momentum factor (μ) that controls inertia.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.velocity">
+<span class="sig-name descname"><span class="pre">velocity</span></span><a class="headerlink" href="#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.velocity" title="Link to this definition">¶</a></dt>
+<dd><p>The ‘memory’ that stores the velocity for each parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/optimizers/NesterovAcceleratedGradient.html#NesterovAcceleratedGradient.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.step" title="Link to this definition">¶</a></dt>
+<dd><p>Performs a single optimization step for all parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>list</em>) – A list of lists containing the model’s parameters.
+Expected structure: [[weights1, biases1], [weights2, biases2], …]</p></li>
+<li><p><strong>grads</strong> (<em>list</em>) – A list of lists containing the gradients for each
+parameter, with the same structure as <cite>params</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Turing</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../optimizers.html">Optimizers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gradient_descent_with_momentum.html">Gradient Descent With Momentum</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Nesterov Accelerated Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adagrad.html">AdaGrad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rmsprop.html">RMSProp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adam.html">Adam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../activation_functions.html">Activation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loss.html">Loss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../optimizers.html">Optimizers</a><ul>
+      <li>Previous: <a href="gradient_descent_with_momentum.html" title="previous chapter">Gradient Descent With Momentum</a></li>
+      <li>Next: <a href="adagrad.html" title="next chapter">AdaGrad</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Luiz Faria.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/api/optimizers/nesterov_accelerated_gradient.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
