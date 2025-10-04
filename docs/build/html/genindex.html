@@ -38,6 +38,7 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
@@ -45,23 +46,35 @@
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/adagrad.html#optimizers.AdaGrad.AdaGrad.accumulator">accumulator (optimizers.AdaGrad.AdaGrad attribute)</a>
+
+      <ul>
+        <li><a href="api/optimizers/rmsprop.html#optimizers.RMSProp.RMSProp.accumulator">(optimizers.RMSProp.RMSProp attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/metrics/accuracy.html#metrics.Accuracy.Accuracy">Accuracy (class in metrics.Accuracy)</a>
 </li>
       <li><a href="api/layers/dense.html#layers.Dense.Dense.activation">activation (layers.Dense.Dense attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/adagrad.html#optimizers.AdaGrad.AdaGrad">AdaGrad (class in optimizers.AdaGrad)</a>
+</li>
+      <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam">Adam (class in optimizers.Adam)</a>
+</li>
       <li><a href="api/activation_functions/leaky_relu.html#layers.activation.LeakyReLU.LeakyReLU.alpha">alpha (layers.activation.LeakyReLU.LeakyReLU attribute)</a>
 </li>
       <li><a href="api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D">AveragePooling2D (class in layers.AveragePooling2D)</a>
@@ -110,6 +123,10 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam.beta_1">beta_1 (optimizers.Adam.Adam attribute)</a>
+</li>
+      <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam.beta_2">beta_2 (optimizers.Adam.Adam attribute)</a>
+</li>
       <li><a href="api/layers/convolution2d.html#layers.Convolution2D.Convolution2D.biases">biases (layers.Convolution2D.Convolution2D attribute)</a>
 </li>
   </ul></td>
@@ -143,8 +160,24 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/rmsprop.html#optimizers.RMSProp.RMSProp.decay_rate">decay_rate (optimizers.RMSProp.RMSProp attribute)</a>
+</li>
       <li><a href="api/layers/dense.html#layers.Dense.Dense">Dense (class in layers.Dense)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/adagrad.html#optimizers.AdaGrad.AdaGrad.epsilon">epsilon (optimizers.AdaGrad.AdaGrad attribute)</a>
+
+      <ul>
+        <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam.epsilon">(optimizers.Adam.Adam attribute)</a>
+</li>
+        <li><a href="api/optimizers/rmsprop.html#optimizers.RMSProp.RMSProp.epsilon">(optimizers.RMSProp.RMSProp attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -195,9 +228,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/layers/global_average_pooling2d.html#layers.GlobalAveragePooling2D.GlobalAveragePooling2D">GlobalAveragePooling2D (class in layers.GlobalAveragePooling2D)</a>
 </li>
+      <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent">GradientDescent (class in optimizers.GradientDescent)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent">GradientDescent (class in optimizers.GradientDescent)</a>
+      <li><a href="api/optimizers/gradient_descent_with_momentum.html#optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum">GradientDescentWithMomentum (class in optimizers.GradientDescentWithMomentum)</a>
 </li>
       <li><a href="api/models/sequential.html#model.Sequential.Sequential.grads">grads (model.Sequential.Sequential attribute)</a>
 </li>
@@ -311,8 +346,6 @@
         <li><a href="api/activation_functions/tanh.html#module-layers.activation.Tanh">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     layers.AveragePooling2D
 
@@ -320,6 +353,8 @@
         <li><a href="api/layers/average_pooling2d.html#module-layers.AveragePooling2D">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     layers.Convolution2D
 
@@ -366,14 +401,28 @@
         <li><a href="api/loss/categorical_cross_entropy.html#module-loss.CategoricalCrossEntropy">module</a>
 </li>
       </ul></li>
-      <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent.lr">lr (optimizers.GradientDescent.GradientDescent attribute)</a>
+      <li><a href="api/optimizers/adagrad.html#optimizers.AdaGrad.AdaGrad.lr">lr (optimizers.AdaGrad.AdaGrad attribute)</a>
+
+      <ul>
+        <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam.lr">(optimizers.Adam.Adam attribute)</a>
 </li>
+        <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent.lr">(optimizers.GradientDescent.GradientDescent attribute)</a>
+</li>
+        <li><a href="api/optimizers/gradient_descent_with_momentum.html#optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum.lr">(optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum attribute)</a>
+</li>
+        <li><a href="api/optimizers/nesterov_accelerated_gradient.html#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.lr">(optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient attribute)</a>
+</li>
+        <li><a href="api/optimizers/rmsprop.html#optimizers.RMSProp.RMSProp.lr">(optimizers.RMSProp.RMSProp attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam.m">m (optimizers.Adam.Adam attribute)</a>
+</li>
       <li><a href="api/layers/max_pooling2d.html#layers.MaxPooling2D.MaxPooling2D">MaxPooling2D (class in layers.MaxPooling2D)</a>
 </li>
       <li>
@@ -430,9 +479,35 @@
 </li>
         <li><a href="api/models/sequential.html#module-model.Sequential">model.Sequential</a>
 </li>
+        <li><a href="api/optimizers/adagrad.html#module-optimizers.AdaGrad">optimizers.AdaGrad</a>
+</li>
+        <li><a href="api/optimizers/adam.html#module-optimizers.Adam">optimizers.Adam</a>
+</li>
         <li><a href="api/optimizers/gradient_descent.html#module-optimizers.GradientDescent">optimizers.GradientDescent</a>
 </li>
+        <li><a href="api/optimizers/gradient_descent_with_momentum.html#module-optimizers.GradientDescentWithMomentum">optimizers.GradientDescentWithMomentum</a>
+</li>
+        <li><a href="api/optimizers/nesterov_accelerated_gradient.html#module-optimizers.NesterovAcceleratedGradient">optimizers.NesterovAcceleratedGradient</a>
+</li>
+        <li><a href="api/optimizers/rmsprop.html#module-optimizers.RMSProp">optimizers.RMSProp</a>
+</li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/gradient_descent_with_momentum.html#optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum.momentum">momentum (optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum attribute)</a>
+
+      <ul>
+        <li><a href="api/optimizers/nesterov_accelerated_gradient.html#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.momentum">(optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/nesterov_accelerated_gradient.html#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient">NesterovAcceleratedGradient (class in optimizers.NesterovAcceleratedGradient)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -440,10 +515,47 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
+    optimizers.AdaGrad
+
+      <ul>
+        <li><a href="api/optimizers/adagrad.html#module-optimizers.AdaGrad">module</a>
+</li>
+      </ul></li>
+      <li>
+    optimizers.Adam
+
+      <ul>
+        <li><a href="api/optimizers/adam.html#module-optimizers.Adam">module</a>
+</li>
+      </ul></li>
+      <li>
     optimizers.GradientDescent
 
       <ul>
         <li><a href="api/optimizers/gradient_descent.html#module-optimizers.GradientDescent">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    optimizers.GradientDescentWithMomentum
+
+      <ul>
+        <li><a href="api/optimizers/gradient_descent_with_momentum.html#module-optimizers.GradientDescentWithMomentum">module</a>
+</li>
+      </ul></li>
+      <li>
+    optimizers.NesterovAcceleratedGradient
+
+      <ul>
+        <li><a href="api/optimizers/nesterov_accelerated_gradient.html#module-optimizers.NesterovAcceleratedGradient">module</a>
+</li>
+      </ul></li>
+      <li>
+    optimizers.RMSProp
+
+      <ul>
+        <li><a href="api/optimizers/rmsprop.html#module-optimizers.RMSProp">module</a>
 </li>
       </ul></li>
   </ul></td>
@@ -479,6 +591,10 @@
       <li><a href="api/activation_functions/relu.html#layers.activation.ReLU.ReLU">ReLU (class in layers.activation.ReLU)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/rmsprop.html#optimizers.RMSProp.RMSProp">RMSProp (class in optimizers.RMSProp)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
@@ -492,12 +608,24 @@
 </li>
       <li><a href="api/activation_functions/softmax.html#layers.activation.Softmax.Softmax">Softmax (class in layers.activation.Softmax)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/activation_functions/softsign.html#layers.activation.Softsign.Softsign">Softsign (class in layers.activation.Softsign)</a>
 </li>
-      <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent.step">step() (optimizers.GradientDescent.GradientDescent method)</a>
+      <li><a href="api/optimizers/adagrad.html#optimizers.AdaGrad.AdaGrad.step">step() (optimizers.AdaGrad.AdaGrad method)</a>
+
+      <ul>
+        <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam.step">(optimizers.Adam.Adam method)</a>
 </li>
+        <li><a href="api/optimizers/gradient_descent.html#optimizers.GradientDescent.GradientDescent.step">(optimizers.GradientDescent.GradientDescent method)</a>
+</li>
+        <li><a href="api/optimizers/gradient_descent_with_momentum.html#optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum.step">(optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum method)</a>
+</li>
+        <li><a href="api/optimizers/nesterov_accelerated_gradient.html#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.step">(optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient method)</a>
+</li>
+        <li><a href="api/optimizers/rmsprop.html#optimizers.RMSProp.RMSProp.step">(optimizers.RMSProp.RMSProp method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/layers/average_pooling2d.html#layers.AveragePooling2D.AveragePooling2D.stride">stride (layers.AveragePooling2D.AveragePooling2D attribute)</a>
 
       <ul>
@@ -510,12 +638,30 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh">Tanh (class in layers.activation.Tanh)</a>
+      <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam.t">t (optimizers.Adam.Adam attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh">Tanh (class in layers.activation.Tanh)</a>
+</li>
       <li><a href="api/activation_functions/tanh.html#layers.activation.Tanh.Tanh.tanh_output">tanh_output (layers.activation.Tanh.Tanh attribute)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/adam.html#optimizers.Adam.Adam.v">v (optimizers.Adam.Adam attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimizers/gradient_descent_with_momentum.html#optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum.velocity">velocity (optimizers.GradientDescentWithMomentum.GradientDescentWithMomentum attribute)</a>
+
+      <ul>
+        <li><a href="api/optimizers/nesterov_accelerated_gradient.html#optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient.velocity">(optimizers.NesterovAcceleratedGradient.NesterovAcceleratedGradient attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
