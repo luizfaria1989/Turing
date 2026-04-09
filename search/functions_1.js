@@ -1,0 +1,4 @@
+var searchData=
+[
+  ['backward_0',['backward',['../classDenseLayer.html#a1b6db67e50b0ad59b241b89de042c54d',1,'DenseLayer::Backward()'],['../classLayer.html#aaa9702275d22508ec497c74d25f98904',1,'Layer::Backward()'],['../classReLU.html#a767d3975a8beb80782b27d95247b81c0',1,'ReLU::Backward()'],['../classSigmoid.html#ad3b30d26c2352d800a91d8843ed0f33f',1,'Sigmoid::Backward()'],['../classSoftmax.html#a656a59e8d1ec64b4ab3f67f5cd096173',1,'Softmax::Backward()'],['../classTanh.html#a2509555c79d23afd0745398228470bd7',1,'Tanh::Backward()'],['../classCategoricalCrossEntropy.html#a0abcf9ac6bab5aa9594b980a8c733963',1,'CategoricalCrossEntropy::Backward()'],['../classLoss.html#ab43eb64f9d819d58fe4e15b95900afff',1,'Loss::Backward()'],['../classModel.html#a71c3cc32d74a7f7fa12e8da29816461d',1,'Model::Backward()']]]
+];
