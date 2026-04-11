@@ -1,4 +1,4 @@
-name: Deploy Doxygen to GitHub Pages
+name: Deploy Sphinx Documentation
 
 on:
   push:
@@ -18,11 +18,26 @@ jobs:
       - name: Install Doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen
 
-      - name: Generate Documentation
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install sphinx breathe sphinxawesome-theme
+
+      - name: Generate Doxygen XML
         run: doxygen Doxyfile
+
+      - name: Build Sphinx HTML
+        run: |
+          cd docs
+          make html
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: html
+          # Agora apontamos para a pasta onde o Sphinx cospe o site bonito
+          folder: docs/build/html
           branch: gh-pages
