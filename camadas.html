@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="./" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Camadas (Layers) | Turing 1.0 documentation</title>
+<meta content="Camadas (Layers) | Turing 1.0 documentation" property="og:title"/>
+<meta content="Camadas (Layers) | Turing 1.0 documentation" name="twitter:title"/>
+<link href="_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=73505e79" rel="stylesheet" type="text/css"/>
+<link href="search.html" rel="search" title="Search"/>
+<link href="genindex.html" rel="index" title="Index"/>
+<link href="ativacoes.html" rel="next" title="Funções de Ativação"/>
+<link href="modelo.html" rel="prev" title="Modelo (Orquestrador)"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Turing 1.0 documentation</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="index.html"><span class="font-bold text-clip whitespace-nowrap">Turing 1.0 documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<p class="caption" role="heading"><span class="caption-text">Índice da API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modelo.html">Modelo (Orquestrador)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Camadas (Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ativacoes.html">Funções de Ativação</a></li>
+<li class="toctree-l1"><a class="reference internal" href="otimizadores.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perdas.html">Funções de Perda (Loss)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metricas.html">Métricas</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="index.html">
+<span class="hidden md:inline">Turing 1.0 documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Camadas (Layers)</span>
+</nav>
+<div id="content" role="main">
+<section id="camadas-layers">
+<h1>Camadas (Layers)<a class="headerlink" href="#camadas-layers" title="Link to this heading"><span>#</span></a></h1>
+<p>As camadas são os blocos de construção fundamentais de qualquer rede neural profunda.
+Elas contêm os parâmetros treináveis do modelo (pesos e vieses) e são responsáveis por
+aplicar transformações geométricas nos dados de entrada.</p>
+<p>Na arquitetura da biblioteca Turing, o aprendizado de máquina é tratado como um pipeline
+modular. O dado flui para frente através das camadas (Forward Pass) para gerar uma previsão,
+e o erro flui de trás para frente (Backward Pass) ajustando as matrizes de cada camada.</p>
+<section id="interface-base-layer">
+<h2>Interface Base (Layer)<a class="headerlink" href="#interface-base-layer" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#interface-base-layer'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv45Layer">
+<span id="_CPPv35Layer"></span><span id="_CPPv25Layer"></span><span id="Layer"></span><span class="target" id="classLayer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Layer</span></span></span><a class="headerlink" href="#_CPPv45Layer" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv45Layer'"><span>#</span></a><br/></dt>
+<dd><p>Classe base abstrata para todas as camadas da rede neural. </p>
+<p><ul class="simple">
+<li><p>Define o contrato polimórfico que qualquer componente da rede (camadas densas, convolucionais, funções de ativação) deve implementar. Ela garante que o modelo possa orquestrar o fluxo de dados em lote (batch) de forma genérica. </p></li>
+</ul>
+</p>
+<p>Subclassed by <a class="reference internal" href="#classDenseLayer"><span class="std std-ref">DenseLayer</span></a>, <a class="reference internal" href="ativacoes.html#classReLU"><span class="std std-ref">ReLU</span></a>, <a class="reference internal" href="ativacoes.html#classSigmoid"><span class="std std-ref">Sigmoid</span></a>, <a class="reference internal" href="ativacoes.html#classSoftmax"><span class="std std-ref">Softmax</span></a>, <a class="reference internal" href="ativacoes.html#classTanh"><span class="std std-ref">Tanh</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5LayerD0Ev">
+<span id="_CPPv3N5LayerD0Ev"></span><span id="_CPPv2N5LayerD0Ev"></span><span id="Layer::~Layer"></span><span class="target" id="classLayer_1a2bac093f2a650095a5551fc455d10dc5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Layer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5LayerD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N5LayerD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor virtual padrão. </p>
+<p><ul class="simple">
+<li><p>Garante a liberação correta de memória das classes derivadas quando destruídas a partir de um ponteiro da classe base. </p></li>
+</ul>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Layer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE">
+<span id="_CPPv3N5Layer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="_CPPv2N5Layer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="Layer::Forward__Eigen::MatrixXfCR.Eigen::MatrixXfR"></span><span class="target" id="classLayer_1affbe88d35a60f8cfc2f44ec5a8024a81"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N5Layer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N5Layer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o forward pass (propagação direta) da camada. </p>
+<p><ul class="simple">
+<li><p>Aplica a transformação matemática específica da camada aos dados de entrada. De forma generalizada, computa: <div class="math notranslate nohighlight">
+\[ Y = f(X) \]</div>
+ Onde <span class="math notranslate nohighlight">\( X \)</span> é a entrada e <span class="math notranslate nohighlight">\( f \)</span> é a operação interna da camada.</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> – Referência constante para a matriz de entrada <span class="math notranslate nohighlight">\( X \)</span>. </p></li>
+<li><p><strong>output</strong> – Referência para a matriz onde o resultado <span class="math notranslate nohighlight">\( Y \)</span> será armazenado. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Layer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N5Layer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N5Layer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="Layer::Backward__Eigen::MatrixXfR.Eigen::MatrixXfCR"></span><span class="target" id="classLayer_1aaa9702275d22508ec497c74d25f98904"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_input</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N5Layer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N5Layer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o backward pass (retropropagação) da camada. </p>
+<p><ul class="simple">
+<li><p>Aplica a Regra da Cadeia para propagar o gradiente do erro. A camada recebe o gradiente da perda em relação à sua saída, <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span>, e calcula o gradiente em relação à sua entrada, <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial X} \)</span>, propagando-o para a camada anterior: <div class="math notranslate nohighlight">
+\[ \frac{\partial L}{\partial X} = \frac{\partial L}{\partial Y} \cdot \frac{\partial Y}{\partial X} \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grad_input</strong> – Matriz que armazenará o gradiente calculado <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial X} \)</span>. </p></li>
+<li><p><strong>grad_output</strong> – Matriz contendo o gradiente recebido da camada seguinte <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Layer12UpdateParamsEP9Optimizer">
+<span id="_CPPv3N5Layer12UpdateParamsEP9Optimizer"></span><span id="_CPPv2N5Layer12UpdateParamsEP9Optimizer"></span><span id="Layer::UpdateParams__OptimizerP"></span><span class="target" id="classLayer_1a2cb96b45c27c3903197148cb82e7d36c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UpdateParams</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="otimizadores.html#_CPPv49Optimizer" title="Optimizer"><span class="n"><span class="pre">Optimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">optimizer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Layer12UpdateParamsEP9Optimizer" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N5Layer12UpdateParamsEP9Optimizer'"><span>#</span></a><br/></dt>
+<dd><p>Atualiza os parâmetros internos da camada (pesos, vieses). </p>
+<p><ul class="simple">
+<li><p>Camadas parametrizadas (ex: <a class="reference internal" href="#classDenseLayer"><span class="std std-ref">DenseLayer</span></a>) devem sobrescrever este método para aplicar os gradientes calculados utilizando o otimizador fornecido.</p></li>
+<li><p></p></li>
+<li><p></p></li>
+</ul>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Camadas sem parâmetros treináveis (ex: <a class="reference internal" href="ativacoes.html#classReLU"><span class="std std-ref">ReLU</span></a>, <a class="reference internal" href="ativacoes.html#classSoftmax"><span class="std std-ref">Softmax</span></a>) utilizam esta implementação base vazia, ignorando o passo de atualização.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>optimizer</strong> – Ponteiro para o otimizador que dita a regra de atualização. </p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Layer10SaveParamsERNSt8ofstreamE">
+<span id="_CPPv3N5Layer10SaveParamsERNSt8ofstreamE"></span><span id="_CPPv2N5Layer10SaveParamsERNSt8ofstreamE"></span><span id="Layer::SaveParams__std::ofstreamR"></span><span class="target" id="classLayer_1ae5c58ef1390c62740638c04cd3617e33"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SaveParams</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ofstream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">file</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Layer10SaveParamsERNSt8ofstreamE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N5Layer10SaveParamsERNSt8ofstreamE'"><span>#</span></a><br/></dt>
+<dd><p>Serializa os parâmetros da camada em disco. </p>
+<p><ul class="simple">
+<li><p>Implementação base vazia. Camadas com estado interno de aprendizado devem sobrescrever este método para persistir suas matrizes.</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – Referência para o fluxo de arquivo de saída onde os dados serão gravados. </p>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+<section id="camada-densa-denselayer">
+<h2>Camada Densa (DenseLayer)<a class="headerlink" href="#camada-densa-denselayer" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#camada-densa-denselayer'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv410DenseLayer">
+<span id="_CPPv310DenseLayer"></span><span id="_CPPv210DenseLayer"></span><span id="DenseLayer"></span><span class="target" id="classDenseLayer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DenseLayer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv45Layer" title="Layer"><span class="n"><span class="pre">Layer</span></span></a><a class="headerlink" href="#_CPPv410DenseLayer" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv410DenseLayer'"><span>#</span></a><br/></dt>
+<dd><p>Implementa uma camada densa (fully connected) da rede neural. </p>
+<p><ul class="simple">
+<li><p>Responsável por aplicar uma transformação linear aos dados de entrada. A operação fundamental desta camada no forward pass é: <div class="math notranslate nohighlight">
+\[ Z = X \cdot W + b \]</div>
+ Onde:</p></li>
+<li><p><span class="math notranslate nohighlight">\( X \)</span> é a matriz de entrada.</p></li>
+<li><p><span class="math notranslate nohighlight">\( W \)</span> é a matriz de pesos.</p></li>
+<li><p><span class="math notranslate nohighlight">\( b \)</span> é o vetor de vieses (transmitido para todas as linhas via broadcasting). </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DenseLayer10DenseLayerEKiKi">
+<span id="_CPPv3N10DenseLayer10DenseLayerEKiKi"></span><span id="_CPPv2N10DenseLayer10DenseLayerEKiKi"></span><span id="DenseLayer::DenseLayer__iC.iC"></span><span class="target" id="classDenseLayer_1a2c74e5f2eecdfcc5ffd4671260977f4d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DenseLayer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_size</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">neurons</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DenseLayer10DenseLayerEKiKi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10DenseLayer10DenseLayerEKiKi'"><span>#</span></a><br/></dt>
+<dd><p>Construtor da camada densa. </p>
+<p><ul class="simple">
+<li><p>Inicializa os pesos a partir de uma distribuição uniforme (escalonada por 0.01 para evitar saturação inicial) e os vieses com zeros.</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_size</strong> – Número de características (features) da entrada. </p></li>
+<li><p><strong>neurons</strong> – Número de neurônios da camada (tamanho da saída). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DenseLayerD0Ev">
+<span id="_CPPv3N10DenseLayerD0Ev"></span><span id="_CPPv2N10DenseLayerD0Ev"></span><span id="DenseLayer::~DenseLayer"></span><span class="target" id="classDenseLayer_1aa83161d0138a3828dae8dbc1b1189a01"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~DenseLayer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N10DenseLayerD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10DenseLayerD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor padrão. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DenseLayer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE">
+<span id="_CPPv3N10DenseLayer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="_CPPv2N10DenseLayer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="DenseLayer::Forward__Eigen::MatrixXfCR.Eigen::MatrixXfR"></span><span class="target" id="classDenseLayer_1a838c45a4400e5e7cd243a9f2d5b275f5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N10DenseLayer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10DenseLayer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o forward pass da camada densa. </p>
+<p><ul class="simple">
+<li><p></p></li>
+<li><p></p></li>
+</ul>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Utiliza broadcasting do Eigen (<code class="docutils literal notranslate"><span class="pre">rowwise()</span></code>) para somar o vetor de vieses a cada amostra do batch. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> – Referência constante para a matriz de entrada de dimensões <span class="math notranslate nohighlight">\( (batch\_size \times input\_size) \)</span>. </p></li>
+<li><p><strong>output</strong> – Referência para a matriz onde o resultado <span class="math notranslate nohighlight">\( Z \)</span> será armazenado, de dimensões <span class="math notranslate nohighlight">\( (batch\_size \times neurons) \)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DenseLayer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N10DenseLayer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N10DenseLayer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="DenseLayer::Backward__Eigen::MatrixXfR.Eigen::MatrixXfCR"></span><span class="target" id="classDenseLayer_1a1b6db67e50b0ad59b241b89de042c54d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_input</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N10DenseLayer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10DenseLayer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o backward pass, calculando os gradientes locais e propagando o erro. </p>
+<p><ul class="simple">
+<li><p>A partir do gradiente recebido da camada posterior <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Z} \)</span>, esta função calcula as seguintes derivadas parciais:</p></li>
+<li><p>1. Gradiente dos pesos: <div class="math notranslate nohighlight">
+\[ \frac{\partial L}{\partial W} = X^T \cdot \frac{\partial L}{\partial Z} \]</div>
+</p></li>
+</ul>
+<ol class="lowerroman simple">
+<li><p>Gradiente dos vieses: <div class="math notranslate nohighlight">
+\[ \frac{\partial L}{\partial b} = \sum_{i=1}^{m} \left( \frac{\partial L}{\partial Z} \right)_i \]</div>
+</p></li>
+<li><p>Gradiente da entrada (propagado para trás): <div class="math notranslate nohighlight">
+\[ \frac{\partial L}{\partial X} = \frac{\partial L}{\partial Z} \cdot W^T \]</div>
+</p></li>
+</ol>
+<ul class="simple">
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grad_input</strong> – Matriz que armazenará o gradiente a ser enviado para a camada anterior <span class="math notranslate nohighlight">\( (batch\_size \times input\_size) \)</span>. </p></li>
+<li><p><strong>grad_output</strong> – Gradiente da perda em relação à saída desta camada <span class="math notranslate nohighlight">\( (batch\_size \times neurons) \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DenseLayer12UpdateParamsEP9Optimizer">
+<span id="_CPPv3N10DenseLayer12UpdateParamsEP9Optimizer"></span><span id="_CPPv2N10DenseLayer12UpdateParamsEP9Optimizer"></span><span id="DenseLayer::UpdateParams__OptimizerP"></span><span class="target" id="classDenseLayer_1a34e82d313b5f8638edbe8aa0dc2609d8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UpdateParams</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="otimizadores.html#_CPPv49Optimizer" title="Optimizer"><span class="n"><span class="pre">Optimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">optimizer</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N10DenseLayer12UpdateParamsEP9Optimizer" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10DenseLayer12UpdateParamsEP9Optimizer'"><span>#</span></a><br/></dt>
+<dd><p>Atualiza os pesos e vieses da camada. </p>
+<p><ul class="simple">
+<li><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="otimizadores.html#classOptimizer_1ac8552de32fcb56547dc9b3d01a032311"><span class="std std-ref">Optimizer::Update()</span></a></p>
+</div>
+</p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>optimizer</strong> – Ponteiro para o otimizador que aplicará a regra de atualização (ex: SGD, Momentum, Adam). </p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DenseLayer10SaveParamsERNSt8ofstreamE">
+<span id="_CPPv3N10DenseLayer10SaveParamsERNSt8ofstreamE"></span><span id="_CPPv2N10DenseLayer10SaveParamsERNSt8ofstreamE"></span><span id="DenseLayer::SaveParams__std::ofstreamR"></span><span class="target" id="classDenseLayer_1a2f0ac022b0a2770aa42ee05066f02102"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SaveParams</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ofstream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">file</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N10DenseLayer10SaveParamsERNSt8ofstreamE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10DenseLayer10SaveParamsERNSt8ofstreamE'"><span>#</span></a><br/></dt>
+<dd><p>Salva os parâmetros atuais da camada em um arquivo de texto. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – Referência para o fluxo de arquivo (ofstream) onde os dados serão gravados. </p>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+</section>
+</div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
+<div class="mr-auto">
+<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="modelo.html">
+<svg class="mr-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<polyline points="15 18 9 12 15 6"></polyline>
+</svg>
+        Modelo (Orquestrador)
+      </a>
+</div>
+<div class="ml-auto">
+<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="ativacoes.html">
+        Funções de Ativação
+        <svg class="ml-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</a>
+</div>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#interface-base-layer'" class="reference internal" href="#interface-base-layer">Interface Base (Layer)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv45Layer'" class="reference internal" href="#_CPPv45Layer"><code class="docutils literal notranslate"><span class="pre">Layer</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N5LayerD0Ev'" class="reference internal" href="#_CPPv4N5LayerD0Ev"><code class="docutils literal notranslate"><span class="pre">~Layer()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N5Layer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N5Layer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Forward()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N5Layer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N5Layer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N5Layer12UpdateParamsEP9Optimizer'" class="reference internal" href="#_CPPv4N5Layer12UpdateParamsEP9Optimizer"><code class="docutils literal notranslate"><span class="pre">UpdateParams()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N5Layer10SaveParamsERNSt8ofstreamE'" class="reference internal" href="#_CPPv4N5Layer10SaveParamsERNSt8ofstreamE"><code class="docutils literal notranslate"><span class="pre">SaveParams()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#camada-densa-denselayer'" class="reference internal" href="#camada-densa-denselayer">Camada Densa (DenseLayer)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv410DenseLayer'" class="reference internal" href="#_CPPv410DenseLayer"><code class="docutils literal notranslate"><span class="pre">DenseLayer</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N10DenseLayer10DenseLayerEKiKi'" class="reference internal" href="#_CPPv4N10DenseLayer10DenseLayerEKiKi"><code class="docutils literal notranslate"><span class="pre">DenseLayer()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10DenseLayerD0Ev'" class="reference internal" href="#_CPPv4N10DenseLayerD0Ev"><code class="docutils literal notranslate"><span class="pre">~DenseLayer()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10DenseLayer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N10DenseLayer7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Forward()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10DenseLayer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N10DenseLayer8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10DenseLayer12UpdateParamsEP9Optimizer'" class="reference internal" href="#_CPPv4N10DenseLayer12UpdateParamsEP9Optimizer"><code class="docutils literal notranslate"><span class="pre">UpdateParams()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10DenseLayer10SaveParamsERNSt8ofstreamE'" class="reference internal" href="#_CPPv4N10DenseLayer10SaveParamsERNSt8ofstreamE"><code class="docutils literal notranslate"><span class="pre">SaveParams()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, Luiz Guilherme Faria Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 9.0.4</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="_static/documentation_options.js?v=f2a433a1"></script>
+<script src="_static/doctools.js?v=fd6eb6e6"></script>
+<script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script defer="defer" src="_static/theme.js?v=582b20c5"></script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+</body>
+</html>

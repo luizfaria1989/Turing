@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="./" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Funções de Ativação | Turing 1.0 documentation</title>
+<meta content="Funções de Ativação | Turing 1.0 documentation" property="og:title"/>
+<meta content="Funções de Ativação | Turing 1.0 documentation" name="twitter:title"/>
+<link href="_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=73505e79" rel="stylesheet" type="text/css"/>
+<link href="search.html" rel="search" title="Search"/>
+<link href="genindex.html" rel="index" title="Index"/>
+<link href="otimizadores.html" rel="next" title="Otimizadores"/>
+<link href="camadas.html" rel="prev" title="Camadas (Layers)"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Turing 1.0 documentation</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="index.html"><span class="font-bold text-clip whitespace-nowrap">Turing 1.0 documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<p class="caption" role="heading"><span class="caption-text">Índice da API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modelo.html">Modelo (Orquestrador)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="camadas.html">Camadas (Layers)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Funções de Ativação</a></li>
+<li class="toctree-l1"><a class="reference internal" href="otimizadores.html">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perdas.html">Funções de Perda (Loss)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metricas.html">Métricas</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="index.html">
+<span class="hidden md:inline">Turing 1.0 documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Funções de Ativação</span>
+</nav>
+<div id="content" role="main">
+<section id="funcoes-de-ativacao">
+<h1>Funções de Ativação<a class="headerlink" href="#funcoes-de-ativacao" title="Link to this heading"><span>#</span></a></h1>
+<p>As funções de ativação são componentes matemáticos cruciais em redes neurais artificiais. Elas são responsáveis por introduzir <strong>não-linearidade</strong> ao modelo, permitindo que a rede aprenda e mapeie relações complexas nos dados. Sem elas, não importa quantas camadas ocultas a rede possua, ela se comportaria apenas como uma gigantesca regressão linear.</p>
+<p>Abaixo, documentamos as funções de ativação implementadas na biblioteca Turing.</p>
+<section id="rectified-linear-unit-relu">
+<h2>Rectified Linear Unit (ReLU)<a class="headerlink" href="#rectified-linear-unit-relu" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#rectified-linear-unit-relu'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv44ReLU">
+<span id="_CPPv34ReLU"></span><span id="_CPPv24ReLU"></span><span id="ReLU"></span><span class="target" id="classReLU"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReLU</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="camadas.html#_CPPv45Layer" title="Layer"><span class="n"><span class="pre">Layer</span></span></a><a class="headerlink" href="#_CPPv44ReLU" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv44ReLU'"><span>#</span></a><br/></dt>
+<dd><p>Implementa a função de ativação Rectified Linear Unit (<a class="reference internal" href="#classReLU"><span class="std std-ref">ReLU</span></a>). </p>
+<p><ul class="simple">
+<li><p>A <a class="reference internal" href="#classReLU"><span class="std std-ref">ReLU</span></a> é uma função não-linear aplicada elemento a elemento na matriz de entrada. É amplamente utilizada em redes neurais profundas por mitigar o problema do desvanecimento do gradiente e induzir esparsidade nas ativações. A função matemática é definida como: <div class="math notranslate nohighlight">
+\[ f(x) = \max(0, x) \]</div>
+</p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4ReLU4ReLUEv">
+<span id="_CPPv3N4ReLU4ReLUEv"></span><span id="_CPPv2N4ReLU4ReLUEv"></span><span id="ReLU::ReLU"></span><span class="target" id="classReLU_1a737e93d28f0b95e2a4d1748187c5cd60"></span><span class="sig-name descname"><span class="n"><span class="pre">ReLU</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4ReLU4ReLUEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N4ReLU4ReLUEv'"><span>#</span></a><br/></dt>
+<dd><p>Construtor padrão da camada <a class="reference internal" href="#classReLU"><span class="std std-ref">ReLU</span></a>. </p>
+<p><ul class="simple">
+<li><p>Como esta camada não possui parâmetros treináveis (pesos ou vieses), nenhuma inicialização de matriz é necessária. </p></li>
+</ul>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4ReLUD0Ev">
+<span id="_CPPv3N4ReLUD0Ev"></span><span id="_CPPv2N4ReLUD0Ev"></span><span id="ReLU::~ReLU"></span><span class="target" id="classReLU_1abf3d44d4a5b04666338e8a1f8928fe71"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~ReLU</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4ReLUD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N4ReLUD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor padrão. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4ReLU7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE">
+<span id="_CPPv3N4ReLU7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="_CPPv2N4ReLU7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="ReLU::Forward__Eigen::MatrixXfCR.Eigen::MatrixXfR"></span><span class="target" id="classReLU_1a344d0aafca743d5d1c73743c10811b96"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4ReLU7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N4ReLU7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o forward pass da ativação <a class="reference internal" href="#classReLU"><span class="std std-ref">ReLU</span></a>. </p>
+<p><ul class="simple">
+<li><p>Aplica a função limiar zero a todos os elementos da matriz de entrada. <div class="math notranslate nohighlight">
+\[ Y = \max(0, X) \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> – Referência constante para a matriz de entrada <span class="math notranslate nohighlight">\( X \)</span> de dimensões <span class="math notranslate nohighlight">\( (batch\_size \times input\_size) \)</span>. </p></li>
+<li><p><strong>output</strong> – Referência para a matriz onde o resultado ativado <span class="math notranslate nohighlight">\( Y \)</span> será armazenado. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="ReLU::Backward__Eigen::MatrixXfR.Eigen::MatrixXfCR"></span><span class="target" id="classReLU_1a767d3975a8beb80782b27d95247b81c0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_input</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o backward pass da ativação <a class="reference internal" href="#classReLU"><span class="std std-ref">ReLU</span></a>. </p>
+<p><ul class="simple">
+<li><p>A derivada da função <a class="reference internal" href="#classReLU"><span class="std std-ref">ReLU</span></a> em relação à sua entrada <span class="math notranslate nohighlight">\( x \)</span> é uma função indicadora:  <div class="math notranslate nohighlight">
+\[\begin{split}
+f'(x) =
+\begin{cases}
+1 &amp; \text{se } x &gt; 0 \\
+0 &amp; \text{se } x \le 0
+\end{cases}
+\end{split}\]</div>
+ Para propagar o erro, aplicamos a Regra da Cadeia multiplicando o gradiente recebido <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span> pela derivada local utilizando o Produto de Hadamard ( <span class="math notranslate nohighlight">\( \odot \)</span>): <div class="math notranslate nohighlight">
+\[ \frac{\partial L}{\partial X} = \frac{\partial L}{\partial Y} \odot f'(X) \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grad_input</strong> – Referência para a matriz que armazenará o gradiente calculado <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial X} \)</span>. </p></li>
+<li><p><strong>grad_output</strong> – Matriz contendo o gradiente recebido da camada seguinte <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+<section id="sigmoide-logistica-sigmoid">
+<h2>Sigmoide Logística (Sigmoid)<a class="headerlink" href="#sigmoide-logistica-sigmoid" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#sigmoide-logistica-sigmoid'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv47Sigmoid">
+<span id="_CPPv37Sigmoid"></span><span id="_CPPv27Sigmoid"></span><span id="Sigmoid"></span><span class="target" id="classSigmoid"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sigmoid</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="camadas.html#_CPPv45Layer" title="Layer"><span class="n"><span class="pre">Layer</span></span></a><a class="headerlink" href="#_CPPv47Sigmoid" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv47Sigmoid'"><span>#</span></a><br/></dt>
+<dd><p>Implementa a função de ativação Sigmoide Logística. </p>
+<p><ul class="simple">
+<li><p>A função sigmoide mapeia qualquer valor real para o intervalo <span class="math notranslate nohighlight">\( (0, 1) \)</span>. Historicamente, é muito utilizada para modelar probabilidades e transformar saídas lineares em distribuições. A função matemática é definida como: <div class="math notranslate nohighlight">
+\[ \sigma(x) = \frac{1}{1 + e^{-x}} \]</div>
+</p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Sigmoid7SigmoidEv">
+<span id="_CPPv3N7Sigmoid7SigmoidEv"></span><span id="_CPPv2N7Sigmoid7SigmoidEv"></span><span id="Sigmoid::Sigmoid"></span><span class="target" id="classSigmoid_1ac41cc59268d555fac7d6235f4f75cd44"></span><span class="sig-name descname"><span class="n"><span class="pre">Sigmoid</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N7Sigmoid7SigmoidEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7Sigmoid7SigmoidEv'"><span>#</span></a><br/></dt>
+<dd><p>Construtor padrão da camada <a class="reference internal" href="#classSigmoid"><span class="std std-ref">Sigmoid</span></a>. Como esta camada não possui parâmetros treináveis (pesos/vieses), a inicialização ocorre sem alocação de matrizes. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7SigmoidD0Ev">
+<span id="_CPPv3N7SigmoidD0Ev"></span><span id="_CPPv2N7SigmoidD0Ev"></span><span id="Sigmoid::~Sigmoid"></span><span class="target" id="classSigmoid_1a505d75c55e2b503eba0f1ca83203ea62"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Sigmoid</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N7SigmoidD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7SigmoidD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor padrão. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Sigmoid7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE">
+<span id="_CPPv3N7Sigmoid7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="_CPPv2N7Sigmoid7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="Sigmoid::Forward__Eigen::MatrixXfCR.Eigen::MatrixXfR"></span><span class="target" id="classSigmoid_1a109bd07ad28f5fc6dd040c153c5b64c4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7Sigmoid7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7Sigmoid7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o forward pass da ativação Sigmoide. </p>
+<p><ul class="simple">
+<li><p>Aplica a função logística a cada elemento da matriz de entrada. <div class="math notranslate nohighlight">
+\[ Y = \frac{1}{1 + e^{-X}} \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> – Referência constante para a matriz de entrada <span class="math notranslate nohighlight">\( X \)</span> de dimensões <span class="math notranslate nohighlight">\( (batch\_size \times input\_size) \)</span>. </p></li>
+<li><p><strong>output</strong> – Referência para a matriz onde o resultado ativado <span class="math notranslate nohighlight">\( Y \)</span> será armazenado. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="Sigmoid::Backward__Eigen::MatrixXfR.Eigen::MatrixXfCR"></span><span class="target" id="classSigmoid_1ad3b30d26c2352d800a91d8843ed0f33f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_input</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o backward pass da ativação Sigmoide. </p>
+<p><ul class="simple">
+<li><p>Uma das propriedades matemáticas mais elegantes da função sigmoide é que sua derivada pode ser calculada diretamente a partir de sua saída <span class="math notranslate nohighlight">\( Y \)</span>: <div class="math notranslate nohighlight">
+\[ \sigma'(X) = Y \odot (1 - Y) \]</div>
+</p></li>
+<li><p>Para propagar o erro, aplicamos a Regra da Cadeia multiplicando o gradiente recebido <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span> pela derivada local através do Produto de Hadamard ( <span class="math notranslate nohighlight">\( \odot \)</span>): <div class="math notranslate nohighlight">
+\[ \frac{\partial L}{\partial X} = \frac{\partial L}{\partial Y} \odot (Y \odot (1 - Y)) \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grad_input</strong> – Matriz que armazenará o gradiente calculado <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial X} \)</span>. </p></li>
+<li><p><strong>grad_output</strong> – Matriz contendo o gradiente recebido da camada seguinte <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+<section id="tangente-hiperbolica-tanh">
+<h2>Tangente Hiperbólica (Tanh)<a class="headerlink" href="#tangente-hiperbolica-tanh" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#tangente-hiperbolica-tanh'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv44Tanh">
+<span id="_CPPv34Tanh"></span><span id="_CPPv24Tanh"></span><span id="Tanh"></span><span class="target" id="classTanh"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tanh</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="camadas.html#_CPPv45Layer" title="Layer"><span class="n"><span class="pre">Layer</span></span></a><a class="headerlink" href="#_CPPv44Tanh" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv44Tanh'"><span>#</span></a><br/></dt>
+<dd><p>Implementa a função de ativação Tangente Hiperbólica (<a class="reference internal" href="#classTanh"><span class="std std-ref">Tanh</span></a>). </p>
+<p><ul class="simple">
+<li><p>A função <a class="reference internal" href="#classTanh"><span class="std std-ref">Tanh</span></a> é uma versão reescalonada e deslocada da função Sigmoide. Sua principal vantagem matemática é mapear os valores de entrada para o intervalo <span class="math notranslate nohighlight">\( (-1, 1) \)</span>, tornando as ativações centralizadas em zero (zero-centered). Isso reduz as oscilações durante a atualização dos pesos e frequentemente resulta em uma convergência mais rápida. A função matemática é definida como: <div class="math notranslate nohighlight">
+\[ \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \]</div>
+</p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4Tanh4TanhEv">
+<span id="_CPPv3N4Tanh4TanhEv"></span><span id="_CPPv2N4Tanh4TanhEv"></span><span id="Tanh::Tanh"></span><span class="target" id="classTanh_1a3686698710a8ef5e016e005733f0897a"></span><span class="sig-name descname"><span class="n"><span class="pre">Tanh</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4Tanh4TanhEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N4Tanh4TanhEv'"><span>#</span></a><br/></dt>
+<dd><p>Construtor padrão da camada tanh. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4TanhD0Ev">
+<span id="_CPPv3N4TanhD0Ev"></span><span id="_CPPv2N4TanhD0Ev"></span><span id="Tanh::~Tanh"></span><span class="target" id="classTanh_1a82c48fd2df89c6b6fbf0d7e97f92f4b9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Tanh</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4TanhD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N4TanhD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor padrão. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4Tanh7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE">
+<span id="_CPPv3N4Tanh7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="_CPPv2N4Tanh7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="Tanh::Forward__Eigen::MatrixXfCR.Eigen::MatrixXfR"></span><span class="target" id="classTanh_1a8c80badf7384cb5e9d1b0ce1f1703435"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4Tanh7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N4Tanh7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o forward pass da ativação Tangente Hiperbólica. </p>
+<p><ul class="simple">
+<li><p>Aplica a função <span class="math notranslate nohighlight">\( \tanh \)</span> a cada elemento da matriz de entrada utilizando a implementação otimizada da biblioteca Eigen. <div class="math notranslate nohighlight">
+\[ Y = \tanh(X) \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> – Referência constante para a matriz de entrada <span class="math notranslate nohighlight">\( X \)</span> de dimensões <span class="math notranslate nohighlight">\( (batch\_size \times input\_size) \)</span>. </p></li>
+<li><p><strong>output</strong> – Referência para a matriz onde o resultado ativado <span class="math notranslate nohighlight">\( Y \)</span> será armazenado. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="Tanh::Backward__Eigen::MatrixXfR.Eigen::MatrixXfCR"></span><span class="target" id="classTanh_1a2509555c79d23afd0745398228470bd7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_input</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o backward pass da ativação Tangente Hiperbólica. </p>
+<p><ul class="simple">
+<li><p>A derivada matemática da função <a class="reference internal" href="#classTanh"><span class="std std-ref">Tanh</span></a> em relação à sua entrada <span class="math notranslate nohighlight">\( X \)</span> é dada por: <div class="math notranslate nohighlight">
+\[ \tanh'(X) = 1 - \tanh^2(X) = 1 - Y^2 \]</div>
+</p></li>
+<li><p>Para propagar o erro, aplicamos a Regra da Cadeia multiplicando o gradiente recebido <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span> pela derivada local através do Produto de Hadamard ( <span class="math notranslate nohighlight">\( \odot \)</span>): <div class="math notranslate nohighlight">
+\[ \frac{\partial L}{\partial X} = \frac{\partial L}{\partial Y} \odot (1 - Y^2) \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grad_input</strong> – Matriz que armazenará o gradiente calculado <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial X} \)</span>. </p></li>
+<li><p><strong>grad_output</strong> – Matriz contendo o gradiente recebido da camada seguinte <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+<section id="softmax">
+<h2>Softmax<a class="headerlink" href="#softmax" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#softmax'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv47Softmax">
+<span id="_CPPv37Softmax"></span><span id="_CPPv27Softmax"></span><span id="Softmax"></span><span class="target" id="classSoftmax"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Softmax</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="camadas.html#_CPPv45Layer" title="Layer"><span class="n"><span class="pre">Layer</span></span></a><a class="headerlink" href="#_CPPv47Softmax" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv47Softmax'"><span>#</span></a><br/></dt>
+<dd><p>Implementa a função de ativação <a class="reference internal" href="#classSoftmax"><span class="std std-ref">Softmax</span></a>. </p>
+<p><ul class="simple">
+<li><p>A função <a class="reference internal" href="#classSoftmax"><span class="std std-ref">Softmax</span></a> é tipicamente utilizada na última camada de redes neurais de classificação multiclasse. Ela converte um vetor de números reais (logits) em uma distribuição de probabilidade, garantindo que todas as saídas estejam no intervalo <span class="math notranslate nohighlight">\( (0, 1) \)</span> e que a soma das probabilidades de todas as classes seja igual a 1. A função matemática para o i-ésimo elemento é: <div class="math notranslate nohighlight">
+\[ y_i = \frac{e^{x_i}}{\sum_{j=1}^{C} e^{x_j}} \]</div>
+ Onde <span class="math notranslate nohighlight">\( C \)</span> é o número total de classes (neurônios na camada). </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Softmax7SoftmaxEv">
+<span id="_CPPv3N7Softmax7SoftmaxEv"></span><span id="_CPPv2N7Softmax7SoftmaxEv"></span><span id="Softmax::Softmax"></span><span class="target" id="classSoftmax_1a8ea9c0783625aa9ddd1b1442325bb5a0"></span><span class="sig-name descname"><span class="n"><span class="pre">Softmax</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N7Softmax7SoftmaxEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7Softmax7SoftmaxEv'"><span>#</span></a><br/></dt>
+<dd><p>Construtor padrão da camada <a class="reference internal" href="#classSoftmax"><span class="std std-ref">Softmax</span></a>. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7SoftmaxD0Ev">
+<span id="_CPPv3N7SoftmaxD0Ev"></span><span id="_CPPv2N7SoftmaxD0Ev"></span><span id="Softmax::~Softmax"></span><span class="target" id="classSoftmax_1af1e0b3dd483452169de4cea566a978c2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Softmax</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N7SoftmaxD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7SoftmaxD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor padrão. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Softmax7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE">
+<span id="_CPPv3N7Softmax7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="_CPPv2N7Softmax7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"></span><span id="Softmax::Forward__Eigen::MatrixXfCR.Eigen::MatrixXfR"></span><span class="target" id="classSoftmax_1affca5e056e14a2ce95fa29f9455dd0a6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7Softmax7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7Softmax7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o forward pass da ativação <a class="reference internal" href="#classSoftmax"><span class="std std-ref">Softmax</span></a>. </p>
+<p><ul class="simple">
+<li><p>Aplica a exponenciação a cada elemento e normaliza dividindo pela soma das exponenciais da respectiva amostra (linha).</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> – Referência constante para a matriz de logits <span class="math notranslate nohighlight">\( X \)</span> de dimensões <span class="math notranslate nohighlight">\( (batch\_size \times num\_classes) \)</span>. </p></li>
+<li><p><strong>output</strong> – Referência para a matriz onde a distribuição de probabilidade <span class="math notranslate nohighlight">\( Y \)</span> será armazenada. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="Softmax::Backward__Eigen::MatrixXfR.Eigen::MatrixXfCR"></span><span class="target" id="classSoftmax_1a656a59e8d1ec64b4ab3f67f5cd096173"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_input</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa o backward pass da ativação <a class="reference internal" href="#classSoftmax"><span class="std std-ref">Softmax</span></a>. </p>
+<p><ul class="simple">
+<li><p>Como a saída <span class="math notranslate nohighlight">\( y_i \)</span> depende de todos os <span class="math notranslate nohighlight">\( x_j \)</span>, a derivada real da <a class="reference internal" href="#classSoftmax"><span class="std std-ref">Softmax</span></a> é uma matriz Jacobiana. Para evitar o custo de memória de instanciar uma matriz tridimensional para o batch, aplicamos o “Jacobian-vector product” diretamente.</p></li>
+<li><p>A equação vetorizada do gradiente para uma amostra é dada por: <div class="math notranslate nohighlight">
+\[ \frac{\partial L}{\partial X} = Y \odot \left( \frac{\partial L}{\partial Y} - \left( \sum_{j} \frac{\partial L}{\partial Y_j} \cdot Y_j \right) \mathbf{1} \right) \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grad_input</strong> – Matriz que armazenará o gradiente calculado <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial X} \)</span>. </p></li>
+<li><p><strong>grad_output</strong> – Matriz contendo o gradiente recebido da camada seguinte (geralmente a função de perda) <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial Y} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+</section>
+</div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
+<div class="mr-auto">
+<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="camadas.html">
+<svg class="mr-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<polyline points="15 18 9 12 15 6"></polyline>
+</svg>
+        Camadas (Layers)
+      </a>
+</div>
+<div class="ml-auto">
+<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="otimizadores.html">
+        Otimizadores
+        <svg class="ml-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</a>
+</div>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#rectified-linear-unit-relu'" class="reference internal" href="#rectified-linear-unit-relu">Rectified Linear Unit (ReLU)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv44ReLU'" class="reference internal" href="#_CPPv44ReLU"><code class="docutils literal notranslate"><span class="pre">ReLU</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N4ReLU4ReLUEv'" class="reference internal" href="#_CPPv4N4ReLU4ReLUEv"><code class="docutils literal notranslate"><span class="pre">ReLU()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N4ReLUD0Ev'" class="reference internal" href="#_CPPv4N4ReLUD0Ev"><code class="docutils literal notranslate"><span class="pre">~ReLU()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N4ReLU7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N4ReLU7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Forward()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#sigmoide-logistica-sigmoid'" class="reference internal" href="#sigmoide-logistica-sigmoid">Sigmoide Logística (Sigmoid)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv47Sigmoid'" class="reference internal" href="#_CPPv47Sigmoid"><code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N7Sigmoid7SigmoidEv'" class="reference internal" href="#_CPPv4N7Sigmoid7SigmoidEv"><code class="docutils literal notranslate"><span class="pre">Sigmoid()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7SigmoidD0Ev'" class="reference internal" href="#_CPPv4N7SigmoidD0Ev"><code class="docutils literal notranslate"><span class="pre">~Sigmoid()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7Sigmoid7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N7Sigmoid7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Forward()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#tangente-hiperbolica-tanh'" class="reference internal" href="#tangente-hiperbolica-tanh">Tangente Hiperbólica (Tanh)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv44Tanh'" class="reference internal" href="#_CPPv44Tanh"><code class="docutils literal notranslate"><span class="pre">Tanh</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N4Tanh4TanhEv'" class="reference internal" href="#_CPPv4N4Tanh4TanhEv"><code class="docutils literal notranslate"><span class="pre">Tanh()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N4TanhD0Ev'" class="reference internal" href="#_CPPv4N4TanhD0Ev"><code class="docutils literal notranslate"><span class="pre">~Tanh()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N4Tanh7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N4Tanh7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Forward()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#softmax'" class="reference internal" href="#softmax">Softmax</a><ul>
+<li><a :data-current="activeSection === '#_CPPv47Softmax'" class="reference internal" href="#_CPPv47Softmax"><code class="docutils literal notranslate"><span class="pre">Softmax</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N7Softmax7SoftmaxEv'" class="reference internal" href="#_CPPv4N7Softmax7SoftmaxEv"><code class="docutils literal notranslate"><span class="pre">Softmax()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7SoftmaxD0Ev'" class="reference internal" href="#_CPPv4N7SoftmaxD0Ev"><code class="docutils literal notranslate"><span class="pre">~Softmax()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7Softmax7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N7Softmax7ForwardERKN5Eigen8MatrixXfERN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Forward()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, Luiz Guilherme Faria Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 9.0.4</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="_static/documentation_options.js?v=f2a433a1"></script>
+<script src="_static/doctools.js?v=fd6eb6e6"></script>
+<script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script defer="defer" src="_static/theme.js?v=582b20c5"></script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+</body>
+</html>

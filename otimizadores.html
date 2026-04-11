@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="./" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Otimizadores | Turing 1.0 documentation</title>
+<meta content="Otimizadores | Turing 1.0 documentation" property="og:title"/>
+<meta content="Otimizadores | Turing 1.0 documentation" name="twitter:title"/>
+<link href="_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=73505e79" rel="stylesheet" type="text/css"/>
+<link href="search.html" rel="search" title="Search"/>
+<link href="genindex.html" rel="index" title="Index"/>
+<link href="perdas.html" rel="next" title="Funções de Perda (Loss)"/>
+<link href="ativacoes.html" rel="prev" title="Funções de Ativação"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Turing 1.0 documentation</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="index.html"><span class="font-bold text-clip whitespace-nowrap">Turing 1.0 documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<p class="caption" role="heading"><span class="caption-text">Índice da API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modelo.html">Modelo (Orquestrador)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="camadas.html">Camadas (Layers)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ativacoes.html">Funções de Ativação</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Otimizadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perdas.html">Funções de Perda (Loss)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metricas.html">Métricas</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="index.html">
+<span class="hidden md:inline">Turing 1.0 documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Otimizadores</span>
+</nav>
+<div id="content" role="main">
+<section id="otimizadores">
+<h1>Otimizadores<a class="headerlink" href="#otimizadores" title="Link to this heading"><span>#</span></a></h1>
+<p>Os otimizadores são o “motor de convergência” de uma rede neural. Enquanto a função de perda
+nos diz <em>o quão errado</em> o modelo está, o otimizador dita a estratégia exata de <strong>como</strong> os parâmetros
+(pesos e vieses) devem ser ajustados para corrigir esse erro.</p>
+<p>Através das derivadas calculadas no <em>Backpropagation</em>, o algoritmo de otimização define as regras
+para descer a superfície de erro passo a passo, em busca do mínimo global da função objetivo.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>O hiperparâmetro mais crítico em qualquer otimizador é a <strong>Taxa de Aprendizado</strong> ($eta$).
+Um valor muito alto pode fazer o modelo divergir e “explodir”, enquanto um valor muito
+baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</p>
+</div>
+<section id="interface-base-optimizer">
+<h2>Interface Base (Optimizer)<a class="headerlink" href="#interface-base-optimizer" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#interface-base-optimizer'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv49Optimizer">
+<span id="_CPPv39Optimizer"></span><span id="_CPPv29Optimizer"></span><span id="Optimizer"></span><span class="target" id="classOptimizer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Optimizer</span></span></span><a class="headerlink" href="#_CPPv49Optimizer" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv49Optimizer'"><span>#</span></a><br/></dt>
+<dd><p>Classe base abstrata para todos os algoritmos de otimização. </p>
+<p><ul class="simple">
+<li><p>Define a interface para os métodos que atualizam os parâmetros treináveis (pesos e vieses) da rede neural com o objetivo de minimizar a função de perda <span class="math notranslate nohighlight">\( L \)</span>.</p></li>
+<li><p>A regra geral de otimização baseada em gradiente ajusta um parâmetro genérico <span class="math notranslate nohighlight">\( \theta \)</span> na direção oposta ao seu gradiente: <div class="math notranslate nohighlight">
+\[ \theta_{t+1} = \theta_t - \eta \cdot \nabla_{\theta} L \]</div>
+ Onde <span class="math notranslate nohighlight">\( \eta \)</span> é a taxa de aprendizado. Algoritmos derivados (como Momentum, Adam) estendem essa regra introduzindo conceitos físicos (inércia) ou estatísticos (momentos). </p></li>
+</ul>
+</p>
+<p>Subclassed by <a class="reference internal" href="#classGDMomentum"><span class="std std-ref">GDMomentum</span></a>, <a class="reference internal" href="#classGradientDescent"><span class="std std-ref">GradientDescent</span></a>, <a class="reference internal" href="#classNAG"><span class="std std-ref">NAG</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Optimizer9OptimizerEf">
+<span id="_CPPv3N9Optimizer9OptimizerEf"></span><span id="_CPPv2N9Optimizer9OptimizerEf"></span><span id="Optimizer::Optimizer__float"></span><span class="target" id="classOptimizer_1a4ef2bd223a49d67db894486a047a1466"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Optimizer</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">learning_rate</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.01f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Optimizer9OptimizerEf" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Optimizer9OptimizerEf'"><span>#</span></a><br/></dt>
+<dd><p>Construtor padrão do otimizador. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>learning_rate</strong> – Valor inicial para a taxa de aprendizado <span class="math notranslate nohighlight">\( \eta \)</span>. O padrão é 0.01. </p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9OptimizerD0Ev">
+<span id="_CPPv3N9OptimizerD0Ev"></span><span id="_CPPv2N9OptimizerD0Ev"></span><span id="Optimizer::~Optimizer"></span><span class="target" id="classOptimizer_1a29eeb57d268354286bf7673f70c24b5c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Optimizer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N9OptimizerD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9OptimizerD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor virtual padrão. </p>
+<p><ul class="simple">
+<li><p>Garante a liberação correta de memória caso otimizadores derivados (que podem alocar matrizes de estado, como velocidades) sejam destruídos. </p></li>
+</ul>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Optimizer6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N9Optimizer6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N9Optimizer6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="Optimizer::Update__Eigen::MatrixXfR.Eigen::MatrixXfR.Eigen::MatrixXfCR.Eigen::MatrixXfCR"></span><span class="target" id="classOptimizer_1ac8552de32fcb56547dc9b3d01a032311"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Update</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weights</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">biases</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_weights</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_biases</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9Optimizer6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Optimizer6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Atualiza os parâmetros de uma camada baseando-se nos gradientes calculados. </p>
+<p><ul class="simple">
+<li><p>Esta função aplica a regra de otimização específica para atualizar as matrizes originais de pesos ( <span class="math notranslate nohighlight">\( W \)</span>) e vieses ( <span class="math notranslate nohighlight">\( b \)</span>). Em sua forma mais canônica (Gradiente Descendente Padrão), a operação executada nas classes filhas será: <div class="math notranslate nohighlight">
+\[ W = W - \eta \frac{\partial L}{\partial W} \]</div>
+<div class="math notranslate nohighlight">
+\[ b = b - \eta \frac{\partial L}{\partial b} \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> – Referência para a matriz de pesos da camada <span class="math notranslate nohighlight">\( W \)</span>. </p></li>
+<li><p><strong>biases</strong> – Referência para o vetor de vieses da camada <span class="math notranslate nohighlight">\( b \)</span>. </p></li>
+<li><p><strong>grad_weights</strong> – Referência constante para a matriz de gradientes dos pesos <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial W} \)</span>. </p></li>
+<li><p><strong>grad_biases</strong> – Referência constante para o vetor de gradientes dos vieses <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial b} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+<section id="gradiente-descente-gradientdescent">
+<h2>Gradiente Descente (GradientDescent)<a class="headerlink" href="#gradiente-descente-gradientdescent" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#gradiente-descente-gradientdescent'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv415GradientDescent">
+<span id="_CPPv315GradientDescent"></span><span id="_CPPv215GradientDescent"></span><span id="GradientDescent"></span><span class="target" id="classGradientDescent"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientDescent</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49Optimizer" title="Optimizer"><span class="n"><span class="pre">Optimizer</span></span></a><a class="headerlink" href="#_CPPv415GradientDescent" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv415GradientDescent'"><span>#</span></a><br/></dt>
+<dd><p>Implementa o algoritmo de otimização Gradiente Descendente (Standard Gradient Descent). </p>
+<p><ul class="simple">
+<li><p>É o método fundamental de otimização de primeira ordem para redes neurais. Ele atualiza os parâmetros do modelo iterativamente na direção oposta ao gradiente da função de perda, buscando o mínimo da função objetivo. A regra matemática de transição de estado para um parâmetro genérico <span class="math notranslate nohighlight">\( \theta \)</span> é definida como: <div class="math notranslate nohighlight">
+\[ \theta_{t+1} = \theta_t - \eta \nabla_{\theta} L \]</div>
+ Onde <span class="math notranslate nohighlight">\( \eta \)</span> representa a taxa de aprendizado (learning rate). </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15GradientDescent15GradientDescentEf">
+<span id="_CPPv3N15GradientDescent15GradientDescentEf"></span><span id="_CPPv2N15GradientDescent15GradientDescentEf"></span><span id="GradientDescent::GradientDescent__float"></span><span class="target" id="classGradientDescent_1a3db698adc4447b981fd9347052d4e8ab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientDescent</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">learning_rate</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.01f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15GradientDescent15GradientDescentEf" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N15GradientDescent15GradientDescentEf'"><span>#</span></a><br/></dt>
+<dd><p>Construtor do otimizador Gradiente Descendente. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>learning_rate</strong> – O tamanho do passo <span class="math notranslate nohighlight">\( \eta \)</span> dado na direção do gradiente negativo. O valor padrão é 0.01. </p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15GradientDescentD0Ev">
+<span id="_CPPv3N15GradientDescentD0Ev"></span><span id="_CPPv2N15GradientDescentD0Ev"></span><span id="GradientDescent::~GradientDescent"></span><span class="target" id="classGradientDescent_1a81fc44a0c79618a81f09f456f936eb9b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~GradientDescent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N15GradientDescentD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N15GradientDescentD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor padrão. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="GradientDescent::Update__Eigen::MatrixXfR.Eigen::MatrixXfR.Eigen::MatrixXfCR.Eigen::MatrixXfCR"></span><span class="target" id="classGradientDescent_1a540314d87f0af376c5567863281f2a88"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Update</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weights</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">biases</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_weights</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_biases</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa a atualização dos pesos e vieses da camada. </p>
+<p><ul class="simple">
+<li><p>Aplica a regra algébrica clássica do Gradiente Descendente diretamente subtraindo o gradiente escalonado das matrizes de parâmetros originais: <div class="math notranslate nohighlight">
+\[ W = W - \eta \frac{\partial L}{\partial W} \]</div>
+<div class="math notranslate nohighlight">
+\[ b = b - \eta \frac{\partial L}{\partial b} \]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> – Referência para a matriz de pesos <span class="math notranslate nohighlight">\( W \)</span> da camada, que será atualizada in-place. </p></li>
+<li><p><strong>biases</strong> – Referência para o vetor de vieses <span class="math notranslate nohighlight">\( b \)</span> da camada, que será atualizado in-place. </p></li>
+<li><p><strong>grad_weights</strong> – Matriz constante contendo os gradientes da perda em relação aos pesos <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial W} \)</span>. </p></li>
+<li><p><strong>grad_biases</strong> – Vetor constante contendo os gradientes da perda em relação aos vieses <span class="math notranslate nohighlight">\( \frac{\partial L}{\partial b} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+<section id="gradiente-descendente-com-momento-gdmomentum">
+<h2>Gradiente Descendente com Momento (GDMomentum)<a class="headerlink" href="#gradiente-descendente-com-momento-gdmomentum" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#gradiente-descendente-com-momento-gdmomentum'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv410GDMomentum">
+<span id="_CPPv310GDMomentum"></span><span id="_CPPv210GDMomentum"></span><span id="GDMomentum"></span><span class="target" id="classGDMomentum"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GDMomentum</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49Optimizer" title="Optimizer"><span class="n"><span class="pre">Optimizer</span></span></a><a class="headerlink" href="#_CPPv410GDMomentum" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv410GDMomentum'"><span>#</span></a><br/></dt>
+<dd><p>Implementa o otimizador Gradiente Descendente com Momento (Momentum). </p>
+<p><ul class="simple">
+<li><p>Este algoritmo introduz o conceito físico de “inércia” na atualização dos parâmetros. Em vez de depender apenas do gradiente atual, ele acumula uma média móvel exponencial dos gradientes passados (velocidade). Isso ajuda a acelerar a convergência em direções consistentes e a amortecer oscilações em ravinas muito íngremes da função de perda.</p></li>
+<li><p>A regra de atualização matemática para um parâmetro genérico <span class="math notranslate nohighlight">\(\theta\)</span> e sua respectiva velocidade <span class="math notranslate nohighlight">\(v\)</span> é dada por: <div class="math notranslate nohighlight">
+\[ v_{t+1} = \gamma v_t + \eta \nabla_{\theta} L\]</div>
+<div class="math notranslate nohighlight">
+\[\theta_{t+1} = \theta_t - v_{t+1}\]</div>
+ Onde <span class="math notranslate nohighlight">\(\eta\)</span> é a taxa de aprendizado e <span class="math notranslate nohighlight">\(\gamma\)</span> é o coeficiente de momento. </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10GDMomentum10GDMomentumEff">
+<span id="_CPPv3N10GDMomentum10GDMomentumEff"></span><span id="_CPPv2N10GDMomentum10GDMomentumEff"></span><span id="GDMomentum::GDMomentum__float.float"></span><span class="target" id="classGDMomentum_1a63cb9211a610eb11d846a60deeae2211"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GDMomentum</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">learning_rate</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.01f</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">momentum</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.01f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10GDMomentum10GDMomentumEff" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10GDMomentum10GDMomentumEff'"><span>#</span></a><br/></dt>
+<dd><p>Construtor do otimizador <a class="reference internal" href="#classGDMomentum"><span class="std std-ref">GDMomentum</span></a>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Na literatura padrão de Deep Learning, valores comuns para o momento são maiores, como 0.9 ou 0.99. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>learning_rate</strong> – A taxa de aprendizado <span class="math notranslate nohighlight">\(\eta\)</span>. O padrão é 0.01. </p></li>
+<li><p><strong>momentum</strong> – O coeficiente de momento <span class="math notranslate nohighlight">\(\gamma\)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10GDMomentumD0Ev">
+<span id="_CPPv3N10GDMomentumD0Ev"></span><span id="_CPPv2N10GDMomentumD0Ev"></span><span id="GDMomentum::~GDMomentum"></span><span class="target" id="classGDMomentum_1ac65e059d727b3c3b2c6bcdbe48c66143"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~GDMomentum</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N10GDMomentumD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10GDMomentumD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor padrão. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="GDMomentum::Update__Eigen::MatrixXfR.Eigen::MatrixXfR.Eigen::MatrixXfCR.Eigen::MatrixXfCR"></span><span class="target" id="classGDMomentum_1aab678c25ec8f620d6eccc6f2bd1ac481"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Update</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weights</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">biases</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_weights</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_biases</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa a atualização dos pesos e vieses utilizando inércia. </p>
+<p><ul class="simple">
+<li><p>Caso os parâmetros estejam sendo atualizados pela primeira vez (não existam no mapa de velocidades), uma matriz de inércia zerada é inicializada preguiçosamente (lazy initialization). Em seguida, as seguintes equações são aplicadas: <div class="math notranslate nohighlight">
+\[v_W = \gamma v_W + \eta \frac{\partial L}{\partial W}\]</div>
+<div class="math notranslate nohighlight">
+\[W = W - v_W\]</div>
+ (O mesmo é aplicado aos vieses <span class="math notranslate nohighlight">\(b\)</span>).</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> – Referência para a matriz de pesos <span class="math notranslate nohighlight">\(W\)</span>. </p></li>
+<li><p><strong>biases</strong> – Referência para o vetor de vieses <span class="math notranslate nohighlight">\(b\)</span>. </p></li>
+<li><p><strong>grad_weights</strong> – Matriz contendo os gradientes da perda em relação aos pesos <span class="math notranslate nohighlight">\(\frac{\partial L}{\partial W}\)</span>. </p></li>
+<li><p><strong>grad_biases</strong> – Vetor contendo os gradientes da perda em relação aos vieses <span class="math notranslate nohighlight">\(\frac{\partial L}{\partial b}\)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+<section id="gradiente-acelerado-de-nesterov-nag">
+<h2>Gradiente Acelerado de Nesterov (NAG)<a class="headerlink" href="#gradiente-acelerado-de-nesterov-nag" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#gradiente-acelerado-de-nesterov-nag'"><span>#</span></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv43NAG">
+<span id="_CPPv33NAG"></span><span id="_CPPv23NAG"></span><span id="NAG"></span><span class="target" id="classNAG"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NAG</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49Optimizer" title="Optimizer"><span class="n"><span class="pre">Optimizer</span></span></a><a class="headerlink" href="#_CPPv43NAG" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv43NAG'"><span>#</span></a><br/></dt>
+<dd><p>Implementa o otimizador Nesterov Accelerated Gradient (<a class="reference internal" href="#classNAG"><span class="std std-ref">NAG</span></a>). </p>
+<p><ul class="simple">
+<li><p>Uma melhoria sobre o Gradiente Descendente com Momento. Enquanto o Momento padrão calcula o gradiente na posição atual e então adiciona a inércia, o Nesterov teoricamente calcula o gradiente em uma posição futura (lookahead), o que proporciona uma correção de curso mais rápida e evita oscilações excessivas ao redor de mínimos.</p></li>
+<li><p>Como o cálculo do gradiente ocorre antes da etapa de otimização em nossa arquitetura, implementamos a forma algebricamente rearranjada do <a class="reference internal" href="#classNAG"><span class="std std-ref">NAG</span></a>. Para um parâmetro genérico $\theta$, velocidade $v$, taxa de aprendizado $\eta$ e momento $\gamma$, a atualização é: <div class="math notranslate nohighlight">
+\[v_{t+1} = \gamma v_t + \eta \nabla_{\theta} L\]</div>
+<div class="math notranslate nohighlight">
+\[\theta_{t+1} = \theta_t - (\gamma v_{t+1} + \eta \nabla_{\theta} L)\]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Essa formulação permite aplicar o conceito de “lookahead” do Nesterov utilizando o gradiente calculado na posição atual <span class="math notranslate nohighlight">\(\theta_t\)</span>, mantendo o desacoplamento entre o cálculo das derivadas (camadas) e a atualização (otimizador). </p>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3NAG3NAGEff">
+<span id="_CPPv3N3NAG3NAGEff"></span><span id="_CPPv2N3NAG3NAGEff"></span><span id="NAG::NAG__float.float"></span><span class="target" id="classNAG_1a428ff73ccdf78eccaec4c79fea7f7906"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NAG</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">learning_rate</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.01f</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">momentum</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.01f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3NAG3NAGEff" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3NAG3NAGEff'"><span>#</span></a><br/></dt>
+<dd><p>Construtor do otimizador Nesterov Accelerated Gradient. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>learning_rate</strong> – A taxa de aprendizado <span class="math notranslate nohighlight">\(\eta\)</span>. O padrão é 0.01. </p></li>
+<li><p><strong>momentum</strong> – O coeficiente de momento <span class="math notranslate nohighlight">\(\gamma\)</span>. O padrão é 0.01. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3NAGD0Ev">
+<span id="_CPPv3N3NAGD0Ev"></span><span id="_CPPv2N3NAGD0Ev"></span><span id="NAG::~NAG"></span><span class="target" id="classNAG_1adce201efd09115b458b48f80547b2213"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~NAG</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3NAGD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3NAGD0Ev'"><span>#</span></a><br/></dt>
+<dd><p>Destrutor padrão. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE">
+<span id="_CPPv3N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="_CPPv2N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"></span><span id="NAG::Update__Eigen::MatrixXfR.Eigen::MatrixXfR.Eigen::MatrixXfCR.Eigen::MatrixXfCR"></span><span class="target" id="classNAG_1a654b258b6301f7fdcb905c485c8145c0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Update</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weights</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">biases</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_weights</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXf</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">grad_biases</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'"><span>#</span></a><br/></dt>
+<dd><p>Executa a atualização dos parâmetros utilizando a inércia de Nesterov. </p>
+<p><ul class="simple">
+<li><p>Semelhante ao Momento padrão, a velocidade é inicializada preguiçosamente (lazy initialization). A atualização segue a variante vetorizada onde aplicamos a correção de Nesterov diretamente utilizando o gradiente recém-calculado e a nova velocidade: <div class="math notranslate nohighlight">
+\[v_{nova} = \gamma v_{atual} + \eta \frac{\partial L}{\partial W}\]</div>
+<div class="math notranslate nohighlight">
+\[W = W - (\gamma v_{nova} + \eta \frac{\partial L}{\partial W})\]</div>
+</p></li>
+<li><p></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> – Referência para a matriz de pesos <span class="math notranslate nohighlight">\(W\)</span>. </p></li>
+<li><p><strong>biases</strong> – Referência para o vetor de vieses <span class="math notranslate nohighlight">\(b\)</span>. </p></li>
+<li><p><strong>grad_weights</strong> – Matriz contendo os gradientes da perda em relação aos pesos <span class="math notranslate nohighlight">\(\frac{\partial L}{\partial W}\)</span>. </p></li>
+<li><p><strong>grad_biases</strong> – Vetor contendo os gradientes da perda em relação aos vieses <span class="math notranslate nohighlight">\(\frac{\partial L}{\partial b}\)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+</section>
+</div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
+<div class="mr-auto">
+<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="ativacoes.html">
+<svg class="mr-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<polyline points="15 18 9 12 15 6"></polyline>
+</svg>
+        Funções de Ativação
+      </a>
+</div>
+<div class="ml-auto">
+<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="perdas.html">
+        Funções de Perda (Loss)
+        <svg class="ml-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</a>
+</div>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#interface-base-optimizer'" class="reference internal" href="#interface-base-optimizer">Interface Base (Optimizer)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv49Optimizer'" class="reference internal" href="#_CPPv49Optimizer"><code class="docutils literal notranslate"><span class="pre">Optimizer</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N9Optimizer9OptimizerEf'" class="reference internal" href="#_CPPv4N9Optimizer9OptimizerEf"><code class="docutils literal notranslate"><span class="pre">Optimizer()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9OptimizerD0Ev'" class="reference internal" href="#_CPPv4N9OptimizerD0Ev"><code class="docutils literal notranslate"><span class="pre">~Optimizer()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Optimizer6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N9Optimizer6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gradiente-descente-gradientdescent'" class="reference internal" href="#gradiente-descente-gradientdescent">Gradiente Descente (GradientDescent)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv415GradientDescent'" class="reference internal" href="#_CPPv415GradientDescent"><code class="docutils literal notranslate"><span class="pre">GradientDescent</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N15GradientDescent15GradientDescentEf'" class="reference internal" href="#_CPPv4N15GradientDescent15GradientDescentEf"><code class="docutils literal notranslate"><span class="pre">GradientDescent()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N15GradientDescentD0Ev'" class="reference internal" href="#_CPPv4N15GradientDescentD0Ev"><code class="docutils literal notranslate"><span class="pre">~GradientDescent()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gradiente-descendente-com-momento-gdmomentum'" class="reference internal" href="#gradiente-descendente-com-momento-gdmomentum">Gradiente Descendente com Momento (GDMomentum)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv410GDMomentum'" class="reference internal" href="#_CPPv410GDMomentum"><code class="docutils literal notranslate"><span class="pre">GDMomentum</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N10GDMomentum10GDMomentumEff'" class="reference internal" href="#_CPPv4N10GDMomentum10GDMomentumEff"><code class="docutils literal notranslate"><span class="pre">GDMomentum()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10GDMomentumD0Ev'" class="reference internal" href="#_CPPv4N10GDMomentumD0Ev"><code class="docutils literal notranslate"><span class="pre">~GDMomentum()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#gradiente-acelerado-de-nesterov-nag'" class="reference internal" href="#gradiente-acelerado-de-nesterov-nag">Gradiente Acelerado de Nesterov (NAG)</a><ul>
+<li><a :data-current="activeSection === '#_CPPv43NAG'" class="reference internal" href="#_CPPv43NAG"><code class="docutils literal notranslate"><span class="pre">NAG</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N3NAG3NAGEff'" class="reference internal" href="#_CPPv4N3NAG3NAGEff"><code class="docutils literal notranslate"><span class="pre">NAG()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N3NAGD0Ev'" class="reference internal" href="#_CPPv4N3NAGD0Ev"><code class="docutils literal notranslate"><span class="pre">~NAG()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2026, Luiz Guilherme Faria Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 9.0.4</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="_static/documentation_options.js?v=f2a433a1"></script>
+<script src="_static/doctools.js?v=fd6eb6e6"></script>
+<script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script defer="defer" src="_static/theme.js?v=582b20c5"></script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+</body>
+</html>
