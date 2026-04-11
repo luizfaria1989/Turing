@@ -2,32 +2,51 @@
 #include "Layer.h"
 
 /**
- * @brief Implementa uma camada densa da rede neural.
- * * Responsável por calcular a transformação linear Z = X * W + b, onde X representa
- * a matriz de entrada, W a matriz de pesos e b o vetor de vieses da camada.
+ * @class DenseLayer
+ * @brief Implementa uma camada densa (fully connected) da rede neural.
+ * * Responsável por aplicar uma transformação linear aos dados de entrada.
+ * A operação fundamental desta camada no forward pass é:
+ * \f[ Z = X \cdot W + b \f]
+ * Onde:
+ * - \f$ X \f$ é a matriz de entrada.
+ * - \f$ W \f$ é a matriz de pesos.
+ * - \f$ b \f$ é o vetor de vieses (transmitido para todas as linhas via broadcasting).
  */
 class DenseLayer : public Layer {
 
 protected:
-    /// @brief Matriz de pesos da camada, atualizada durante o backward pass.
+
+    /// @brief Matriz de pesos da camada \f$ (input\_size \times neurons) \f$.
     Eigen::MatrixXf weights_;
-    /// @brief Vetor de vieses da camada, atualizado durante o backward pass.
+
+    /// @brief Vetor de vieses da camada \f$ (1 \times neurons) \f$.
     Eigen::MatrixXf biases_;
-    /// @brief Matriz contendo os gradientes dos pesos, utilizada para atualizar a matriz de pesos original.
+
+    /// @brief Gradientes da função de perda em relação aos pesos \f$ \frac{\partial L}{\partial W} \f$.
     Eigen::MatrixXf grad_weights_;
-    /// @brief Matriz contentendo os gradientes dos vieses, é utilizada para atualizar o vetor de vieses.
+
+    /// @brief Gradientes da função de perda em relação aos vieses \f$ \frac{\partial L}{\partial b} \f$.
     Eigen::MatrixXf grad_biases_;
-    /// @brief Quantidade de neurônios na camada.
+
+    /// @brief Quantidade de neurônios na camada (dimensão de saída).
     int neurons_;
 
 public:
 
     /**
-     * @brief Construtor padrão da camada densa. Inicializa os pesos aleatoriamente e os vieses com zero.
-     * @param input_size Número de características (features) da entrada vinda da camada anterior.
-     * @param neurons Número de neurônios que esta camada terá.
-     */
-    DenseLayer(const int input_size, const int neurons): weights_(Eigen::MatrixXf::Random(input_size, neurons) * 0.01f), biases_(Eigen::MatrixXf::Zero(1, neurons)), grad_weights_(Eigen::MatrixXf::Zero(input_size, neurons)), grad_biases_(Eigen::MatrixXf::Zero(1, neurons)), neurons_(neurons){}
+    * @brief Construtor da camada densa.
+    * * Inicializa os pesos a partir de uma distribuição uniforme (escalonada por 0.01 para evitar saturação inicial)
+    * e os vieses com zeros.
+    * * @param input_size Número de características (features) da entrada.
+    * @param neurons Número de neurônios da camada (tamanho da saída).
+    */
+    DenseLayer(const int input_size, const int neurons):
+        weights_(Eigen::MatrixXf::Random(input_size, neurons) * 0.01f),
+        biases_(Eigen::MatrixXf::Zero(1, neurons)),
+        grad_weights_(Eigen::MatrixXf::Zero(input_size, neurons)),
+        grad_biases_(Eigen::MatrixXf::Zero(1, neurons)),
+        neurons_(neurons){}
+
 
     /**
      * @brief Destrutor padrão.
@@ -35,22 +54,25 @@ public:
     virtual ~DenseLayer() = default;
 
     /**
-    * @brief Implementa o método forward pass da camada densa.
-    * @param input Referência constante para a matriz de entrada de dados.
-    * @param output Referência para a matriz onde o resultado da camada será armazenado.
-    * @note A fórmula matemática executada é: Z = X * W + b.
-    * @warning As dimensões de 'input' devem ser (batch_size, input_size).
-    */
+     * @brief Executa o forward pass da camada densa.
+     * * @param input Referência constante para a matriz de entrada de dimensões \f$ (batch\_size \times input\_size) \f$.
+     * @param output Referência para a matriz onde o resultado \f$ Z \f$ será armazenado, de dimensões \f$ (batch\_size \times neurons) \f$.
+     * * @note Utiliza broadcasting do Eigen (`rowwise()`) para somar o vetor de vieses a cada amostra do batch.
+     */
     void Forward(const Eigen::MatrixXf &input, Eigen::MatrixXf &output) override {
         output = (input * weights_).array().rowwise() + biases_.row(0).array();
         this->input_ = input;
     }
 
     /**
-    * @brief Implementa o método backward pass da camada densa.
-    * * Calcula a matriz de gradientes dos pesos, dos vieses e o gradiente que será propagado.
-    * @param grad_input Referência para a matriz que armazenará o gradiente a ser enviado para a camada anterior.
-    * @param grad_output Referência constante para o gradiente recebido da camada seguinte.
+    * @brief Executa o backward pass, calculando os gradientes locais e propagando o erro.
+    * * A partir do gradiente recebido da camada posterior \f$ \frac{\partial L}{\partial Z} \f$,
+    * esta função calcula as seguintes derivadas parciais:
+    * * 1. Gradiente dos pesos: \f[ \frac{\partial L}{\partial W} = X^T \cdot \frac{\partial L}{\partial Z} \f]
+    * 2. Gradiente dos vieses: \f[ \frac{\partial L}{\partial b} = \sum_{i=1}^{m} \left( \frac{\partial L}{\partial Z} \right)_i \f]
+    * 3. Gradiente da entrada (propagado para trás): \f[ \frac{\partial L}{\partial X} = \frac{\partial L}{\partial Z} \cdot W^T \f]
+    * * @param grad_input Matriz que armazenará o gradiente a ser enviado para a camada anterior \f$ (batch\_size \times input\_size) \f$.
+    * @param grad_output Gradiente da perda em relação à saída desta camada \f$ (batch\_size \times neurons) \f$.
     */
     void Backward(Eigen::MatrixXf &grad_input, const Eigen::MatrixXf &grad_output) override {
         grad_weights_ = this->input_.transpose() * grad_output;
@@ -59,8 +81,8 @@ public:
     };
 
     /**
-    * @brief Atualiza os parâmetros (pesos e vieses) da camada utilizando o otimizador.
-    * @param optimizer Ponteiro para o otimizador escolhido na construção do modelo.
+    * @brief Atualiza os pesos e vieses da camada.
+    * * @param optimizer Ponteiro para o otimizador que aplicará a regra de atualização (ex: SGD, Momentum, Adam).
     * @see Optimizer::Update()
     */
     void UpdateParams(Optimizer* optimizer) override {
