@@ -34,10 +34,10 @@ jobs:
         run: |
           cd docs
           make html
+          touch build/html/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          # Agora apontamos para a pasta onde o Sphinx cospe o site bonito
           folder: docs/build/html
           branch: gh-pages
