@@ -14,3 +14,9 @@ latex/
 *.exe
 
 data/
+
+docs/build/
+docs/source/.doctrees/
+docs/.doctrees
+
+xml/
