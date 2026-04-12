@@ -6,8 +6,7 @@
   
   <br>
   
-  <h1>🧠 Turing: Deep Learning Framework</h1>
-  <p><em>Um motor de Redes Neurais Artificiais modular e de alto desempenho, construído do zero em C++.</em></p>
+  <h1>Turing: Deep Learning Framework</h1>
 </div>
 
 <hr>
