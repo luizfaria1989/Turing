@@ -23,3 +23,12 @@ Entropia Cruzada Categórica (CCE)
 .. doxygenclass:: CategoricalCrossEntropy
    :project: Turing
    :members:
+
+Exemplo de Aplicação
+^^^^^^^^^^^^^^^^^^^^
+Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando a entropia cruzada categórica como função de perdar:
+
+.. literalinclude:: ../../models/DNNWithNAG.cpp
+   :language: cpp
+   :linenos:
+   :lines: 49-75
