@@ -41,7 +41,7 @@ public:
     * @param neurons Número de neurônios da camada (tamanho da saída).
     */
     DenseLayer(const int input_size, const int neurons):
-        weights_(Eigen::MatrixXf::Random(input_size, neurons) * 0.01f),
+        weights_(Eigen::MatrixXf::Random(input_size, neurons) * 0.7f),
         biases_(Eigen::MatrixXf::Zero(1, neurons)),
         grad_weights_(Eigen::MatrixXf::Zero(input_size, neurons)),
         grad_biases_(Eigen::MatrixXf::Zero(1, neurons)),
