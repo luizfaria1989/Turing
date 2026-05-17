@@ -25,7 +25,7 @@
 <meta content="Camadas (Layers) | Turing 1.0 documentation" property="og:title"/>
 <meta content="Camadas (Layers) | Turing 1.0 documentation" name="twitter:title"/>
 <link href="_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
-<link href="_static/theme.css?v=73505e79" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=979577e3" rel="stylesheet" type="text/css"/>
 <link href="search.html" rel="search" title="Search"/>
 <link href="genindex.html" rel="index" title="Index"/>
 <link href="ativacoes.html" rel="next" title="Funções de Ativação"/>
@@ -331,6 +331,39 @@ e o erro flui de trás para frente (Backward Pass) ajustando as matrizes de cada
 </dd></dl>
 </div>
 </dd></dl>
+<section id="exemplo-de-aplicacao">
+<h3>Exemplo de Aplicação<a class="headerlink" href="#exemplo-de-aplicacao" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#exemplo-de-aplicacao'"><span>#</span></a></h3>
+<p>Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando a camada densa:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="linenos"> 1</span><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+</span><span id="line-2"><span class="linenos"> 2</span>
+</span><span id="line-3"><span class="linenos"> 3</span><span class="w">    </span><span class="c1">// Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios</span>
+</span><span id="line-4"><span class="linenos"> 4</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">));</span>
+</span><span id="line-5"><span class="linenos"> 5</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ReLU</span><span class="p">());</span>
+</span><span id="line-6"><span class="linenos"> 6</span>
+</span><span id="line-7"><span class="linenos"> 7</span><span class="w">    </span><span class="c1">// Camada de Saída: 128 entradas para 10 neurônios (classes de 0 a 9)</span>
+</span><span id="line-8"><span class="linenos"> 8</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">));</span>
+</span><span id="line-9"><span class="linenos"> 9</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Softmax</span><span class="p">());</span>
+</span><span id="line-10"><span class="linenos">10</span>
+</span><span id="line-11"><span class="linenos">11</span><span class="w">    </span><span class="cm">/*</span>
+</span><span id="line-12"><span class="linenos">12</span><span class="cm">     * 3. Configurando a função de perda e o otimizador</span>
+</span><span id="line-13"><span class="linenos">13</span><span class="cm">     */</span>
+</span><span id="line-14"><span class="linenos">14</span>
+</span><span id="line-15"><span class="linenos">15</span><span class="w">    </span><span class="n">CategoricalCrossEntropy</span><span class="w"> </span><span class="n">loss_function</span><span class="p">;</span>
+</span><span id="line-16"><span class="linenos">16</span><span class="w">    </span><span class="n">NAG</span><span class="w"> </span><span class="nf">optimizer</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">);</span>
+</span><span id="line-17"><span class="linenos">17</span>
+</span><span id="line-18"><span class="linenos">18</span><span class="w">    </span><span class="cm">/*</span>
+</span><span id="line-19"><span class="linenos">19</span><span class="cm">     * 4. Configurando os parâmetros de treinamento do modelo</span>
+</span><span id="line-20"><span class="linenos">20</span><span class="cm">     */</span>
+</span><span id="line-21"><span class="linenos">21</span>
+</span><span id="line-22"><span class="linenos">22</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+</span><span id="line-23"><span class="linenos">23</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">batch_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span>
+</span><span id="line-24"><span class="linenos">24</span>
+</span><span id="line-25"><span class="linenos">25</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">Fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span><span class="w"> </span><span class="n">batch_size</span><span class="p">,</span><span class="w"> </span><span class="n">X_train</span><span class="p">,</span><span class="w"> </span><span class="n">Y_train</span><span class="p">,</span><span class="w"> </span><span class="n">loss_function</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span>
+</span><span id="line-26"><span class="linenos">26</span>
+</span><span id="line-27"><span class="linenos">27</span><span class="w">    </span><span class="cm">/*</span>
+</span></code></pre></div>
+</div>
+</section>
 </section>
 </section>
 </div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
@@ -374,6 +407,7 @@ e o erro flui de trás para frente (Backward Pass) ajustando as matrizes de cada
 <li><a :data-current="activeSection === '#_CPPv4N10DenseLayer10SaveParamsERNSt8ofstreamE'" class="reference internal" href="#_CPPv4N10DenseLayer10SaveParamsERNSt8ofstreamE"><code class="docutils literal notranslate"><span class="pre">SaveParams()</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#exemplo-de-aplicacao'" class="reference internal" href="#exemplo-de-aplicacao">Exemplo de Aplicação</a></li>
 </ul>
 </li>
 </ul>
@@ -392,7 +426,7 @@ e o erro flui de trás para frente (Backward Pass) ajustando as matrizes de cada
 <script src="_static/documentation_options.js?v=f2a433a1"></script>
 <script src="_static/doctools.js?v=fd6eb6e6"></script>
 <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-<script defer="defer" src="_static/theme.js?v=582b20c5"></script>
+<script defer="defer" src="_static/theme.js?v=d6a9845b"></script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </body>
 </html>

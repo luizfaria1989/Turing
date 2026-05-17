@@ -25,7 +25,7 @@
 <meta content="Funções de Ativação | Turing 1.0 documentation" property="og:title"/>
 <meta content="Funções de Ativação | Turing 1.0 documentation" name="twitter:title"/>
 <link href="_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
-<link href="_static/theme.css?v=73505e79" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=979577e3" rel="stylesheet" type="text/css"/>
 <link href="search.html" rel="search" title="Search"/>
 <link href="genindex.html" rel="index" title="Index"/>
 <link href="otimizadores.html" rel="next" title="Otimizadores"/>
@@ -102,7 +102,7 @@
 <div id="content" role="main">
 <section id="funcoes-de-ativacao">
 <h1>Funções de Ativação<a class="headerlink" href="#funcoes-de-ativacao" title="Link to this heading"><span>#</span></a></h1>
-<p>As funções de ativação são componentes matemáticos cruciais em redes neurais artificiais. Elas são responsáveis por introduzir <strong>não-linearidade</strong> ao modelo, permitindo que a rede aprenda e mapeie relações complexas nos dados. Sem elas, não importa quantas camadas ocultas a rede possua, ela se comportaria apenas como uma gigantesca regressão linear.</p>
+<p>As funções de ativação são componentes matemáticos cruciais em redes neurais artificiais. Elas são responsáveis por introduzir não-linearidade ao modelo, permitindo que a rede aprenda e mapeie relações complexas nos dados. Sem elas, não importa quantas camadas ocultas a rede possua, ela se comportaria apenas como uma gigantesca regressão linear.</p>
 <p>Abaixo, documentamos as funções de ativação implementadas na biblioteca Turing.</p>
 <section id="rectified-linear-unit-relu">
 <h2>Rectified Linear Unit (ReLU)<a class="headerlink" href="#rectified-linear-unit-relu" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#rectified-linear-unit-relu'"><span>#</span></a></h2>
@@ -182,6 +182,17 @@ f'(x) =
 </dd></dl>
 </div>
 </dd></dl>
+<section id="exemplo-de-aplicacao">
+<h3>Exemplo de Aplicação<a class="headerlink" href="#exemplo-de-aplicacao" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#exemplo-de-aplicacao'"><span>#</span></a></h3>
+<p>Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando a ReLU:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="linenos">1</span><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+</span><span id="line-2"><span class="linenos">2</span>
+</span><span id="line-3"><span class="linenos">3</span><span class="w">    </span><span class="c1">// Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios</span>
+</span><span id="line-4"><span class="linenos">4</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">));</span>
+</span><span id="line-5"><span class="linenos">5</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ReLU</span><span class="p">());</span>
+</span></code></pre></div>
+</div>
+</section>
 </section>
 <section id="sigmoide-logistica-sigmoid">
 <h2>Sigmoide Logística (Sigmoid)<a class="headerlink" href="#sigmoide-logistica-sigmoid" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#sigmoide-logistica-sigmoid'"><span>#</span></a></h2>
@@ -252,6 +263,17 @@ f'(x) =
 </dd></dl>
 </div>
 </dd></dl>
+<section id="id1">
+<h3>Exemplo de Aplicação<a class="headerlink" href="#id1" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id1'"><span>#</span></a></h3>
+<p>Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando a Sigmoide Logística:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="linenos">1</span><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+</span><span id="line-2"><span class="linenos">2</span>
+</span><span id="line-3"><span class="linenos">3</span><span class="w">    </span><span class="c1">// Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios</span>
+</span><span id="line-4"><span class="linenos">4</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">));</span>
+</span><span id="line-5"><span class="linenos">5</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Sigmoid</span><span class="p">());</span>
+</span></code></pre></div>
+</div>
+</section>
 </section>
 <section id="tangente-hiperbolica-tanh">
 <h2>Tangente Hiperbólica (Tanh)<a class="headerlink" href="#tangente-hiperbolica-tanh" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#tangente-hiperbolica-tanh'"><span>#</span></a></h2>
@@ -322,6 +344,17 @@ f'(x) =
 </dd></dl>
 </div>
 </dd></dl>
+<section id="id2">
+<h3>Exemplo de Aplicação<a class="headerlink" href="#id2" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id2'"><span>#</span></a></h3>
+<p>Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando a Tangente Hiperbólica:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="linenos">1</span><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+</span><span id="line-2"><span class="linenos">2</span>
+</span><span id="line-3"><span class="linenos">3</span><span class="w">    </span><span class="c1">// Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios</span>
+</span><span id="line-4"><span class="linenos">4</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">));</span>
+</span><span id="line-5"><span class="linenos">5</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Tanh</span><span class="p">());</span>
+</span></code></pre></div>
+</div>
+</section>
 </section>
 <section id="softmax">
 <h2>Softmax<a class="headerlink" href="#softmax" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#softmax'"><span>#</span></a></h2>
@@ -388,6 +421,21 @@ f'(x) =
 </dd></dl>
 </div>
 </dd></dl>
+<section id="id3">
+<h3>Exemplo de Aplicação<a class="headerlink" href="#id3" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id3'"><span>#</span></a></h3>
+<p>Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando a Softmax:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="linenos">1</span><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+</span><span id="line-2"><span class="linenos">2</span>
+</span><span id="line-3"><span class="linenos">3</span><span class="w">    </span><span class="c1">// Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios</span>
+</span><span id="line-4"><span class="linenos">4</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">));</span>
+</span><span id="line-5"><span class="linenos">5</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Sigmoid</span><span class="p">());</span>
+</span><span id="line-6"><span class="linenos">6</span>
+</span><span id="line-7"><span class="linenos">7</span><span class="w">    </span><span class="c1">// Camada de Saída: 128 entradas para 10 neurônios (classes de 0 a 9)</span>
+</span><span id="line-8"><span class="linenos">8</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">));</span>
+</span><span id="line-9"><span class="linenos">9</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Softmax</span><span class="p">());</span>
+</span></code></pre></div>
+</div>
+</section>
 </section>
 </section>
 </div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
@@ -418,6 +466,7 @@ f'(x) =
 <li><a :data-current="activeSection === '#_CPPv4N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N4ReLU8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#exemplo-de-aplicacao'" class="reference internal" href="#exemplo-de-aplicacao">Exemplo de Aplicação</a></li>
 </ul>
 </li>
 <li><a :data-current="activeSection === '#sigmoide-logistica-sigmoid'" class="reference internal" href="#sigmoide-logistica-sigmoid">Sigmoide Logística (Sigmoid)</a><ul>
@@ -428,6 +477,7 @@ f'(x) =
 <li><a :data-current="activeSection === '#_CPPv4N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N7Sigmoid8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#id1'" class="reference internal" href="#id1">Exemplo de Aplicação</a></li>
 </ul>
 </li>
 <li><a :data-current="activeSection === '#tangente-hiperbolica-tanh'" class="reference internal" href="#tangente-hiperbolica-tanh">Tangente Hiperbólica (Tanh)</a><ul>
@@ -438,6 +488,7 @@ f'(x) =
 <li><a :data-current="activeSection === '#_CPPv4N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N4Tanh8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#id2'" class="reference internal" href="#id2">Exemplo de Aplicação</a></li>
 </ul>
 </li>
 <li><a :data-current="activeSection === '#softmax'" class="reference internal" href="#softmax">Softmax</a><ul>
@@ -448,6 +499,7 @@ f'(x) =
 <li><a :data-current="activeSection === '#_CPPv4N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N7Softmax8BackwardERN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Backward()</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#id3'" class="reference internal" href="#id3">Exemplo de Aplicação</a></li>
 </ul>
 </li>
 </ul>
@@ -466,7 +518,7 @@ f'(x) =
 <script src="_static/documentation_options.js?v=f2a433a1"></script>
 <script src="_static/doctools.js?v=fd6eb6e6"></script>
 <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-<script defer="defer" src="_static/theme.js?v=582b20c5"></script>
+<script defer="defer" src="_static/theme.js?v=d6a9845b"></script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </body>
 </html>

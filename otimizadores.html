@@ -25,7 +25,7 @@
 <meta content="Otimizadores | Turing 1.0 documentation" property="og:title"/>
 <meta content="Otimizadores | Turing 1.0 documentation" name="twitter:title"/>
 <link href="_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
-<link href="_static/theme.css?v=73505e79" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=979577e3" rel="stylesheet" type="text/css"/>
 <link href="search.html" rel="search" title="Search"/>
 <link href="genindex.html" rel="index" title="Index"/>
 <link href="perdas.html" rel="next" title="Funções de Perda (Loss)"/>
@@ -175,8 +175,8 @@ baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</
 </div>
 </dd></dl>
 </section>
-<section id="gradiente-descente-gradientdescent">
-<h2>Gradiente Descente (GradientDescent)<a class="headerlink" href="#gradiente-descente-gradientdescent" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#gradiente-descente-gradientdescent'"><span>#</span></a></h2>
+<section id="gradiente-descedente-gradientdescent">
+<h2>Gradiente Descedente (GradientDescent)<a class="headerlink" href="#gradiente-descedente-gradientdescent" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#gradiente-descedente-gradientdescent'"><span>#</span></a></h2>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv415GradientDescent">
 <span id="_CPPv315GradientDescent"></span><span id="_CPPv215GradientDescent"></span><span id="GradientDescent"></span><span class="target" id="classGradientDescent"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientDescent</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49Optimizer" title="Optimizer"><span class="n"><span class="pre">Optimizer</span></span></a><a class="headerlink" href="#_CPPv415GradientDescent" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv415GradientDescent'"><span>#</span></a><br/></dt>
@@ -230,6 +230,38 @@ baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</
 </dd></dl>
 </div>
 </dd></dl>
+<section id="exemplo-de-aplicacao">
+<h3>Exemplo de Aplicação<a class="headerlink" href="#exemplo-de-aplicacao" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#exemplo-de-aplicacao'"><span>#</span></a></h3>
+<p>Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando o gradiente descendente como otimizador:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="linenos"> 1</span><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+</span><span id="line-2"><span class="linenos"> 2</span>
+</span><span id="line-3"><span class="linenos"> 3</span><span class="w">    </span><span class="c1">// Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios</span>
+</span><span id="line-4"><span class="linenos"> 4</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">));</span>
+</span><span id="line-5"><span class="linenos"> 5</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Sigmoid</span><span class="p">());</span>
+</span><span id="line-6"><span class="linenos"> 6</span>
+</span><span id="line-7"><span class="linenos"> 7</span><span class="w">    </span><span class="c1">// Camada de Saída: 128 entradas para 10 neurônios (classes de 0 a 9)</span>
+</span><span id="line-8"><span class="linenos"> 8</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">));</span>
+</span><span id="line-9"><span class="linenos"> 9</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Softmax</span><span class="p">());</span>
+</span><span id="line-10"><span class="linenos">10</span>
+</span><span id="line-11"><span class="linenos">11</span><span class="w">    </span><span class="cm">/*</span>
+</span><span id="line-12"><span class="linenos">12</span><span class="cm">     * 3. Configurando a função de perda e o otimizador</span>
+</span><span id="line-13"><span class="linenos">13</span><span class="cm">     */</span>
+</span><span id="line-14"><span class="linenos">14</span>
+</span><span id="line-15"><span class="linenos">15</span><span class="w">    </span><span class="n">CategoricalCrossEntropy</span><span class="w"> </span><span class="n">loss_function</span><span class="p">;</span>
+</span><span id="line-16"><span class="linenos">16</span><span class="w">    </span><span class="n">GradientDescent</span><span class="w"> </span><span class="nf">optimizer</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">);</span>
+</span><span id="line-17"><span class="linenos">17</span>
+</span><span id="line-18"><span class="linenos">18</span><span class="w">    </span><span class="cm">/*</span>
+</span><span id="line-19"><span class="linenos">19</span><span class="cm">     * 4. Configurando os parâmetros de treinamento do modelo</span>
+</span><span id="line-20"><span class="linenos">20</span><span class="cm">     */</span>
+</span><span id="line-21"><span class="linenos">21</span>
+</span><span id="line-22"><span class="linenos">22</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</span><span id="line-23"><span class="linenos">23</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">batch_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span>
+</span><span id="line-24"><span class="linenos">24</span>
+</span><span id="line-25"><span class="linenos">25</span>
+</span><span id="line-26"><span class="linenos">26</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">Fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span><span class="w"> </span><span class="n">batch_size</span><span class="p">,</span><span class="w"> </span><span class="n">X_train</span><span class="p">,</span><span class="w"> </span><span class="n">Y_train</span><span class="p">,</span><span class="w"> </span><span class="n">loss_function</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span>
+</span></code></pre></div>
+</div>
+</section>
 </section>
 <section id="gradiente-descendente-com-momento-gdmomentum">
 <h2>Gradiente Descendente com Momento (GDMomentum)<a class="headerlink" href="#gradiente-descendente-com-momento-gdmomentum" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#gradiente-descendente-com-momento-gdmomentum'"><span>#</span></a></h2>
@@ -296,6 +328,38 @@ baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</
 </dd></dl>
 </div>
 </dd></dl>
+<section id="id1">
+<h3>Exemplo de Aplicação<a class="headerlink" href="#id1" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id1'"><span>#</span></a></h3>
+<p>Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando o gradiente descendente com momento como otimizador:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="linenos"> 1</span><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+</span><span id="line-2"><span class="linenos"> 2</span>
+</span><span id="line-3"><span class="linenos"> 3</span><span class="w">    </span><span class="c1">// Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios</span>
+</span><span id="line-4"><span class="linenos"> 4</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">));</span>
+</span><span id="line-5"><span class="linenos"> 5</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Tanh</span><span class="p">());</span>
+</span><span id="line-6"><span class="linenos"> 6</span>
+</span><span id="line-7"><span class="linenos"> 7</span><span class="w">    </span><span class="c1">// Camada de Saída: 128 entradas para 10 neurônios (classes de 0 a 9)</span>
+</span><span id="line-8"><span class="linenos"> 8</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">));</span>
+</span><span id="line-9"><span class="linenos"> 9</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Softmax</span><span class="p">());</span>
+</span><span id="line-10"><span class="linenos">10</span>
+</span><span id="line-11"><span class="linenos">11</span><span class="w">    </span><span class="cm">/*</span>
+</span><span id="line-12"><span class="linenos">12</span><span class="cm">     * 3. Configurando a função de perda e o otimizador</span>
+</span><span id="line-13"><span class="linenos">13</span><span class="cm">     */</span>
+</span><span id="line-14"><span class="linenos">14</span>
+</span><span id="line-15"><span class="linenos">15</span><span class="w">    </span><span class="n">CategoricalCrossEntropy</span><span class="w"> </span><span class="n">loss_function</span><span class="p">;</span>
+</span><span id="line-16"><span class="linenos">16</span><span class="w">    </span><span class="n">GDMomentum</span><span class="w"> </span><span class="nf">optimizer</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">);</span>
+</span><span id="line-17"><span class="linenos">17</span>
+</span><span id="line-18"><span class="linenos">18</span><span class="w">    </span><span class="cm">/*</span>
+</span><span id="line-19"><span class="linenos">19</span><span class="cm">     * 4. Configurando os parâmetros de treinamento do modelo</span>
+</span><span id="line-20"><span class="linenos">20</span><span class="cm">     */</span>
+</span><span id="line-21"><span class="linenos">21</span>
+</span><span id="line-22"><span class="linenos">22</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+</span><span id="line-23"><span class="linenos">23</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">batch_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span>
+</span><span id="line-24"><span class="linenos">24</span>
+</span><span id="line-25"><span class="linenos">25</span>
+</span><span id="line-26"><span class="linenos">26</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">Fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span><span class="w"> </span><span class="n">batch_size</span><span class="p">,</span><span class="w"> </span><span class="n">X_train</span><span class="p">,</span><span class="w"> </span><span class="n">Y_train</span><span class="p">,</span><span class="w"> </span><span class="n">loss_function</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span>
+</span></code></pre></div>
+</div>
+</section>
 </section>
 <section id="gradiente-acelerado-de-nesterov-nag">
 <h2>Gradiente Acelerado de Nesterov (NAG)<a class="headerlink" href="#gradiente-acelerado-de-nesterov-nag" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#gradiente-acelerado-de-nesterov-nag'"><span>#</span></a></h2>
@@ -363,6 +427,39 @@ baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</
 </dd></dl>
 </div>
 </dd></dl>
+<section id="id2">
+<h3>Exemplo de Aplicação<a class="headerlink" href="#id2" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id2'"><span>#</span></a></h3>
+<p>Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando o gradiente acelerado de Nesterov como otimizador:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="linenos"> 1</span><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+</span><span id="line-2"><span class="linenos"> 2</span>
+</span><span id="line-3"><span class="linenos"> 3</span><span class="w">    </span><span class="c1">// Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios</span>
+</span><span id="line-4"><span class="linenos"> 4</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">));</span>
+</span><span id="line-5"><span class="linenos"> 5</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ReLU</span><span class="p">());</span>
+</span><span id="line-6"><span class="linenos"> 6</span>
+</span><span id="line-7"><span class="linenos"> 7</span><span class="w">    </span><span class="c1">// Camada de Saída: 128 entradas para 10 neurônios (classes de 0 a 9)</span>
+</span><span id="line-8"><span class="linenos"> 8</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DenseLayer</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">));</span>
+</span><span id="line-9"><span class="linenos"> 9</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">AddLayer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Softmax</span><span class="p">());</span>
+</span><span id="line-10"><span class="linenos">10</span>
+</span><span id="line-11"><span class="linenos">11</span><span class="w">    </span><span class="cm">/*</span>
+</span><span id="line-12"><span class="linenos">12</span><span class="cm">     * 3. Configurando a função de perda e o otimizador</span>
+</span><span id="line-13"><span class="linenos">13</span><span class="cm">     */</span>
+</span><span id="line-14"><span class="linenos">14</span>
+</span><span id="line-15"><span class="linenos">15</span><span class="w">    </span><span class="n">CategoricalCrossEntropy</span><span class="w"> </span><span class="n">loss_function</span><span class="p">;</span>
+</span><span id="line-16"><span class="linenos">16</span><span class="w">    </span><span class="n">NAG</span><span class="w"> </span><span class="nf">optimizer</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">);</span>
+</span><span id="line-17"><span class="linenos">17</span>
+</span><span id="line-18"><span class="linenos">18</span><span class="w">    </span><span class="cm">/*</span>
+</span><span id="line-19"><span class="linenos">19</span><span class="cm">     * 4. Configurando os parâmetros de treinamento do modelo</span>
+</span><span id="line-20"><span class="linenos">20</span><span class="cm">     */</span>
+</span><span id="line-21"><span class="linenos">21</span>
+</span><span id="line-22"><span class="linenos">22</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+</span><span id="line-23"><span class="linenos">23</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">batch_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span>
+</span><span id="line-24"><span class="linenos">24</span>
+</span><span id="line-25"><span class="linenos">25</span><span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">Fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span><span class="w"> </span><span class="n">batch_size</span><span class="p">,</span><span class="w"> </span><span class="n">X_train</span><span class="p">,</span><span class="w"> </span><span class="n">Y_train</span><span class="p">,</span><span class="w"> </span><span class="n">loss_function</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span>
+</span><span id="line-26"><span class="linenos">26</span>
+</span><span id="line-27"><span class="linenos">27</span><span class="w">    </span><span class="cm">/*</span>
+</span></code></pre></div>
+</div>
+</section>
 </section>
 </section>
 </div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
@@ -394,13 +491,14 @@ baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</
 </li>
 </ul>
 </li>
-<li><a :data-current="activeSection === '#gradiente-descente-gradientdescent'" class="reference internal" href="#gradiente-descente-gradientdescent">Gradiente Descente (GradientDescent)</a><ul>
+<li><a :data-current="activeSection === '#gradiente-descedente-gradientdescent'" class="reference internal" href="#gradiente-descedente-gradientdescent">Gradiente Descedente (GradientDescent)</a><ul>
 <li><a :data-current="activeSection === '#_CPPv415GradientDescent'" class="reference internal" href="#_CPPv415GradientDescent"><code class="docutils literal notranslate"><span class="pre">GradientDescent</span></code></a><ul>
 <li><a :data-current="activeSection === '#_CPPv4N15GradientDescent15GradientDescentEf'" class="reference internal" href="#_CPPv4N15GradientDescent15GradientDescentEf"><code class="docutils literal notranslate"><span class="pre">GradientDescent()</span></code></a></li>
 <li><a :data-current="activeSection === '#_CPPv4N15GradientDescentD0Ev'" class="reference internal" href="#_CPPv4N15GradientDescentD0Ev"><code class="docutils literal notranslate"><span class="pre">~GradientDescent()</span></code></a></li>
 <li><a :data-current="activeSection === '#_CPPv4N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N15GradientDescent6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Update()</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#exemplo-de-aplicacao'" class="reference internal" href="#exemplo-de-aplicacao">Exemplo de Aplicação</a></li>
 </ul>
 </li>
 <li><a :data-current="activeSection === '#gradiente-descendente-com-momento-gdmomentum'" class="reference internal" href="#gradiente-descendente-com-momento-gdmomentum">Gradiente Descendente com Momento (GDMomentum)</a><ul>
@@ -410,6 +508,7 @@ baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</
 <li><a :data-current="activeSection === '#_CPPv4N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N10GDMomentum6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Update()</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#id1'" class="reference internal" href="#id1">Exemplo de Aplicação</a></li>
 </ul>
 </li>
 <li><a :data-current="activeSection === '#gradiente-acelerado-de-nesterov-nag'" class="reference internal" href="#gradiente-acelerado-de-nesterov-nag">Gradiente Acelerado de Nesterov (NAG)</a><ul>
@@ -419,6 +518,7 @@ baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</
 <li><a :data-current="activeSection === '#_CPPv4N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE'" class="reference internal" href="#_CPPv4N3NAG6UpdateERN5Eigen8MatrixXfERN5Eigen8MatrixXfERKN5Eigen8MatrixXfERKN5Eigen8MatrixXfE"><code class="docutils literal notranslate"><span class="pre">Update()</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#id2'" class="reference internal" href="#id2">Exemplo de Aplicação</a></li>
 </ul>
 </li>
 </ul>
@@ -437,7 +537,7 @@ baixo fará o treinamento demorar uma eternidade ou travar em mínimos locais.</
 <script src="_static/documentation_options.js?v=f2a433a1"></script>
 <script src="_static/doctools.js?v=fd6eb6e6"></script>
 <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-<script defer="defer" src="_static/theme.js?v=582b20c5"></script>
+<script defer="defer" src="_static/theme.js?v=d6a9845b"></script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </body>
 </html>
