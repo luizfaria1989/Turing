@@ -22,3 +22,12 @@ Camada Densa (DenseLayer)
 .. doxygenclass:: DenseLayer
    :project: Turing
    :members:
+
+Exemplo de Aplicação
+^^^^^^^^^^^^^^^^^^^^
+Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando a camada densa:
+
+.. literalinclude:: ../../models/DNNWithNAG.cpp
+   :language: cpp
+   :linenos:
+   :lines: 49-75
