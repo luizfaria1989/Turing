@@ -1,0 +1,95 @@
+#include <iostream>
+#include <string>
+
+#include "../model/Model.h"
+#include "../layers/DenseLayer.h"
+#include "../layers/Sigmoid.h"
+#include "../layers/Softmax.h"
+#include "../loss/CategoricalCrossEntropy.h"
+#include "../optimizers/GradientDescent.h"
+#include "../MNISTLoader.h"
+
+/**
+ * @brief Implementa uma rede neural densa de duas camadas com a função sigmoide e
+ * softmax como funções de ativação, entropia cruzada categórica como função de perda e
+ * gradiente descendente como otimizador da rede.
+ */
+int main() {
+    std::cout << "Iniciando o framework de Deep Learning em C++..." << std::endl;
+
+    /*
+     * 1. Carregando os dados do MNIST
+     */
+
+    std::string path_images = "../data/train-images-idx3-ubyte/train-images-idx3-ubyte";
+    std::string path_labels = "../data/train-labels-idx1-ubyte/train-labels-idx1-ubyte";
+    std::string path_images_test = "../data/t10k-images-idx3-ubyte/t10k-images-idx3-ubyte";
+    std:: string path_labels_test = "../data/t10k-labels-idx1-ubyte/t10k-labels-idx1-ubyte";
+
+    std::cout << "Carregando o dataset MNIST..." << std::endl;
+    Eigen::MatrixXf X_train, Y_train;
+
+    try {
+        X_train = MNISTLoader::loadImages(path_images);
+        Y_train = MNISTLoader::loadLabels(path_labels);
+    } catch (const std::exception& e) {
+        std::cerr << "ERRO FATAL: " << e.what() << std::endl;
+        std::cerr << "Verifique se os arquivos do MNIST estão na pasta correta e descompactados!" << std::endl;
+        return 1;
+    }
+
+    std::cout << "Imagens carregadas: " << X_train.rows() << " x " << X_train.cols() << std::endl;
+    std::cout << "Labels carregadas:  " << Y_train.rows() << " x " << Y_train.cols() << std::endl;
+
+    /*
+     * 2. Montando a arquitetura da rede neural
+     */
+
+    std::cout << "Montando a rede neural..." << std::endl;
+    Model model;
+
+    // Camada Oculta: 784 entradas (pixels 28x28) para 128 neurônios
+    model.AddLayer(new DenseLayer(784, 128));
+    model.AddLayer(new Sigmoid());
+
+    // Camada de Saída: 128 entradas para 10 neurônios (classes de 0 a 9)
+    model.AddLayer(new DenseLayer(128, 10));
+    model.AddLayer(new Softmax());
+
+    /*
+     * 3. Configurando a função de perda e o otimizador
+     */
+
+    CategoricalCrossEntropy loss_function;
+    GradientDescent optimizer(0.01f);
+
+    /*
+     * 4. Configurando os parâmetros de treinamento do modelo
+     */
+
+    int epochs = 3;
+    int batch_size = 64;
+
+
+    model.Fit(epochs, batch_size, X_train, Y_train, loss_function, optimizer);
+
+    /*
+     * 5. Configurando os dados para teste do modelo
+     */
+
+    std::cout << "Carregando o dataset MNIST..." << std::endl;
+    Eigen::MatrixXf X_test, Y_test;
+
+    try {
+        X_test = MNISTLoader::loadImages(path_images_test);
+        Y_test = MNISTLoader::loadLabels(path_labels_test);
+    } catch (const std::exception& e) {
+        std::cerr << "ERRO FATAL: " << e.what() << std::endl;
+        std::cerr << "Verifique se os arquivos do MNIST estão na pasta correta e descompactados!" << std::endl;
+        return 1;
+    }
+
+    model.Evaluate(X_test, Y_test);
+
+    return 0;
+}
