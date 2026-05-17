@@ -34,5 +34,42 @@ add_executable(dnn_in_cpp
 find_library(ACCELERATE_FRAMEWORK Accelerate)
 
 target_link_libraries(dnn_in_cpp PRIVATE Eigen3::Eigen ${ACCELERATE_FRAMEWORK})
-
 target_compile_definitions(dnn_in_cpp PRIVATE EIGEN_USE_BLAS EIGEN_USE_LAPACK)
+
+add_executable(XORProblem models/XORProblem.cpp
+        models/
+        models/DNNWithNAG.cpp
+        models/DNNWithGDMomentum.cpp)
+
+add_executable(DNNWithGD models/DNNWithGD.cpp
+        model/Model.h
+        layers/DenseLayer.h
+        layers/Sigmoid.h
+        layers/Softmax.h
+        loss/CategoricalCrossEntropy.h
+        optimizers/GradientDescent.h
+        MNISTLoader.h)
+
+add_executable(DNNWithGDMomentum models/DNNWithGDMomentum.cpp
+        model/Model.h
+        layers/DenseLayer.h
+        layers/Tanh.h
+        layers/Softmax.h
+        loss/CategoricalCrossEntropy.h
+        optimizers/GDMomentum.h
+        MNISTLoader.h)
+
+add_executable(DNNWithNAG models/DNNWithNAG.cpp
+        model/Model.h
+        layers/DenseLayer.h
+        layers/ReLU.h
+        layers/Softmax.h
+        loss/CategoricalCrossEntropy.h
+        optimizers/NAG.h
+        MNISTLoader.h)
+
+
+target_link_libraries(XORProblem PRIVATE Eigen3::Eigen)
+target_link_libraries(DNNWithGD PRIVATE Eigen3::Eigen)
+target_link_libraries(DNNWithGDMomentum PRIVATE Eigen3::Eigen)
+target_link_libraries(DNNWithNAG PRIVATE Eigen3::Eigen)
