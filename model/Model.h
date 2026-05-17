@@ -114,6 +114,9 @@ public:
      */
     void Fit(int epochs, int batch_size, const Eigen::MatrixXf &input, const Eigen::MatrixXf &labels, Loss &loss_function, Optimizer &optimizer) {
 
+        std::cout << "Iniciando o treinamento por " << epochs << " epocas..." << std::endl;
+        std::cout << "------------------------------------------------" << std::endl;
+
         int num_samples = input.rows();
         int num_batches = (num_samples + batch_size - 1) / batch_size;
 
@@ -163,6 +166,8 @@ public:
                         historico << epoch+1 << "," << avg_loss << "," << avg_acc << "\n";
 
         }
+        std::cout << "------------------------------------------------" << std::endl;
+        std::cout << "Treinamento concluído com sucesso! \0/" << std::endl;
     }
 
     /**
