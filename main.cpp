@@ -59,14 +59,8 @@ int main() {
     int epochs = 20;
     int batch_size = 64;
 
-    std::cout << "Iniciando o treinamento por " << epochs << " epocas..." << std::endl;
-    std::cout << "------------------------------------------------" << std::endl;
-
     // Chama o método fit que nós construímos!
     model.Fit(epochs, batch_size, X_train, Y_train, loss_function, optimizer);
-
-    std::cout << "------------------------------------------------" << std::endl;
-    std::cout << "Treinamento concluído com sucesso! \0/" << std::endl;
 
     std::cout << "Carregando o dataset MNIST..." << std::endl;
     Eigen::MatrixXf X_test, Y_test;
