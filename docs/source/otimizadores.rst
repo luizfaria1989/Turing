@@ -20,12 +20,21 @@ Interface Base (Optimizer)
    :project: Turing
    :members:
 
-Gradiente Descente (GradientDescent)
--------------------------------------
+Gradiente Descedente (GradientDescent)
+----------------------------------------
 
 .. doxygenclass:: GradientDescent
    :project: Turing
    :members:
+
+Exemplo de Aplicação
+^^^^^^^^^^^^^^^^^^^^
+Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando o gradiente descendente como otimizador:
+
+.. literalinclude:: ../../models/DNNWithGD.cpp
+   :language: cpp
+   :linenos:
+   :lines: 49-75
 
 Gradiente Descendente com Momento (GDMomentum)
 -----------------------------------------------
@@ -33,9 +42,27 @@ Gradiente Descendente com Momento (GDMomentum)
    :project: Turing
    :members:
 
+Exemplo de Aplicação
+^^^^^^^^^^^^^^^^^^^^
+Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando o gradiente descendente com momento como otimizador:
+
+.. literalinclude:: ../../models/DNNWithGDMomentum.cpp
+   :language: cpp
+   :linenos:
+   :lines: 49-75
+
 Gradiente Acelerado de Nesterov (NAG)
 ---------------------------------------
 
 .. doxygenclass:: NAG
    :project: Turing
    :members:
+
+Exemplo de Aplicação
+^^^^^^^^^^^^^^^^^^^^
+Abaixo está um exemplo completo de como instanciar e treinar uma rede utilizando o gradiente acelerado de Nesterov como otimizador:
+
+.. literalinclude:: ../../models/DNNWithNAG.cpp
+   :language: cpp
+   :linenos:
+   :lines: 49-75
